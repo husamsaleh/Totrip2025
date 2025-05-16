@@ -19,6 +19,9 @@ urlpatterns = [
     
     # Add the tourguides app URLs
     path("", include("tourguides.urls", namespace="tourguides")),
+    
+    # Add the blog app URLs
+    path("blogs/", include("blog.urls", namespace="blog")),
 ]
 
 

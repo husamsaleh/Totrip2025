@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{{ page.title }} - استكشف السعودية{% endblock %}
+
+{% block extra_css %}
+<style>
+    .blog-content {
+        font-size: 1.125rem;
+        line-height: 1.8;
+    }
+
+    .blog-content h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #1f2937;
+    }
+
+    .blog-content h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        color: #374151;
+    }
+
+    .blog-content p {
+        margin-bottom: 1.5rem;
+        color: #4b5563;
+    }
+
+    .blog-content blockquote {
+        border-right: 4px solid #10b981;
+        padding: 1rem 2rem;
+        margin: 2rem 0;
+        background: #f3f4f6;
+        border-radius: 0.5rem;
+        font-style: italic;
+        color: #374151;
+    }
+
+    .blog-content img {
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0">
+        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1578895101408-1a36b834405b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" alt="Aerial view of Saudi Arabia cityscape at sunset">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/30"></div>
+    </div>
+    <div class="relative text-center text-white max-w-4xl mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6" data-aos="fade-up">{{ page.title }}</h1>
+        <p class="text-xl opacity-90 mb-8" data-aos="fade-up" data-aos-delay="100">{{ page.intro|richtext }}</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Search Bar -->
+    <div class="max-w-3xl mx-auto mb-12">
+        <form method="get" class="relative group">
+            <input type="text" 
+                    name="query"
+                    value="{{ search_query|default:'' }}"
+                    class="w-full bg-gray-50/80 border-2 border-gray-200 rounded-xl px-4 py-3 sm:py-4 pr-12 focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
+                    placeholder="ابحث في المدونة...">
+            <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2">
+                <i class="fas fa-search text-gray-400 group-hover:text-emerald-500 transition-colors duration-300"></i>
+            </button>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-12 gap-8">
+        <!-- Sidebar Filters -->
+        <div class="col-span-12 lg:col-span-3">
+            <div class="bg-white rounded-3xl shadow-xl p-6 sticky top-24" data-aos="fade-left">
+                <!-- Sort Options -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4">ترتيب المقالات</h3>
+                    <div class="space-y-2">
+                        <a href="?{% if current_category %}category={{ current_category }}&{% endif %}{% if current_tag %}tag={{ current_tag }}&{% endif %}{% if search_query %}query={{ search_query }}&{% endif %}sort_by=recent" 
+                            class="w-full block text-right px-4 py-2 rounded-xl {% if current_sort == 'recent' or not current_sort %}bg-emerald-50 text-emerald-600{% else %}text-gray-600 hover:bg-emerald-50 hover:text-emerald-600{% endif %} transition-colors">
+                            <i class="fas fa-clock ml-2"></i>الأحدث
+                        </a>
+                        <a href="?{% if current_category %}category={{ current_category }}&{% endif %}{% if current_tag %}tag={{ current_tag }}&{% endif %}{% if search_query %}query={{ search_query }}&{% endif %}sort_by=oldest" 
+                            class="w-full block text-right px-4 py-2 rounded-xl {% if current_sort == 'oldest' %}bg-emerald-50 text-emerald-600{% else %}text-gray-600 hover:bg-emerald-50 hover:text-emerald-600{% endif %} transition-colors">
+                            <i class="fas fa-history ml-2"></i>الأقدم
+                        </a>
+                        <a href="?{% if current_category %}category={{ current_category }}&{% endif %}{% if current_tag %}tag={{ current_tag }}&{% endif %}{% if search_query %}query={{ search_query }}&{% endif %}sort_by=popular" 
+                            class="w-full block text-right px-4 py-2 rounded-xl {% if current_sort == 'popular' %}bg-emerald-50 text-emerald-600{% else %}text-gray-600 hover:bg-emerald-50 hover:text-emerald-600{% endif %} transition-colors">
+                            <i class="fas fa-fire ml-2"></i>الأكثر مشاهدة
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Categories Filter -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4">التصنيفات</h3>
+                    <div class="space-y-2">
+                        {% for category in categories_with_count %}
+                            <a href="?category={{ category.slug }}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
+                                class="w-full block text-right px-4 py-2 rounded-xl {% if current_category == category.slug %}bg-emerald-50 text-emerald-600{% else %}text-gray-600 hover:bg-emerald-50 hover:text-emerald-600{% endif %} transition-colors">
+                                <i class="fas fa-angle-left ml-2"></i>{{ category.name }} ({{ category.count }})
+                            </a>
+                        {% endfor %}
+                        
+                        {% if current_category or current_tag %}
+                            <a href="?{% if current_sort %}sort_by={{ current_sort }}{% endif %}" 
+                                class="w-full block text-right px-4 py-2 rounded-xl bg-red-50 text-red-600 transition-colors mt-4">
+                                <i class="fas fa-times ml-2"></i>إلغاء التصفية
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">الوسوم الشائعة</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for tag in posts.0.tags.all %}
+                            <a href="?tag={{ tag }}" class="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full text-sm hover:bg-emerald-200 cursor-pointer transition-colors">
+                                #{{ tag }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Posts Grid -->
+        <div class="col-span-12 lg:col-span-9">
+            {% if search_query %}
+                <div class="mb-6 p-4 bg-blue-50 text-blue-700 rounded-lg">
+                    <i class="fas fa-search mr-2"></i>
+                    نتائج البحث عن: <strong>{{ search_query }}</strong>
+                    <a href="?" class="text-red-500 hover:text-red-700 mr-3">
+                        <i class="fas fa-times"></i> إلغاء البحث
+                    </a>
+                </div>
+            {% endif %}
+            
+            {% if current_category and current_category != None and current_category != '' %}
+                <div class="mb-6 p-4 bg-emerald-50 text-emerald-700 rounded-lg">
+                    <i class="fas fa-folder mr-2"></i>
+                    تصفية حسب الفئة: <strong>{{ current_category }}</strong>
+                    <a href="?{% if current_sort %}sort_by={{ current_sort }}{% endif %}" class="text-red-500 hover:text-red-700 mr-3">
+                        <i class="fas fa-times"></i> إلغاء التصفية
+                    </a>
+                </div>
+            {% endif %}
+            
+            {% if current_tag %}
+                <div class="mb-6 p-4 bg-purple-50 text-purple-700 rounded-lg">
+                    <i class="fas fa-tag mr-2"></i>
+                    تصفية حسب الوسم: <strong>#{{ current_tag }}</strong>
+                    <a href="?{% if current_sort %}sort_by={{ current_sort }}{% endif %}" class="text-red-500 hover:text-red-700 mr-3">
+                        <i class="fas fa-times"></i> إلغاء التصفية
+                    </a>
+                </div>
+            {% endif %}
+            
+            {% if posts %}
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {% for post in posts %}
+                        <!-- Blog Card -->
+                        {% if forloop.counter0 == 0 %}
+                        <a href="{% pageurl post %}" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="0">
+                        {% elif forloop.counter0 == 1 %}
+                        <a href="{% pageurl post %}" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                        {% elif forloop.counter0 == 2 %}
+                        <a href="{% pageurl post %}" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                        {% elif forloop.counter0 == 3 %}
+                        <a href="{% pageurl post %}" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
+                        {% elif forloop.counter0 == 4 %}
+                        <a href="{% pageurl post %}" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400">
+                        {% elif forloop.counter0 == 5 %}
+                        <a href="{% pageurl post %}" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="500">
+                        {% else %}
+                        <a href="{% pageurl post %}" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="600">
+                        {% endif %}
+                            <div class="relative">
+                                {% if post.featured_image %}
+                                    {% image post.featured_image fill-800x600 as img %}
+                                    <img src="{{ img.url }}" 
+                                            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" 
+                                            alt="{{ post.title }}">
+                                {% else %}
+                                    <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
+                                        <i class="fas fa-image text-gray-400 text-4xl"></i>
+                                    </div>
+                                {% endif %}
+                                
+                                {% with post.categories.all as categories %}
+                                    {% if categories %}
+                                        <div class="absolute top-4 right-4">
+                                            <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                                {{ categories.0.name }}
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                                
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                    <p class="text-white text-sm font-medium">{{ post.title }}</p>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center text-gray-500 text-sm mb-4">
+                                    <span class="flex items-center">
+                                        <i class="far fa-calendar-alt ml-1"></i>
+                                        {{ post.date|date:"d F Y" }}
+                                    </span>
+                                    <span class="mr-4 flex items-center">
+                                        <i class="far fa-eye ml-1"></i>
+                                        {{ post.view_count }} مشاهدة
+                                    </span>
+                                </div>
+                                <p class="text-gray-600 mb-4">{{ post.intro }}</p>
+                                <div class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                    اقرأ المزيد
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if posts.paginator.num_pages > 1 %}
+                    <div class="mt-12 flex justify-center">
+                        <nav class="inline-flex rounded-md -space-x-px text-sm font-medium" aria-label="Pagination">
+                            {% if posts.has_previous %}
+                                <a href="?page={{ posts.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_tag %}&tag={{ current_tag }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
+                                    class="relative inline-flex items-center px-4 py-3 rounded-r-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            {% endif %}
+                            
+                            {% for i in posts.paginator.page_range %}
+                                {% if posts.number == i %}
+                                    <span class="relative inline-flex items-center px-4 py-3 border border-emerald-500 bg-emerald-50 text-emerald-600">
+                                        {{ i }}
+                                    </span>
+                                {% else %}
+                                    <a href="?page={{ i }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_tag %}&tag={{ current_tag }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
+                                        class="relative inline-flex items-center px-4 py-3 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                                        {{ i }}
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if posts.has_next %}
+                                <a href="?page={{ posts.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_tag %}&tag={{ current_tag }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
+                                    class="relative inline-flex items-center px-4 py-3 rounded-l-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            {% endif %}
+                        </nav>
+                    </div>
+                {% endif %}
+                
+            {% else %}
+                <div class="text-center py-16">
+                    <div class="bg-white rounded-3xl shadow-xl p-12" data-aos="fade-up">
+                        <i class="far fa-file-alt text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">لا توجد منشورات</h3>
+                        <p class="text-gray-600 mb-6">لم نتمكن من العثور على أي مقالات تطابق معايير بحثك.</p>
+                        <a href="{{ page.url }}" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition-colors shadow-lg">
+                            العودة إلى جميع المقالات
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %} 

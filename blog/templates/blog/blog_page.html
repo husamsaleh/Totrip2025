@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{{ page.title }} - استكشف السعودية{% endblock %}
+
+{% block extra_css %}
+<style>
+    .blog-content {
+        font-size: 1.125rem;
+        line-height: 1.8;
+    }
+
+    .blog-content h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #1f2937;
+    }
+
+    .blog-content h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        color: #374151;
+    }
+
+    .blog-content p {
+        margin-bottom: 1.5rem;
+        color: #4b5563;
+    }
+
+    .blog-content blockquote {
+        border-right: 4px solid #10b981;
+        padding: 1rem 2rem;
+        margin: 2rem 0;
+        background: #f3f4f6;
+        border-radius: 0.5rem;
+        font-style: italic;
+        color: #374151;
+    }
+
+    .blog-content img {
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-of-contents a {
+        transition: all 0.3s ease;
+    }
+
+    .table-of-contents a:hover {
+        color: #10b981;
+        padding-right: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="relative pt-20">
+    <div class="h-[60vh] relative overflow-hidden">
+        {% if page.featured_image %}
+            {% image page.featured_image fill-1920x1080 as hero_img %}
+            <img src="{{ hero_img.url }}" alt="{{ page.title }}" class="w-full h-full object-cover">
+        {% else %}
+            <img src="https://images.unsplash.com/photo-1578895101408-1a36b834405b" alt="{{ page.title }}" class="w-full h-full object-cover">
+        {% endif %}
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/30"></div>
+        <div class="absolute inset-0 flex items-center">
+            <div class="container mx-auto px-4">
+                {% with page.categories.all as categories %}
+                    {% if categories %}
+                        <span class="inline-block bg-emerald-500 text-white px-4 py-1 rounded-full text-sm mb-4" data-aos="fade-up">{{ categories.0.name }}</span>
+                    {% endif %}
+                {% endwith %}
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4" data-aos="fade-up" data-aos-delay="100">{{ page.title }}</h1>
+                <div class="flex flex-wrap gap-6 text-white/90 text-sm" data-aos="fade-up" data-aos-delay="200">
+                    <span class="flex items-center gap-2">
+                        <i class="far fa-calendar-alt"></i>
+                        {{ page.date|date:"d F Y" }}
+                    </span>
+                    <span class="flex items-center gap-2">
+                        <i class="far fa-eye"></i>
+                        {{ page.view_count }} مشاهدة
+                    </span>
+                    <span class="flex items-center gap-2">
+                        <i class="far fa-clock"></i>
+                        {{ page.read_time }} دقائق قراءة
+                    </span>
+                    {% if page.author %}
+                        <span class="flex items-center gap-2">
+                            <i class="far fa-user"></i>
+                            بواسطة {{ page.author.name }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-3xl shadow-xl p-8">
+                <div class="blog-content">
+                    <p class="text-xl text-gray-600 mb-8">{{ page.intro }}</p>
+
+                    {{ page.body|richtext }}
+
+                    <!-- Gallery Images -->
+                    {% if page.gallery_images.all %}
+                        <div class="mt-12">
+                            <h2>معرض الصور</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                                {% for item in page.gallery_images.all %}
+                                    <div class="overflow-hidden rounded-xl">
+                                        {% image item.image fill-800x600 as img %}
+                                        <img src="{{ img.url }}" alt="{{ item.caption }}" class="w-full h-auto hover:scale-105 transition-transform duration-500">
+                                        {% if item.caption %}
+                                            <p class="text-center text-sm text-gray-500 mt-2">{{ item.caption }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Tags -->
+                    {% if page.tags.all %}
+                        <div class="mt-12 pt-6 border-t border-gray-100">
+                            <div class="flex flex-wrap gap-2">
+                                {% for tag in page.tags.all %}
+                                    <a href="{% url 'blog:blog_list' %}?tag={{ tag }}" class="px-4 py-2 bg-gray-100 hover:bg-emerald-100 text-gray-700 hover:text-emerald-700 rounded-full text-sm transition-colors">
+                                        #{{ tag }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Author Card -->
+                {% if page.author %}
+                    <div class="bg-gray-50 rounded-2xl p-6 mt-12">
+                        <div class="flex items-center gap-6">
+                            {% if page.author.profile_image %}
+                                {% image page.author.profile_image fill-100x100 as author_img %}
+                                <img src="{{ author_img.url }}" alt="{{ page.author.name }}" class="w-20 h-20 rounded-full">
+                            {% else %}
+                                <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
+                                    <i class="fas fa-user text-gray-400 text-2xl"></i>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <h5 class="text-xl font-semibold mb-2">{{ page.author.name }}</h5>
+                                <div class="text-gray-600 mb-3">{{ page.author.bio|richtext }}</div>
+                                <div class="flex gap-4">
+                                    <a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">
+                                        <i class="fab fa-linkedin"></i>
+                                    </a>
+                                    <a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Share Buttons -->
+                <div class="flex justify-center gap-4 mt-12">
+                    <button class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white hover:-translate-y-1 transition-transform">
+                        <i class="fab fa-facebook-f"></i>
+                    </button>
+                    <button class="w-12 h-12 flex items-center justify-center rounded-full bg-sky-500 text-white hover:-translate-y-1 transition-transform">
+                        <i class="fab fa-twitter"></i>
+                    </button>
+                    <button class="w-12 h-12 flex items-center justify-center rounded-full bg-green-500 text-white hover:-translate-y-1 transition-transform">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                    <button class="w-12 h-12 flex items-center justify-center rounded-full bg-teal-500 text-white hover:-translate-y-1 transition-transform">
+                        <i class="fas fa-link"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+            <!-- Table of Contents -->
+            <div class="bg-white rounded-3xl shadow-xl p-6 mb-8 sticky top-24" data-aos="fade-left">
+                <h3 class="text-xl font-bold mb-6 border-b pb-4">محتويات المقال</h3>
+                <div class="table-of-contents space-y-4">
+                    <!-- Dynamic content generated with JavaScript -->
+                    <div id="toc-container">
+                        <!-- Table of contents will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Posts -->
+            {% with page.categories.all as categories %}
+                {% if categories %}
+                    <div class="bg-white rounded-3xl shadow-xl p-6 mb-8">
+                        <h3 class="text-xl font-bold mb-6 border-b pb-4">مقالات ذات صلة</h3>
+                        <div class="space-y-6">
+                            {% for related_post in related_posts %}
+                                <a href="{% pageurl related_post %}" class="block group">
+                                    <div class="flex gap-4">
+                                        <div class="flex-shrink-0">
+                                            {% if related_post.featured_image %}
+                                                {% image related_post.featured_image fill-100x100 as img %}
+                                                <img src="{{ img.url }}" alt="{{ related_post.title }}" class="w-20 h-20 rounded-lg object-cover">
+                                            {% else %}
+                                                <div class="w-20 h-20 rounded-lg bg-gray-100 flex items-center justify-center">
+                                                    <i class="fas fa-image text-gray-300"></i>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-gray-900 group-hover:text-emerald-600 transition-colors line-clamp-2">{{ related_post.title }}</h4>
+                                            <p class="text-sm text-gray-500 mt-1">{{ related_post.date|date:"d F Y" }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% empty %}
+                                <p class="text-gray-500">لا توجد مقالات ذات صلة حالياً.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Categories -->
+            <div class="bg-white rounded-3xl shadow-xl p-6">
+                <h3 class="text-xl font-bold mb-6 border-b pb-4">التصنيفات</h3>
+                <div class="space-y-2">
+                    {% for category in all_categories %}
+                        <a href="{% url 'blog:blog_list' %}?category={{ category.slug }}" class="block px-4 py-2 rounded-lg hover:bg-emerald-50 text-gray-700 hover:text-emerald-700 transition-colors">
+                            <i class="fas fa-folder ml-2 text-emerald-500"></i>
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Generate Table of Contents
+        const blogContent = document.querySelector('.blog-content');
+        const tocContainer = document.getElementById('toc-container');
+        
+        if (blogContent && tocContainer) {
+            const headings = blogContent.querySelectorAll('h2, h3');
+            
+            if (headings.length > 0) {
+                const toc = document.createElement('ul');
+                toc.className = 'space-y-2';
+                
+                headings.forEach((heading, index) => {
+                    // Create unique ID for the heading
+                    const id = `heading-${index}`;
+                    heading.id = id;
+                    
+                    const listItem = document.createElement('li');
+                    
+                    // Add appropriate indentation for h3
+                    if (heading.tagName === 'H3') {
+                        listItem.className = 'mr-4';
+                    }
+                    
+                    const link = document.createElement('a');
+                    link.href = `#${id}`;
+                    link.textContent = heading.textContent;
+                    link.className = 'block text-gray-700 hover:text-emerald-600 transition-colors py-1';
+                    
+                    // Add icon based on heading level
+                    const icon = document.createElement('i');
+                    icon.className = heading.tagName === 'H2' 
+                        ? 'fas fa-bookmark ml-2 text-emerald-500' 
+                        : 'fas fa-angle-left ml-2 text-emerald-400';
+                    
+                    link.prepend(icon);
+                    listItem.appendChild(link);
+                    toc.appendChild(listItem);
+                });
+                
+                tocContainer.appendChild(toc);
+            } else {
+                tocContainer.innerHTML = '<p class="text-gray-500">لا توجد عناوين رئيسية في هذا المقال.</p>';
+            }
+        }
+    });
+</script>
+{% endblock extra_js %} 

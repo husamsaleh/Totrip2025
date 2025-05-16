@@ -147,7 +147,7 @@
                         <a href="/" class="{% if request.path == '/' %}text-emerald-600{% else %}text-gray-600 hover:text-emerald-600{% endif %} px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">الرئيسية</a>
                         <a href="{% url 'tourguides:guides_list' %}" class="{% if 'guides' in request.path %}text-emerald-600{% else %}text-gray-600 hover:text-emerald-600{% endif %} px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المرشدون</a>
                         <a href="#" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المكاتب السياحية</a>
-                        <a href="#" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المدونة</a>
+                        <a href="{% url 'blog:blog_list' %}" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المدونة</a>
                         <a href="#" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">اتصل بنا</a>
                     </div>
                 </div>
@@ -248,7 +248,7 @@
                     <i class="fas fa-building ml-2"></i>
                     المكاتب السياحية
                 </a>
-                <a href="#" class="block py-3 px-4 rounded-lg hover:bg-gray-50">
+                <a href="{% url 'blog:blog_list' %}" class="block py-3 px-4 rounded-lg hover:bg-gray-50">
                     <i class="fas fa-newspaper ml-2"></i>
                     المدونة
                 </a>
@@ -343,7 +343,7 @@
                         <li><a href="/" class="text-gray-400 hover:text-emerald-500 transition-colors">الرئيسية</a></li>
                         <li><a href="{% url 'tourguides:guides_list' %}" class="text-gray-400 hover:text-emerald-500 transition-colors">المرشدون</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">المكاتب السياحية</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">المدونة</a></li>
+                        <li><a href="{% url 'blog:blog_list' %}" class="text-gray-400 hover:text-emerald-500 transition-colors">المدونة</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">اتصل بنا</a></li>
                     </ul>
                 </div>
