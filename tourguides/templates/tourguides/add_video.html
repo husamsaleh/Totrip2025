@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if is_update %}تعديل فيديو{% else %}إضافة فيديو{% endif %} | استكشف السعودية{% endblock %}
+
+{% block extra_css %}
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-focus {
+        transition: all 0.3s ease;
+    }
+
+    .input-focus:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    }
+
+    .video-preview-container {
+        border-radius: 0.75rem;
+        overflow: hidden;
+        margin-top: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: relative;
+        max-width: 100%;
+        background-color: #f9fafb;
+    }
+
+    .form-label {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
+    }
+
+    .form-hint {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+    }
+
+    .required-indicator {
+        color: #ef4444;
+        margin-right: 0.25rem;
+    }
+
+    /* Mobile Improvements */
+    @media (max-width: 640px) {
+        .form-container {
+            padding: 1.5rem;
+        }
+        
+        .btn {
+            width: 100%;
+            margin-bottom: 0.75rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="min-h-screen py-6 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="max-w-3xl mx-auto">
+        <div class="glass-card rounded-3xl p-5 sm:p-8 form-container">
+            <div class="flex items-center justify-between mb-6 sm:mb-10">
+                <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent">
+                    {% if is_update %}
+                    <i class="fas fa-edit ml-1"></i> تعديل فيديو
+                    {% else %}
+                    <i class="fas fa-plus ml-1"></i> إضافة فيديو جديد
+                    {% endif %}
+                </h1>
+                <a href="{% url 'tourguides:videos_list' %}" class="text-gray-500 hover:text-red-500 transition-colors" aria-label="إغلاق">
+                    <i class="fas fa-times text-xl"></i>
+                </a>
+            </div>
+
+            {% if messages %}
+            <div class="mb-6">
+                {% for message in messages %}
+                <div class="p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-700{% elif message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- YouTube URL -->
+                <div class="space-y-2">
+                    <label class="block form-label">
+                        <span class="required-indicator">*</span>رابط الفيديو على يوتيوب
+                    </label>
+                    <input type="url" name="youtube_url" id="youtube-url-input"
+                           class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                           placeholder="مثال: https://www.youtube.com/watch?v=abcdefghijk" required
+                           value="{{ video.youtube_url|default:'' }}">
+                    <p class="form-hint">
+                        <i class="fab fa-youtube text-red-500 ml-1"></i>
+                        أدخل الرابط الكامل للفيديو من موقع يوتيوب
+                    </p>
+                </div>
+                
+                <!-- Preview (updates automatically using JavaScript) -->
+                <div id="video-preview-container" class="video-preview-container" {% if not video.youtube_url %}style="display: none;"{% endif %}>
+                    <div class="aspect-w-16 aspect-h-9">
+                        {% if video.youtube_url %}
+                        <iframe src="{{ video.get_embed_url }}" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                        {% else %}
+                        <iframe id="video-preview-frame" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Title -->
+                <div class="space-y-2">
+                    <label class="block form-label">
+                        <span class="required-indicator">*</span>عنوان الفيديو
+                    </label>
+                    <input type="text" name="title" 
+                           class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                           placeholder="أدخل عنوانًا وصفيًا للفيديو" required
+                           value="{{ video.title|default:'' }}">
+                    <p class="form-hint">أضف عنوانًا واضحًا للفيديو</p>
+                </div>
+                
+                <!-- Description -->
+                <div class="space-y-2">
+                    <label class="block form-label">وصف الفيديو</label>
+                    <textarea name="description" rows="3" 
+                              class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus resize-none"
+                              placeholder="اشرح محتوى الفيديو بإيجاز...">{{ video.description|default:'' }}</textarea>
+                    <p class="form-hint">أضف وصفًا موجزًا لمساعدة الزائرين على فهم محتوى الفيديو (اختياري)</p>
+                </div>
+                
+                <!-- Order -->
+                <div class="space-y-2">
+                    <label class="block form-label">ترتيب الظهور</label>
+                    <input type="number" name="order" min="0"
+                           class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                           value="{{ video.order|default:'0' }}">
+                    <p class="form-hint">
+                        <i class="fas fa-sort-numeric-down ml-1"></i>
+                        الرقم الأقل يظهر أولاً في قائمة الفيديوهات
+                    </p>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6">
+                    <button type="submit" class="btn px-6 py-4 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-xl hover:from-red-500 hover:to-red-400 transition-all duration-300 flex items-center justify-center font-medium">
+                        <i class="fas fa-{% if is_update %}save{% else %}plus{% endif %} ml-2"></i>
+                        {% if is_update %}حفظ التغييرات{% else %}إضافة الفيديو{% endif %}
+                    </button>
+                    <a href="{% url 'tourguides:videos_list' %}" class="btn px-6 py-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors text-center text-gray-700 flex items-center justify-center font-medium">
+                        <i class="fas fa-times ml-2"></i>
+                        إلغاء
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- YouTube URL Preview Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const youtubeUrlInput = document.getElementById('youtube-url-input');
+        const videoPreviewContainer = document.getElementById('video-preview-container');
+        const videoPreviewFrame = document.getElementById('video-preview-frame');
+        
+        // Function to extract YouTube ID from URL
+        function getYoutubeId(url) {
+            if (!url) return null;
+            
+            // This regex matches various YouTube URL formats
+            const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            
+            return match ? match[1] : null;
+        }
+        
+        // Function to update the preview
+        function updatePreview() {
+            const url = youtubeUrlInput.value.trim();
+            const videoId = getYoutubeId(url);
+            
+            if (videoId) {
+                // Show the preview container
+                videoPreviewContainer.style.display = 'block';
+                
+                // Set the iframe src to the embed URL
+                videoPreviewFrame.src = `https://www.youtube.com/embed/${videoId}`;
+            } else {
+                // Hide the preview container if no valid video ID
+                videoPreviewContainer.style.display = 'none';
+                videoPreviewFrame.src = '';
+            }
+        }
+        
+        // Update preview when URL changes
+        youtubeUrlInput.addEventListener('input', updatePreview);
+        youtubeUrlInput.addEventListener('paste', function() {
+            // Small delay to allow paste to complete
+            setTimeout(updatePreview, 100);
+        });
+        
+        // Initial preview update
+        updatePreview();
+    });
+</script>
+{% endblock %} 

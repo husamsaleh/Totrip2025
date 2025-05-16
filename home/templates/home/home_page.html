@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background-image: url('{% static "images/banner1.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .feature-card {
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .user-type-card {
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .user-type-card:hover {
+        transform: translateY(-5px);
+        border-color: #10B981;
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section py-32">
+    <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto text-center text-white hero-content">
+            <h1 class="text-5xl font-bold mb-6" data-aos="fade-up">اكتشف أفضل المرشدين السياحيين في المملكة العربية السعودية</h1>
+            <p class="text-xl mb-10 opacity-90" data-aos="fade-up" data-aos-delay="100">
+                منصة تفاعلية تربط المسافرين بمرشدين سياحيين محترفين لتجربة سفر فريدة ومميزة
+            </p>
+            <div class="flex flex-wrap justify-center gap-6" data-aos="fade-up" data-aos-delay="200">
+                <a href="{% url 'tourguides:guides_list' %}" class="px-8 py-4 bg-white text-emerald-600 rounded-full font-medium hover:bg-gray-100 transition-colors text-lg">
+                    <i class="fas fa-search ml-2"></i>
+                    ابحث عن مرشد سياحي
+                </a>
+                <a href="{% url 'tourguides:register' %}" class="px-8 py-4 bg-emerald-700 text-white rounded-full font-medium hover:bg-emerald-800 transition-colors text-lg">
+                    <i class="fas fa-user-plus ml-2"></i>
+                    انضم كمرشد سياحي
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Types Section -->
+<div class="container mx-auto px-4 py-24">
+    <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">اختر طريقة استخدامك للمنصة</h2>
+        <p class="text-gray-600 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+            منصتنا توفر خدمات متنوعة لجميع المستخدمين سواء كنت مرشداً سياحياً أو مسافراً أو مكتب سياحي
+        </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Tour Guide Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 text-center user-type-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-3xl mx-auto mb-6">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">مرشد سياحي</h3>
+            <p class="text-gray-600 mb-6">انضم إلينا كمرشد سياحي واعرض خدماتك وخبراتك للمسافرين من جميع أنحاء العالم</p>
+            <div class="space-y-3">
+                <a href="{% url 'tourguides:register' %}" class="block w-full py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+                    تسجيل حساب جديد
+                </a>
+                <a href="{% url 'tourguides:login' %}" class="block w-full py-3 border border-emerald-500 text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors">
+                    تسجيل دخول مرشد سياحي
+                </a>
+            </div>
+        </div>
+        
+        <!-- Traveler Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 text-center user-type-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-3xl mx-auto mb-6">
+                <i class="fas fa-suitcase"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">مسافر</h3>
+            <p class="text-gray-600 mb-6">ابحث عن أفضل المرشدين السياحيين واحجز تجارب فريدة لرحلتك القادمة في السعودية</p>
+            <div class="space-y-3">
+                <a href="{% url 'tourguides:guides_list' %}" class="block w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    استعرض المرشدين
+                </a>
+                <a href="#" class="block w-full py-3 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                    تسجيل دخول مسافر
+                </a>
+            </div>
+        </div>
+        
+        <!-- Tourism Office Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 text-center user-type-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-3xl mx-auto mb-6">
+                <i class="fas fa-building"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">مكتب سياحي</h3>
+            <p class="text-gray-600 mb-6">قدم خدماتك السياحية وتعاون مع أفضل المرشدين السياحيين لتقديم تجارب مميزة</p>
+            <div class="space-y-3">
+                <a href="#" class="block w-full py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors">
+                    تسجيل حساب مكتب
+                </a>
+                <a href="#" class="block w-full py-3 border border-purple-500 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors">
+                    تسجيل دخول مكتب
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="bg-gray-50 py-24">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">ميزات منصتنا</h2>
+            <p class="text-gray-600 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                نوفر مجموعة من الميزات الفريدة التي تساعد المرشدين السياحيين والمسافرين على تحقيق أقصى استفادة
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-xl shadow-md feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-2xl mb-6">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">مرشدون مُعتمدون</h3>
+                <p class="text-gray-600">جميع المرشدين السياحيين معتمدون ومرخصون من الجهات المختصة لضمان تجربة آمنة وموثوقة</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl shadow-md feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-2xl mb-6">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">تجارب متنوعة</h3>
+                <p class="text-gray-600">استكشف مجموعة متنوعة من التجارب السياحية المخصصة لاحتياجاتك في جميع مناطق المملكة</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl shadow-md feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-2xl mb-6">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">تقييمات موثوقة</h3>
+                <p class="text-gray-600">اطلع على تقييمات حقيقية من مسافرين سابقين واختر المرشد السياحي المناسب لتجربتك</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl shadow-md feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-2xl mb-6">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">تعدد اللغات</h3>
+                <p class="text-gray-600">اختر من بين مرشدين يتحدثون لغات متعددة لضمان تواصل سلس خلال رحلتك</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl shadow-md feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-2xl mb-6">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">حجز مباشر</h3>
+                <p class="text-gray-600">احجز جولتك مباشرة من خلال المنصة بطريقة سهلة وآمنة وتواصل مع المرشد السياحي</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl shadow-md feature-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-2xl mb-6">
+                    <i class="fas fa-hand-holding-usd"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">أسعار تنافسية</h3>
+                <p class="text-gray-600">أسعار شفافة ومنافسة تناسب جميع الميزانيات مع إمكانية المقارنة واختيار الأفضل</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

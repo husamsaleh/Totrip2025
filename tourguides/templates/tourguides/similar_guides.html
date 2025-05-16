@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}مرشدون سياحيون مشابهون | استكشف السعودية{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="relative py-20 bg-gradient-to-b from-emerald-600 to-emerald-800">
+    <div class="container mx-auto px-4">
+        <div class="text-center text-white">
+            <h1 class="text-4xl font-bold mb-4">مرشدون سياحيون مشابهون</h1>
+            <p class="text-xl max-w-3xl mx-auto">
+                مرشدون سياحيون مشابهون لـ {{ current_guide.user.get_full_name|default:current_guide.user.username }}
+            </p>
+            <a href="{% url 'tourguides:tourguide_profile' slug=current_guide.slug %}" class="inline-block mt-6 bg-white text-emerald-600 px-6 py-2 rounded-full hover:bg-emerald-50 transition-colors">
+                <i class="fas fa-arrow-right ml-2"></i>
+                العودة إلى الملف الشخصي
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Similar Guides Section -->
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-6xl mx-auto">
+        {% if similar_guides %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for guide in similar_guides %}
+            <div class="guide-card rounded-xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-300">
+                <div class="relative h-60">
+                    {% if guide.profile_image %}
+                    <img src="{{ guide.profile_image.file.url }}" alt="{{ guide.user.get_full_name }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <div class="w-full h-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+                        <i class="fas fa-user text-white text-5xl"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                        <h3 class="text-white font-bold text-xl">{{ guide.user.get_full_name|default:guide.user.username }}</h3>
+                        <div class="flex items-center">
+                            <div class="flex mr-1">
+                                {% with ''|center:5 as range %}
+                                {% for _ in range %}
+                                <i class="fas fa-star {% if forloop.counter <= guide.avg_rating %}text-yellow-400{% else %}text-gray-300{% endif %} text-sm"></i>
+                                {% endfor %}
+                                {% endwith %}
+                            </div>
+                            <span class="text-white text-sm">({{ guide.reviews.count }})</span>
+                        </div>
+                    </div>
+                    
+                    {% if guide.is_featured %}
+                    <div class="absolute top-3 right-3 bg-yellow-500 text-white text-xs py-1 px-3 rounded-full">
+                        <i class="fas fa-star ml-1"></i> مميز
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="p-4">
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        {% for specialty in guide.specialties.all|slice:":3" %}
+                        <span class="bg-gray-100 text-gray-600 text-xs py-1 px-2 rounded-full">{{ specialty.name }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <p class="text-gray-600 text-sm line-clamp-2 h-10 mb-4">
+                        {% if guide.bio %}
+                        {{ guide.bio|truncatechars:100 }}
+                        {% else %}
+                        مرشد سياحي محترف في المملكة العربية السعودية
+                        {% endif %}
+                    </p>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                            {% with guide.schedules.all|dictsortreversed:"start_date"|first as next_schedule %}
+                            {% if next_schedule %}
+                            {{ next_schedule.location.city }}
+                            {% else %}
+                            غير محدد
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <a href="{% url 'tourguides:tourguide_profile' slug=guide.slug %}" class="text-emerald-500 hover:text-emerald-600 text-sm font-medium transition-colors">
+                            عرض الملف الشخصي
+                            <i class="fas fa-arrow-left mr-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12 bg-gray-50 rounded-xl">
+            <div class="text-5xl text-gray-300 mb-4">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-600 mb-2">لا يوجد مرشدون مشابهون</h3>
+            <p class="text-gray-500">
+                لم نتمكن من العثور على مرشدين سياحيين مشابهين في الوقت الحالي
+            </p>
+            <a href="{% url 'tourguides:guides_list' %}" class="inline-block mt-4 bg-emerald-500 text-white px-6 py-2 rounded-full hover:bg-emerald-600 transition-colors">
+                عرض جميع المرشدين
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

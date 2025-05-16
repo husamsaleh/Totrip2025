@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}{% if is_update %}تعديل صورة{% else %}إضافة صورة{% endif %} للمعرض | استكشف السعودية{% endblock %}
+
+{% block extra_css %}
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-focus {
+        transition: all 0.3s ease;
+    }
+
+    .input-focus:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    }
+
+    /* File Upload Styles */
+    .file-upload-container {
+        border: 2px dashed #10b981;
+        background-color: #f0fdf4;
+        border-radius: 1rem;
+        padding: 2rem 1rem;
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .file-upload-container:hover {
+        background-color: #dcfce7;
+    }
+
+    .file-upload-container input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .upload-icon {
+        font-size: 2.5rem;
+        color: #10b981;
+        margin-bottom: 0.5rem;
+    }
+
+    .upload-text {
+        font-weight: 500;
+        color: #374151;
+    }
+
+    .upload-hint {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+    }
+
+    .image-preview-container {
+        border-radius: 0.75rem;
+        overflow: hidden;
+        margin-top: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: relative;
+        max-width: 100%;
+    }
+
+    .image-preview-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .form-label {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
+    }
+
+    .form-hint {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+    }
+
+    .required-indicator {
+        color: #ef4444;
+        margin-right: 0.25rem;
+    }
+
+    /* Mobile Improvements */
+    @media (max-width: 640px) {
+        .form-container {
+            padding: 1.5rem;
+        }
+        
+        .upload-icon {
+            font-size: 2rem;
+        }
+        
+        .btn {
+            width: 100%;
+            margin-bottom: 0.75rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="min-h-screen py-6 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="max-w-3xl mx-auto">
+        <div class="glass-card rounded-3xl p-5 sm:p-8 form-container">
+            <div class="flex items-center justify-between mb-6 sm:mb-10">
+                <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">
+                    {% if is_update %}
+                    <i class="fas fa-edit ml-1"></i> تعديل صورة
+                    {% else %}
+                    <i class="fas fa-plus ml-1"></i> إضافة صورة جديدة
+                    {% endif %}
+                </h1>
+                <a href="{% url 'tourguides:tourguide_gallery' %}" class="text-gray-500 hover:text-emerald-500 transition-colors" aria-label="إغلاق">
+                    <i class="fas fa-times text-xl"></i>
+                </a>
+            </div>
+
+            {% if messages %}
+            <div class="mb-6">
+                {% for message in messages %}
+                <div class="p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-700{% elif message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Image Upload -->
+                <div class="space-y-2">
+                    <label class="block form-label">
+                        <span class="required-indicator">*</span>صورة المعرض
+                    </label>
+                    
+                    <div class="file-upload-container">
+                        <input type="file" name="uploaded_image" id="image-upload" accept="image/*" {% if not is_update %}required{% endif %}>
+                        <div class="upload-content">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <div class="upload-text">اضغط هنا لاختيار صورة</div>
+                            <div class="upload-hint">أو اسحب الملف وأفلته هنا</div>
+                        </div>
+                    </div>
+                    
+                    <p class="form-hint">
+                        <i class="fas fa-info-circle ml-1"></i>
+                        يفضل رفع صور بجودة عالية بأبعاد متناسبة (مثل 1200×800 بكسل)
+                    </p>
+                    
+                    <!-- Image Preview -->
+                    <div id="preview-container" class="image-preview-container" style="display: none;">
+                        <img id="preview-image" class="object-cover w-full">
+                    </div>
+                    
+                    {% if gallery_image and gallery_image.image %}
+                    <div class="mt-3 image-preview-container">
+                        <p class="form-hint text-center py-2 bg-gray-100">الصورة الحالية</p>
+                        <img src="{{ gallery_image.image.file.url }}" alt="{{ gallery_image.title }}" class="w-full object-cover">
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Title -->
+                <div class="space-y-2">
+                    <label class="block form-label">
+                        <span class="required-indicator">*</span>عنوان الصورة
+                    </label>
+                    <input type="text" name="title" 
+                           class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                           placeholder="مثال: منظر لجبال عسير" required
+                           value="{{ gallery_image.title|default:'' }}">
+                    <p class="form-hint">أضف عنوانًا واضحًا ووصفيًا للصورة</p>
+                </div>
+                
+                <!-- Description -->
+                <div class="space-y-2">
+                    <label class="block form-label">وصف الصورة</label>
+                    <textarea name="description" rows="3" 
+                              class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus resize-none"
+                              placeholder="مثال: صورة تظهر المناظر الطبيعية الخلابة في منطقة عسير خلال فصل الربيع">{{ gallery_image.description|default:'' }}</textarea>
+                    <p class="form-hint">أضف وصفًا يساعد الزائرين على فهم محتوى الصورة (اختياري)</p>
+                </div>
+                
+                <!-- Order -->
+                <div class="space-y-2">
+                    <label class="block form-label">ترتيب الظهور</label>
+                    <input type="number" name="order" min="0"
+                           class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                           value="{{ gallery_image.order|default:'0' }}">
+                    <p class="form-hint">
+                        <i class="fas fa-sort-numeric-down ml-1"></i>
+                        الرقم الأقل يظهر أولاً في المعرض
+                    </p>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6">
+                    <button type="submit" class="btn px-6 py-4 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 flex items-center justify-center font-medium">
+                        <i class="fas fa-{% if is_update %}save{% else %}plus{% endif %} ml-2"></i>
+                        {% if is_update %}حفظ التغييرات{% else %}إضافة الصورة{% endif %}
+                    </button>
+                    <a href="{% url 'tourguides:tourguide_gallery' %}" class="btn px-6 py-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors text-center text-gray-700 flex items-center justify-center font-medium">
+                        <i class="fas fa-times ml-2"></i>
+                        إلغاء
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Image Preview Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageUpload = document.getElementById('image-upload');
+        const previewImage = document.getElementById('preview-image');
+        const previewContainer = document.getElementById('preview-container');
+        const fileUploadContainer = document.querySelector('.file-upload-container');
+        
+        // Function to handle file selection
+        function handleFileSelect(file) {
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.addEventListener('load', function() {
+                    previewImage.src = reader.result;
+                    previewContainer.style.display = 'block';
+                    
+                    // Change upload container style
+                    fileUploadContainer.style.borderColor = '#10b981';
+                    fileUploadContainer.style.backgroundColor = '#f0fdf4';
+                    fileUploadContainer.querySelector('.upload-text').textContent = 'تغيير الصورة';
+                });
+                
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Handle file input change
+        imageUpload.addEventListener('change', function() {
+            handleFileSelect(this.files[0]);
+        });
+        
+        // Handle drag and drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileUploadContainer.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileUploadContainer.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileUploadContainer.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            fileUploadContainer.style.backgroundColor = '#dcfce7';
+            fileUploadContainer.style.borderColor = '#059669';
+        }
+        
+        function unhighlight() {
+            fileUploadContainer.style.backgroundColor = '#f0fdf4';
+            fileUploadContainer.style.borderColor = '#10b981';
+        }
+        
+        fileUploadContainer.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            
+            if (file && file.type.startsWith('image/')) {
+                imageUpload.files = dt.files;
+                handleFileSelect(file);
+            }
+        }
+    });
+</script>
+{% endblock %} 

@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}إنشاء حساب مرشد سياحي | استكشف السعودية{% endblock %}
+
+{% block content %}
+<!-- Registration Section -->
+<div class="min-h-screen flex items-center justify-center px-4 py-32">
+    <div class="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12" data-aos="fade-up">
+        <!-- Left Side - Form -->
+        <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-8 lg:p-12 shadow-2xl">
+            <h2 class="text-3xl font-bold mb-8 gradient-text">إنشاء حساب مرشد سياحي</h2>
+            
+            <div class="flex items-center justify-between mb-8">
+                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-full">
+                    <i class="fas fa-user-tie text-xl"></i>
+                </div>
+                <div class="text-sm text-gray-500">
+                    هل أنت مسافر؟ <a href="#" class="text-blue-500 hover:underline">تسجيل حساب مسافر</a>
+                </div>
+            </div>
+            
+            <form class="space-y-6" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="bg-red-50 border border-red-200 text-red-600 px-6 py-4 rounded-xl mb-6">
+                    <p class="font-medium">يرجى تصحيح الأخطاء التالية:</p>
+                    <ul class="list-disc list-inside mt-2 text-sm">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- First Name -->
+                    <div>
+                        <label class="block text-gray-700 mb-2">الاسم الأول</label>
+                        <div class="relative">
+                            {{ form.first_name }}
+                            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div>
+                        <label class="block text-gray-700 mb-2">الاسم الأخير</label>
+                        <div class="relative">
+                            {{ form.last_name }}
+                            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Username -->
+                <div>
+                    <label class="block text-gray-700 mb-2">اسم المستخدم</label>
+                    <div class="relative">
+                        {{ form.username }}
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-at"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">{{ form.username.help_text|safe }}</p>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-gray-700 mb-2">البريد الإلكتروني</label>
+                    <div class="relative">
+                        {{ form.email }}
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label class="block text-gray-700 mb-2">رقم الجوال</label>
+                    <div class="relative">
+                        {{ form.phone_number }}
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Password -->
+                <div>
+                    <label class="block text-gray-700 mb-2">كلمة المرور</label>
+                    <div class="relative">
+                        {{ form.password1 }}
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">{{ form.password1.help_text|safe }}</p>
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label class="block text-gray-700 mb-2">تأكيد كلمة المرور</label>
+                    <div class="relative">
+                        {{ form.password2 }}
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">{{ form.password2.help_text|safe }}</p>
+                </div>
+
+                <!-- Bio -->
+                <div>
+                    <label class="block text-gray-700 mb-2">نبذة تعريفية</label>
+                    {{ form.bio }}
+                    <p class="text-xs text-gray-500 mt-1">اكتب نبذة مختصرة عنك كمرشد سياحي</p>
+                </div>
+
+                <!-- Profile Image -->
+                <div>
+                    <label class="block text-gray-700 mb-2">الصورة الشخصية</label>
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <div class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-gray-200" id="profile-image-preview">
+                            <i class="fas fa-user text-3xl text-gray-300"></i>
+                        </div>
+                        <div>
+                            <label class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg cursor-pointer inline-block">
+                                <i class="fas fa-upload ml-2"></i>
+                                رفع صورة
+                                {{ form.profile_image }}
+                            </label>
+                            <p class="text-xs text-gray-500 mt-1">يفضل صورة مربعة بحجم 400×400 بكسل</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="flex items-center">
+                    {{ form.agreement }}
+                    <label class="mr-2 text-gray-600">أوافق على <a href="#" class="text-emerald-500 hover:underline">الشروط والأحكام</a> و <a href="#" class="text-emerald-500 hover:underline">سياسة الخصوصية</a></label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-medium rounded-xl py-4 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50 transform hover:-translate-y-1">
+                    إنشاء حساب
+                    <i class="fas fa-arrow-left mr-2"></i>
+                </button>
+
+                <!-- Login Link -->
+                <div class="text-center mt-6">
+                    <p class="text-gray-600">
+                        لديك حساب بالفعل؟ 
+                        <a href="{% url 'tourguides:login' %}" class="text-emerald-500 hover:underline">تسجيل الدخول</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Side - Image & Text -->
+        <div class="hidden lg:block relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-600/20 to-emerald-500/20 rounded-3xl"></div>
+            <img src="https://images.unsplash.com/photo-1578895101408-1a36b834405b?q=80&w=800&h=1200&fit=crop" class="w-full h-full object-cover rounded-3xl" alt="Saudi Arabia Landscape">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent rounded-3xl"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-12 text-white">
+                <h3 class="text-4xl font-bold mb-4">انضم إلينا كمرشد سياحي!</h3>
+                <p class="text-lg text-gray-200 mb-6">ساهم في إثراء تجارب الزوار واكتشاف كنوز المملكة</p>
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-check text-emerald-400"></i>
+                        </div>
+                        <p>اعرض خبراتك وخدماتك أمام آلاف المسافرين</p>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-check text-emerald-400"></i>
+                        </div>
+                        <p>أنشئ ملفك الشخصي وأضف صورك ومقاطع الفيديو الخاصة بك</p>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-check text-emerald-400"></i>
+                        </div>
+                        <p>أضف باقاتك السياحية وجداولك الزمنية</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for image preview -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileInput = document.getElementById('{{ form.profile_image.id_for_label }}');
+        const previewContainer = document.getElementById('profile-image-preview');
+        
+        profileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewContainer.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('w-full', 'h-full', 'object-cover');
+                    previewContainer.appendChild(img);
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>
+{% endblock %} 

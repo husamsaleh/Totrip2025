@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتصل بنا</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0 hover:scale-105 transition">
+                        <img class="h-12" src="https://i.ibb.co/Qj1bBfR/logo-green.png" alt="شعار الموقع">
+                    </a>
+                    <div class="hidden md:mr-8 md:flex md:space-x-8 md:space-x-reverse">
+                        <a href="index.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">الرئيسية</a>
+                        <a href="guides.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المرشدون</a>
+                        <a href="agencies.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المكاتب السياحية</a>
+                        <a href="blogs.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المدونة</a>
+                        <a href="contact.html" class="text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">اتصل بنا</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-4">
+                        <button class="inline-flex items-center text-gray-600 hover:text-emerald-600 transition-all duration-300">
+                            <i class="fas fa-globe ml-2"></i>
+                            العربية
+                        </button>
+                        <a href="login.html" class="px-6 py-2.5 text-gray-600 hover:text-emerald-600 font-medium rounded-full border-2 border-gray-300 hover:border-emerald-500 transition-all duration-300">
+                            تسجيل دخول
+                        </a>
+                        <a href="register.html" class="px-6 py-2.5 text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-full shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 hover:-translate-y-1">
+                            إنشاء حساب
+                        </a>
+                    </div>
+                    <button class="md:hidden bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+                        <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="pt-32 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">اتصل بنا</h1>
+                <p class="text-xl text-gray-600">نحن هنا لمساعدتك في أي استفسار أو مقترح</p>
+            </div>
+
+            <!-- Contact Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:-translate-y-2 transition-all duration-300">
+                    <div class="text-emerald-500 text-4xl mb-4"><i class="fas fa-phone"></i></div>
+                    <h3 class="text-xl font-bold mb-2">اتصل بنا</h3>
+                    <p class="text-gray-600">+966 12 345 6789</p>
+                    <p class="text-gray-600">+966 12 345 6780</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:-translate-y-2 transition-all duration-300">
+                    <div class="text-emerald-500 text-4xl mb-4"><i class="fas fa-envelope"></i></div>
+                    <h3 class="text-xl font-bold mb-2">راسلنا</h3>
+                    <p class="text-gray-600">info@tourguide.sa</p>
+                    <p class="text-gray-600">support@tourguide.sa</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:-translate-y-2 transition-all duration-300">
+                    <div class="text-emerald-500 text-4xl mb-4"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3 class="text-xl font-bold mb-2">موقعنا</h3>
+                    <p class="text-gray-600">شارع الملك فهد</p>
+                    <p class="text-gray-600">الرياض، المملكة العربية السعودية</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Contact Form -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-2xl font-bold mb-6">أرسل لنا رسالة</h3>
+                    <form>
+                        <div class="mb-4">
+                            <input type="text" placeholder="الاسم الكامل" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div class="mb-4">
+                            <input type="email" placeholder="البريد الإلكتروني" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div class="mb-4">
+                            <input type="tel" placeholder="رقم الجوال" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div class="mb-4">
+                            <select class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <option>نوع الاستفسار</option>
+                                <option>استفسار عام</option>
+                                <option>الدعم الفني</option>
+                                <option>الشكاوى والاقتراحات</option>
+                                <option>خدمة العملاء</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <textarea rows="5" placeholder="الرسالة" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-500 text-white py-3 rounded-lg hover:bg-emerald-600 transition-colors">إرسال الرسالة</button>
+                    </form>
+                </div>
+
+                <!-- Map -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-2xl font-bold mb-6">موقعنا على الخريطة</h3>
+                    <div id="map" class="h-[300px] rounded-lg mb-6"></div>
+                    
+                    <h4 class="text-xl font-bold mb-3">ساعات العمل</h4>
+                    <p class="text-gray-600 mb-1">الأحد - الخميس: 9:00 صباحاً - 5:00 مساءً</p>
+                    <p class="text-gray-600 mb-6">الجمعة - السبت: مغلق</p>
+                    
+                    <h4 class="text-xl font-bold mb-3">تواصل معنا عبر مواقع التواصل الاجتماعي</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center hover:-translate-y-1 transition-transform">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center hover:-translate-y-1 transition-transform">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center hover:-translate-y-1 transition-transform">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center hover:-translate-y-1 transition-transform">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- About Section -->
+                <div>
+                    <img src="https://i.ibb.co/Qj1bBfR/logo-green.png" alt="شعار الموقع" class="h-12 mb-6">
+                    <p class="mb-6">منصتك المثالية لاستكشاف جمال المملكة العربية السعودية مع نخبة من المرشدين السياحيين المعتمدين.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h5 class="text-xl font-bold mb-6">روابط سريعة</h5>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">الرئيسية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">المرشدون</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">المكاتب السياحية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">العروض</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">من نحن</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h5 class="text-xl font-bold mb-6">الدعم</h5>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">الأسئلة الشائعة</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">سياسة الخصوصية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">الشروط والأحكام</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">الدعم الفني</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">اتصل بنا</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h5 class="text-xl font-bold mb-6">النشرة البريدية</h5>
+                    <p class="text-gray-400 mb-4">اشترك في نشرتنا البريدية للحصول على آخر العروض والأخبار</p>
+                    <form class="mb-6">
+                        <div class="flex">
+                            <input type="email" placeholder="البريد الإلكتروني" class="w-full p-3 bg-gray-800 text-white rounded-r-lg focus:outline-none">
+                            <button type="submit" class="px-6 bg-emerald-600 text-white rounded-l-lg hover:bg-emerald-700 transition">اشتراك</button>
+                        </div>
+                    </form>
+                    <div class="space-y-2">
+                        <p class="flex items-center"><i class="fas fa-phone-alt text-emerald-600 ml-2"></i> 920000000</p>
+                        <p class="flex items-center"><i class="fas fa-envelope text-emerald-600 ml-2"></i> info@example.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p>جميع الحقوق محفوظة &copy; 2024 استكشف السعودية</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        var map = L.map('map').setView([24.7136, 46.6753], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        
+        // Add marker
+        L.marker([24.7136, 46.6753])
+         .bindPopup('موقعنا')
+         .addTo(map);
+    </script>
+</body>
+</html>

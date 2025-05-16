@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعديل الملف الشخصي | استكشف السعودية</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-file-input::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+
+        .custom-file-input::before {
+            content: 'اختر صورة';
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            outline: none;
+            white-space: nowrap;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .custom-file-input:hover::before {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+
+        .input-focus {
+            transition: all 0.3s ease;
+        }
+
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+
+
+ <!-- Navbar -->
+ <nav class="fixed top-0 left-0 right-0 z-50 glass-effect">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+            <div class="flex items-center">
+                <a href="index.html" class="flex-shrink-0 hover-scale">
+                    <img class="h-12" src="https://i.ibb.co/Qj1bBfR/logo-green.png" alt="شعار الموقع">
+                </a>
+                <div class="hidden md:mr-8 md:flex md:space-x-8 md:space-x-reverse">
+                    <a href="index.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">الرئيسية</a>
+                    <a href="guides.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المرشدون</a>
+                    <a href="agencies.html" class="text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المكاتب السياحية</a>
+                    <a href="blogs.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المدونة</a>
+                    <a href="contact.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">اتصل بنا</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-4">
+                    <button class="inline-flex items-center text-gray-600 hover:text-emerald-600 transition-all duration-300">
+                        <i class="fas fa-globe ml-2"></i>
+                        العربية
+                    </button>
+                    <a href="login.html" class="px-6 py-2.5 text-gray-600 hover:text-emerald-600 font-medium rounded-full border-2 border-gray-300 hover:border-emerald-500 transition-all duration-300">
+                        تسجيل دخول
+                    </a>
+                    <a href="register.html" class="px-6 py-2.5 text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-full shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 hover:-translate-y-1">
+                        إنشاء حساب
+                    </a>
+                </div>
+                <button class="md:hidden bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+                    <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <!-- Main Content -->
+    <div class="max-w-5xl mx-auto">
+        <div class="glass-card rounded-3xl p-6 sm:p-10">
+            <div class="flex items-center justify-between mb-12">
+                <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">تعديل الملف الشخصي</h1>
+                <button onclick="history.back()" class="text-gray-500 hover:text-emerald-500 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <form class="space-y-10">
+                <!-- Profile Picture Section -->
+                <div class="flex flex-col items-center space-y-6">
+                    <div class="relative group">
+                        <img src="images/man2.jpg" alt="الصورة الشخصية" 
+                             class="w-40 h-40 rounded-full object-cover ring-4 ring-emerald-500/30 hover-scale">
+                        <div class="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <label class="cursor-pointer text-white text-center p-4">
+                                <i class="fas fa-camera text-2xl mb-2"></i>
+                                <p class="text-sm">تغيير الصورة</p>
+                                <input type="file" class="hidden" accept="image/*">
+                            </label>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500">يفضل رفع صورة بحجم 400×400 بكسل</p>
+                </div>
+
+                <!-- Basic Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">المعلومات الشخصية</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">الاسم الكامل</label>
+                                <input type="text" value="أحمد محمد" 
+                                       class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">البريد الإلكتروني</label>
+                                <input type="email" value="ahmed@example.com" 
+                                       class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">رقم الجوال</label>
+                                <div class="relative">
+                                    <input type="tel" value="966500000000" 
+                                           class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">المعلومات المهنية</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">نبذة تعريفية</label>
+                                <textarea rows="4" 
+                                          class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus resize-none">مرشد سياحي محترف مع خبرة 8 سنوات في مجال السياحة والإرشاد السياحي. حاصل على شهادة معتمدة من الهيئة السعودية للسياحة.</textarea>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">المدينة</label>
+                                <select class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus appearance-none bg-white">
+                                    <option>الرياض</option>
+                                    <option>جدة</option>
+                                    <option>مكة المكرمة</option>
+                                    <option>المدينة المنورة</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Social Links -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">روابط التواصل الاجتماعي</h2>
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fab fa-twitter"></i>
+                            </span>
+                            <input type="url" placeholder="رابط تويتر" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fab fa-instagram"></i>
+                            </span>
+                            <input type="url" placeholder="رابط انستغرام" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fab fa-linkedin"></i>
+                            </span>
+                            <input type="url" placeholder="رابط لينكد إن" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fas fa-globe"></i>
+                            </span>
+                            <input type="url" placeholder="رابط الموقع الإلكتروني" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fab fa-whatsapp"></i>
+                            </span>
+                            <input type="tel" placeholder="رقم الواتس اب" dir="rtl"
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Specialties & Languages -->
+                <div class="space-y-8">
+                    <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">التخصصات واللغات</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-4">مجالات التخصص</label>
+                            <div class="flex flex-wrap gap-3">
+                                <label class="flex items-center gap-2 px-5 py-3 rounded-xl border border-emerald-200 bg-emerald-50 cursor-pointer hover:bg-emerald-100 transition-colors">
+                                    <input type="checkbox" checked class="text-emerald-500 rounded-lg">
+                                    <span>سياحة المغامرات</span>
+                                </label>
+                                <label class="flex items-center gap-2 px-5 py-3 rounded-xl border border-emerald-200 bg-emerald-50 cursor-pointer hover:bg-emerald-100 transition-colors">
+                                    <input type="checkbox" checked class="text-emerald-500 rounded-lg">
+                                    <span>التراث</span>
+                                </label>
+                                <label class="flex items-center gap-2 px-5 py-3 rounded-xl border border-emerald-200 bg-emerald-50 cursor-pointer hover:bg-emerald-100 transition-colors">
+                                    <input type="checkbox" class="text-emerald-500 rounded-lg">
+                                    <span>الطبيعة</span>
+                                </label>
+                                <label class="flex items-center gap-2 px-5 py-3 rounded-xl border border-emerald-200 bg-emerald-50 cursor-pointer hover:bg-emerald-100 transition-colors">
+                                    <input type="checkbox" class="text-emerald-500 rounded-lg">
+                                    <span>هايكنج</span>
+                                </label>
+                                <label class="flex items-center gap-2 px-5 py-3 rounded-xl border border-emerald-200 bg-emerald-50 cursor-pointer hover:bg-emerald-100 transition-colors">
+                                    <input type="checkbox" class="text-emerald-500 rounded-lg">
+                                    <span>رحلات بحرية</span>
+                                </label>
+                                <label class="flex items-center gap-2 px-5 py-3 rounded-xl border border-emerald-200 bg-emerald-50 cursor-pointer hover:bg-emerald-100 transition-colors">
+                                    <input type="checkbox" class="text-emerald-500 rounded-lg">
+                                    <span>غوص</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-4">اللغات</label>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4">
+                                    <select class="flex-1 px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                                        <option>العربية</option>
+                                        <option>الإنجليزية</option>
+                                        <option>الفرنسية</option>
+                                    </select>
+                                    <select class="flex-1 px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                                        <option>ممتاز</option>
+                                        <option>جيد جداً</option>
+                                        <option>جيد</option>
+                                        <option>متوسط</option>
+                                    </select>
+                                    <button type="button" class="p-4 text-red-500 hover:bg-red-50 rounded-xl transition-colors">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="mt-4 flex items-center gap-2 text-emerald-500 hover:text-emerald-600 font-medium">
+                                <i class="fas fa-plus-circle"></i>
+                                إضافة لغة جديدة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">التسعير</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">السعر لكل ساعة</label>
+                            <div class="relative">
+                                <input type="number" value="200" min="0" 
+                                       class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">ريال</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">السعر لليوم الكامل</label>
+                            <div class="relative">
+                                <input type="number" value="1500" min="0" 
+                                       class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">ريال</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Previous Tours Gallery & Reviews -->
+                <div class="space-y-8">
+                    <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">معرض الرحلات السابقة</h2>
+                    
+                    <!-- Gallery Upload -->
+                    <div class="space-y-6">
+                        <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                            <input type="file" accept="image/*" class="hidden" id="gallery-upload">
+                            <label for="gallery-upload" class="cursor-pointer">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-emerald-500 mb-4"></i>
+                                <p class="text-gray-600">اسحب وأفلت الصور هنا أو اضغط للاختيار</p>
+                                <p class="text-sm text-gray-500 mt-2">الحد الأقصى: 15 صورة - 5MB لكل صورة</p>
+                            </label>
+                        </div>
+
+                        <!-- YouTube Video Input -->
+                        <div class="space-y-4">
+                            <label class="block text-gray-700 font-medium mb-2">رابط فيديو يوتيوب</label>
+                            <div class="flex gap-4">
+                                <input type="url" placeholder="https://www.youtube.com/watch?v=..." 
+                                       class="flex-1 px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                                <button type="button" class="px-6 py-4 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-colors">
+                                    إضافة
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Gallery Preview -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            <div class="relative group rounded-xl overflow-hidden hover-scale">
+                                <img src="https://i.ibb.co/Kj1bBfR/riyadh-tour.jpg" alt="جولة في الرياض" class="w-full h-40 object-cover">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    <button class="p-2 text-white hover:text-emerald-400">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="p-2 text-white hover:text-red-400">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="relative group rounded-xl overflow-hidden hover-scale">
+                                <img src="https://i.ibb.co/Kj1bBfR/alula-tour.jpg" alt="رحلة العلا" class="w-full h-40 object-cover">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    <button class="p-2 text-white hover:text-emerald-400">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="p-2 text-white hover:text-red-400">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- YouTube Video Preview -->
+                            <div class="relative group rounded-xl overflow-hidden hover-scale">
+                                <iframe class="w-full h-40" 
+                                        src="https://www.youtube.com/embed/VIDEO_ID" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen>
+                                </iframe>
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    <button class="p-2 text-white hover:text-red-400">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews Section -->
+                    <div class="mt-12">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-semibold text-gray-800">تقييمات العملاء</h3>
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl font-bold text-emerald-500">4.9</span>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-gray-500">(127 تقييم)</span>
+                            </div>
+                        </div>
+
+                        <!-- Reviews List -->
+                        <div class="space-y-6">
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
+                                            <span class="text-emerald-600 font-bold text-xl">ع</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">عبدالله الشمري</h4>
+                                            <p class="text-sm text-gray-500">15 مارس 2024</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600">رحلة لا تُنسى إلى العلا! المرشد كان محترفاً جداً وملم بتاريخ المنطقة. التنظيم كان ممتاز والبرنامج متكامل. أنصح بشدة بالتجربة.</p>
+                            </div>
+
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
+                                            <span class="text-emerald-600 font-bold text-xl">م</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">منى السالم</h4>
+                                            <p class="text-sm text-gray-500">10 مارس 2024</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600">استمتعت كثيراً برحلة السفاري الصحراوية. الخدمات كانت راقية والمرشد كان ودود ومتعاون. التصوير كان احترافي والذكريات لا تُنسى.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Changes -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-8">
+                    <button type="submit" class="flex-1 px-8 py-4 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25 transform hover:-translate-y-1">
+                        <i class="fas fa-check ml-2"></i>
+                        حفظ التغييرات
+                    </button>
+                    <button type="button" class="px-8 py-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                        إلغاء
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

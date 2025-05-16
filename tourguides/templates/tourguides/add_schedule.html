@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}{% if is_update %}تعديل جدول عمل{% else %}إضافة جدول عمل{% endif %} | استكشف السعودية{% endblock %}
+
+{% block extra_css %}
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-focus {
+        transition: all 0.3s ease;
+    }
+
+    .input-focus:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="max-w-3xl mx-auto">
+        <div class="glass-card rounded-3xl p-6 sm:p-10">
+            <div class="flex items-center justify-between mb-12">
+                <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">
+                    {% if is_update %}
+                    <i class="fas fa-edit ml-2"></i> تعديل جدول عمل
+                    {% else %}
+                    <i class="fas fa-plus ml-2"></i> إضافة جدول عمل
+                    {% endif %}
+                </h1>
+                <a href="{% url 'tourguides:schedules_list' %}" class="text-gray-500 hover:text-emerald-500 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </a>
+            </div>
+
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+                
+                <!-- Location -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">الموقع</label>
+                    <select name="location" class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus appearance-none bg-white">
+                        {% for location in locations %}
+                        <option value="{{ location.id }}" {% if schedule and schedule.location.id == location.id %}selected{% endif %}>{{ location.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Date Range -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">تاريخ البداية</label>
+                        <input type="date" name="start_date" 
+                               class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus" required
+                               value="{% if schedule %}{{ schedule.start_date|date:'Y-m-d' }}{% endif %}">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">تاريخ النهاية</label>
+                        <input type="date" name="end_date" 
+                               class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus" required
+                               value="{% if schedule %}{{ schedule.end_date|date:'Y-m-d' }}{% endif %}">
+                    </div>
+                </div>
+
+                <!-- Availability -->
+                <div>
+                    <label class="flex items-center text-gray-700 font-medium mb-2">
+                        <input type="checkbox" name="is_available" class="rounded text-emerald-500 mr-2" 
+                               {% if schedule and schedule.is_available %}checked{% endif %}
+                               {% if not schedule %}checked{% endif %}>
+                        متاح للحجز
+                    </label>
+                    <p class="text-sm text-gray-500 mr-5">حدد هذا الخيار إذا كنت متاحًا للحجز خلال هذه الفترة</p>
+                </div>
+                
+                <!-- Notes -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">ملاحظات</label>
+                    <textarea name="notes" rows="4" 
+                              class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus resize-none"
+                              placeholder="أضف أية ملاحظات إضافية عن جدول العمل هنا...">{% if schedule %}{{ schedule.notes }}{% endif %}</textarea>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                    <button type="submit" class="flex-1 px-8 py-4 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25 transform hover:-translate-y-1">
+                        <i class="fas fa-{% if is_update %}save{% else %}calendar-check{% endif %} ml-2"></i>
+                        {% if is_update %}حفظ التغييرات{% else %}إضافة جدول العمل{% endif %}
+                    </button>
+                    <a href="{% url 'tourguides:schedules_list' %}" class="px-8 py-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors text-center">
+                        إلغاء
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

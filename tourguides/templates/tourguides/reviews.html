@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}تقييمات {{ tour_guide.user.get_full_name|default:tour_guide.user.username }} | استكشف السعودية{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="relative py-20 bg-gradient-to-b from-emerald-600 to-emerald-800">
+    <div class="container mx-auto px-4">
+        <div class="text-center text-white">
+            <h1 class="text-4xl font-bold mb-4">تقييمات {{ tour_guide.user.get_full_name|default:tour_guide.user.username }}</h1>
+            <div class="flex items-center justify-center gap-4">
+                <div class="flex">
+                    {% with ''|center:5 as range %}
+                    {% for _ in range %}
+                    <i class="fas fa-star {% if forloop.counter <= avg_rating %}text-yellow-400{% else %}text-gray-300{% endif %} text-2xl"></i>
+                    {% endfor %}
+                    {% endwith %}
+                </div>
+                <span class="text-white/80 text-xl">{{ avg_rating }} ({{ review_count }} تقييم)</span>
+            </div>
+            <a href="{% url 'tourguides:tourguide_profile' slug=tour_guide.slug %}" class="inline-block mt-6 bg-white text-emerald-600 px-6 py-2 rounded-full hover:bg-emerald-50 transition-colors">
+                <i class="fas fa-arrow-right ml-2"></i>
+                العودة إلى الملف الشخصي
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Reviews Section -->
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl font-bold mb-8">جميع التقييمات</h2>
+        
+        {% if reviews %}
+        <div class="space-y-6">
+            {% for review in reviews %}
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="font-bold text-lg">{{ review.author_name }}</h3>
+                        <div class="flex text-yellow-400 mt-1">
+                            {% with ''|center:5 as range %}
+                            {% for _ in range %}
+                            <i class="fas fa-star {% if forloop.counter <= review.rating %}text-yellow-400{% else %}text-gray-300{% endif %}"></i>
+                            {% endfor %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <div class="text-gray-500 text-sm">
+                        {{ review.created_at|date:"d/m/Y" }}
+                    </div>
+                </div>
+                <p class="text-gray-700">{{ review.comment }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12 bg-gray-50 rounded-xl">
+            <div class="text-5xl text-gray-300 mb-4">
+                <i class="far fa-comment-dots"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-600 mb-2">لا توجد تقييمات بعد</h3>
+            <p class="text-gray-500">كن أول من يقيم هذا المرشد السياحي</p>
+            <a href="{% url 'tourguides:add_review' slug=tour_guide.slug %}" class="inline-block mt-4 bg-emerald-500 text-white px-6 py-2 rounded-full hover:bg-emerald-600 transition-colors">
+                إضافة تقييم
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

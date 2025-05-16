@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}الجولات المجدولة | استكشف السعودية{% endblock %}
+
+{% block content %}
+<div class="bg-gradient-to-r from-blue-700 to-blue-500 text-white pt-10 pb-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold">الجولات المجدولة</h1>
+                    <p class="opacity-90 mt-2">إدارة وعرض جميع الجولات المجدولة</p>
+                </div>
+                <div>
+                    <a href="{% url 'tourguides:add_schedule' %}" class="inline-flex items-center px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-all font-medium">
+                        <i class="fas fa-plus ml-2"></i>
+                        إضافة جولة جديدة
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-calendar-check text-blue-600 ml-2"></i>
+                        الجولات القادمة
+                    </h2>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">{{ upcoming_schedules.count }} جولة</span>
+                </div>
+            </div>
+            
+            {% if upcoming_schedules %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الموقع</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">تاريخ البداية</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">تاريخ النهاية</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">حالة التوفر</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for schedule in upcoming_schedules %}
+                        <tr>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">{{ schedule.location.name }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">{{ schedule.start_date|date:"d/m/Y" }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">{{ schedule.end_date|date:"d/m/Y" }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if schedule.is_available %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                    {% if schedule.is_available %}متاح{% else %}غير متاح{% endif %}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium">
+                                <div class="flex space-x-3 space-x-reverse">
+                                    <a href="{% url 'tourguides:update_schedule' id=schedule.id %}" class="text-blue-600 hover:text-blue-900">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'tourguides:delete_schedule' id=schedule.id %}" class="text-red-600 hover:text-red-900">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-12 text-gray-500">
+                <i class="far fa-calendar-times text-5xl text-gray-300 mb-3"></i>
+                <p>لا توجد جولات قادمة</p>
+                <a href="{% url 'tourguides:add_schedule' %}" class="mt-4 inline-block px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    إضافة جولة جديدة
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-history text-gray-600 ml-2"></i>
+                        الجولات السابقة
+                    </h2>
+                    <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">{{ past_schedules.count }} جولة</span>
+                </div>
+            </div>
+            
+            {% if past_schedules %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الموقع</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">تاريخ البداية</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">تاريخ النهاية</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for schedule in past_schedules %}
+                        <tr class="bg-gray-50 text-gray-500">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium">{{ schedule.location.name }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm">{{ schedule.start_date|date:"d/m/Y" }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm">{{ schedule.end_date|date:"d/m/Y" }}</div>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium">
+                                <div class="flex space-x-3 space-x-reverse">
+                                    <span class="text-gray-400 cursor-not-allowed">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <a href="{% url 'tourguides:delete_schedule' id=schedule.id %}" class="text-red-400 hover:text-red-600">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-12 text-gray-500">
+                <i class="far fa-calendar-check text-5xl text-gray-300 mb-3"></i>
+                <p>لا توجد جولات سابقة</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المرشدون السياحيون | استكشف السعودية</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Swiper JS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Regular'),
+                 local('San Francisco');
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Medium'),
+                 local('San Francisco');
+            font-weight: 500;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Semibold'),
+                 local('San Francisco');
+            font-weight: 600;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Bold'),
+                 local('San Francisco');
+            font-weight: 700;
+        }
+
+        body {
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #10B981, #34D399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .guide-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .guide-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .guide-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #10B981;
+            border-radius: 10px;
+        }
+
+        .filter-sticky {
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .swiper-pagination-bullet {
+            background: #10B981 !important;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100">
+    <!-- Initialize AOS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+
+            // Initialize Swiper for mobile view
+            if(window.innerWidth < 768) {
+                new Swiper('.swiper-container', {
+                    slidesPerView: 1.2,
+                    spaceBetween: 20,
+                    centeredSlides: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0 hover-scale">
+                        <img class="h-12" src="https://i.ibb.co/Qj1bBfR/logo-green.png" alt="شعار الموقع">
+                    </a>
+                    <div class="hidden md:mr-8 md:flex md:space-x-8 md:space-x-reverse">
+                        <a href="index.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">الرئيسية</a>
+                        <a href="guides.html" class="text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المرشدون</a>
+                        <a href="agencies.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المكاتب السياحية</a>
+                        <a href="blogs.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المدونة</a>
+                        <a href="contact.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">اتصل بنا</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-4">
+                        <button class="inline-flex items-center text-gray-600 hover:text-emerald-600 transition-all duration-300">
+                            <i class="fas fa-globe ml-2"></i>
+                            العربية
+                        </button>
+                        <a href="login.html" class="px-6 py-2.5 text-gray-600 hover:text-emerald-600 font-medium rounded-full border-2 border-gray-300 hover:border-emerald-500 transition-all duration-300">
+                            تسجيل دخول
+                        </a>
+                        <a href="register.html" class="px-6 py-2.5 text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-full shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 hover:-translate-y-1">
+                            إنشاء حساب
+                        </a>
+                    </div>
+                    <button class="md:hidden bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+                        <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Video Background -->
+    <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="images/banner1.jpg" class="w-full h-full object-cover" alt="Beautiful Landscape">
+            <!-- Enhanced gradient overlay -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 text-center z-10" data-aos="fade-up">
+            <h1 class="text-5xl md:text-7xl font-bold text-white leading-tight mb-8 text-shadow">
+                مرشدونا <span class="gradient-text">المحترفون</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto mb-8">
+                اكتشف المملكة مع نخبة من المرشدين السياحيين المعتمدين
+            </p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <button class="group px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                    <span class="flex items-center gap-2">
+                        ابدأ رحلتك الآن
+                        <i class="fas fa-arrow-left transition-transform group-hover:translate-x-1"></i>
+                    </span>
+                </button>
+                <button class="group px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-sm transition-all duration-300 border border-white/20">
+                    <span class="flex items-center gap-2">
+                        تعرف على خدماتنا
+                        <i class="fas fa-info-circle"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Improved Floating Stats -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 p-6 bg-white/10 backdrop-blur-md rounded-t-3xl">
+                    <div class="text-center text-white p-4 hover:bg-white/10 rounded-xl transition-colors duration-300">
+                        <div class="text-4xl font-bold mb-2">500+</div>
+                        <div class="text-sm font-medium">مرشد سياحي</div>
+                    </div>
+                    <div class="text-center text-white p-4 hover:bg-white/10 rounded-xl transition-colors duration-300">
+                        <div class="text-4xl font-bold mb-2">20+</div>
+                        <div class="text-sm font-medium">مدينة</div>
+                    </div>
+                    <div class="text-center text-white p-4 hover:bg-white/10 rounded-xl transition-colors duration-300">
+                        <div class="text-4xl font-bold mb-2">10K+</div>
+                        <div class="text-sm font-medium">رحلة ناجحة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Improved Search and Filter Section -->
+    <div class="max-w-7xl mx-auto px-4 -mt-8 relative z-10" data-aos="fade-up">
+        <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 border border-white/20">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Search Input with improved mobile design -->
+                <div class="md:col-span-2">
+                    <div class="relative group">
+                        <input type="text" placeholder="ابحث عن مرشد سياحي..." 
+                               class="w-full bg-gray-50/80 border-2 border-gray-200 rounded-xl px-4 py-3 sm:py-4 pr-12 focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300">
+                        <div class="absolute right-4 top-1/2 -translate-y-1/2">
+                            <i class="fas fa-search text-gray-400 group-hover:text-emerald-500 transition-colors duration-300"></i>
+                        </div>
+                        <!-- Enhanced Quick Suggestions -->
+                        <div class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 p-2 hidden group-focus-within:block z-50">
+                            <div class="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors duration-300">
+                                <span class="text-sm text-gray-600">مرشد سياحي في الرياض</span>
+                            </div>
+                            <div class="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors duration-300">
+                                <span class="text-sm text-gray-600">مرشد متحدث باللغة الإنجليزية</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Improved Select Inputs -->
+                <div class="relative group">
+                    <select class="w-full bg-gray-50/80 border-2 border-gray-200 rounded-xl px-4 py-3 sm:py-4 pr-12 appearance-none focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300">
+                        <option selected>اختر المدينة</option>
+                        <option>الرياض</option>
+                        <option>جدة</option>
+                        <option>المدينة المنورة</option>
+                        <option>مكة المكرمة</option>
+                        <option>الدمام</option>
+                        <option>أبها</option>
+                        <option>تبوك</option>
+                        <option>نجران</option>
+                        <option>جازان</option>
+                        <option>حائل</option>
+                        <option>عرعر</option>
+                        <option>الجوف</option>
+                        <option>الباحة</option>
+                        <option>ينبع</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <i class="fas fa-map-marker-alt text-gray-400 group-hover:text-emerald-500 transition-colors duration-300"></i>
+                    </div>
+                </div>
+
+                <div class="relative group">
+                    <select class="w-full bg-gray-50/80 border-2 border-gray-200 rounded-xl px-4 py-3 sm:py-4 pr-12 appearance-none focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300">
+                        <option selected>التخصص</option>
+                        <option>سياحة المغامرات</option>
+                        <option>التراث</option>
+                        <option>الطبيعة</option>
+                        <option>السياحة الدينية</option>
+                        <option>التسوق</option>
+                        <option>الفنون والثقافة</option>
+                        <option>الرياضات المائية</option>
+                        <option>سياحة الصحراء</option>
+                        <option>المتاحف والآثار</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <i class="fas fa-tag text-gray-400 group-hover:text-emerald-500 transition-colors duration-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Filters Sidebar -->
+            <div class="md:col-span-1">
+                <div class="bg-white rounded-3xl shadow-xl p-6 filter-sticky custom-scrollbar">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold gradient-text">تصفية النتائج</h3>
+                        <button class="text-sm text-emerald-500 hover:text-emerald-600">
+                            مسح الكل
+                        </button>
+                    </div>
+                    
+                    <!-- Active Filters -->
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm flex items-center">
+                            الرياض
+                            <button class="ml-2 text-emerald-500 hover:text-emerald-700">×</button>
+                        </span>
+                        <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm flex items-center">
+                            4+ نجوم
+                            <button class="ml-2 text-emerald-500 hover:text-emerald-700">×</button>
+                        </span>
+                    </div>
+
+                    <!-- Rating Filter -->
+                    <div class="mb-6">
+                        <h4 class="font-medium mb-4">التقييم</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-reverse space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                <input type="checkbox" class="form-checkbox text-emerald-500 rounded">
+                                <span class="text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </span>
+                                <span class="text-gray-600">(5.0)</span>
+                            </label>
+                            <label class="flex items-center space-x-reverse space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                <input type="checkbox" class="form-checkbox text-emerald-500 rounded">
+                                <span class="text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </span>
+                                <span class="text-gray-600">(4.0+)</span>
+                            </label>
+                            <label class="flex items-center space-x-reverse space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                <input type="checkbox" class="form-checkbox text-emerald-500 rounded">
+                                <span class="text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </span>
+                                <span class="text-gray-600">(3.0+)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Languages Filter -->
+                    <div class="mb-6">
+                        <h4 class="font-medium mb-4">اللغات</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-reverse space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                <input type="checkbox" class="form-checkbox text-emerald-500 rounded">
+                                <span>العربية</span>
+                                <span class="text-gray-400 text-sm">(150)</span>
+                            </label>
+                            <label class="flex items-center space-x-reverse space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                <input type="checkbox" class="form-checkbox text-emerald-500 rounded">
+                                <span>الإنجليزية</span>
+                                <span class="text-gray-400 text-sm">(120)</span>
+                            </label>
+                            <label class="flex items-center space-x-reverse space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                <input type="checkbox" class="form-checkbox text-emerald-500 rounded">
+                                <span>الفرنسية</span>
+                                <span class="text-gray-400 text-sm">(45)</span>
+                            </label>
+                            <!-- Add more languages with counts -->
+                        </div>
+                        <button class="text-emerald-500 text-sm mt-2 hover:text-emerald-600">
+                            عرض المزيد +
+                        </button>
+                    </div>
+
+                    <!-- Price Range Filter -->
+                    <div class="mb-6">
+                        <h4 class="font-medium mb-4">نطاق السعر (ريال/ساعة)</h4>
+                        <div class="px-2">
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>0 ريال</span>
+                                <span>1000 ريال</span>
+                            </div>
+                            <input type="range" class="w-full accent-emerald-500" min="0" max="1000" step="50">
+                            <div class="flex justify-between items-center mt-4">
+                                <input type="number" class="w-24 px-3 py-1 border rounded-lg text-center" placeholder="من">
+                                <span class="text-gray-400">-</span>
+                                <input type="number" class="w-24 px-3 py-1 border rounded-lg text-center" placeholder="إلى">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Experience Filter -->
+                    <div class="mb-6">
+                        <h4 class="font-medium mb-4">سنوات الخبرة</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-reverse space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                <input type="checkbox" class="form-checkbox text-emerald-500 rounded">
+                                <span>أكثر من 10 سنوات</span>
+                                <span class="text-gray-400 text-sm">(25)</span>
+                            </label>
+                            <!-- Add more experience options with counts -->
+                        </div>
+                    </div>
+
+                    <!-- Availability Filter -->
+                    <div class="mb-6">
+                        <h4 class="font-medium mb-4">التوفر</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-reverse space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                <input type="checkbox" class="form-checkbox text-emerald-500 rounded">
+                                <span>متاح حالياً</span>
+                                <span class="text-emerald-500 text-sm">(45 مرشد)</span>
+                            </label>
+                            <!-- Add more availability options -->
+                        </div>
+                    </div>
+
+                    <!-- Apply Filters Button -->
+                    <button class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-3 px-4 rounded-xl transition-colors">
+                        تطبيق الفلاتر
+                    </button>
+                </div>
+            </div>
+
+            <!-- Guides Grid -->
+            <div class="md:col-span-3">
+                <!-- Results Summary -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">
+                        تم العثور على 150 مرشد سياحي
+                    </h2>
+                    <div class="flex items-center gap-4">
+                        <select class="bg-white border rounded-lg px-4 py-2">
+                            <option>الأعلى تقييماً</option>
+                            <option>الأقل سعراً</option>
+                            <option>الأكثر خبرة</option>
+                        </select>
+                        <div class="flex gap-2">
+                            <button class="p-2 bg-white rounded-lg border hover:bg-gray-50">
+                                <i class="fas fa-th-large text-gray-600"></i>
+                            </button>
+                            <button class="p-2 bg-white rounded-lg border hover:bg-gray-50">
+                                <i class="fas fa-list text-gray-600"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Swiper -->
+                <div class="md:hidden swiper-container mb-8">
+                    <div class="swiper-wrapper">
+                        <!-- Guide Cards for Mobile -->
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+
+                <!-- Desktop Grid -->
+                <div class="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Guide Card Template (Repeat for more guides) -->
+                    <div class="guide-card bg-white rounded-3xl shadow-xl overflow-hidden" data-aos="fade-up">
+                        <div class="relative">
+                            <img src="https://i.pravatar.cc/300?img=4" class="w-full h-48 object-cover" alt="Guide">
+                            <div class="absolute top-4 right-4 flex gap-2">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm">
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    موثق
+                                </span>
+                                <button class="bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-white/30 transition-colors">
+                                    <i class="far fa-heart text-white"></i>
+                                </button>
+                            </div>
+                            <div class="card-overlay absolute inset-0 flex items-end p-4">
+                                <div class="text-white">
+                                    <p class="text-sm">متوفر للحجز</p>
+                                    <p class="text-xs">يتحدث العربية والإنجليزية</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800">أحمد محمد</h3>
+                                    <p class="text-sm text-gray-500">مرشد سياحي محترف</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-emerald-500 font-medium">200 ريال</span>
+                                    <p class="text-sm text-gray-500">في الساعة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm mr-2">(4.5)</span>
+                                <span class="text-gray-400 text-sm">| 120 تقييم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">سياحة المغامرات</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">التراث</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-600 text-sm flex items-center">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                                    الرياض
+                                </span>
+                                <span class="text-gray-600 text-sm">
+                                    <i class="fas fa-clock text-emerald-500 ml-1"></i>
+                                    متاح اليوم
+                                </span>
+                            </div>
+                            <a href="guide-profile.html" class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors">
+                                عرض الملف الشخصي
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Guide Card 2 -->
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                        <div class="relative">
+                            <img src="https://i.pravatar.cc/300?img=2" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" alt="Guide">
+                            <div class="absolute top-4 right-4 flex flex-col gap-2">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm flex items-center">
+                                    <i class="fas fa-check-circle ml-1"></i>
+                                    موثق
+                                </span>
+                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">
+                                    مرشد متميز
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <p class="text-white text-sm">متوفر للحجز الفوري</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 hover:text-emerald-500 transition-colors">سارة العمري</h3>
+                                    <p class="text-sm text-gray-500">خبرة 8 سنوات في السياحة</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-emerald-500 font-bold text-xl">180 ريال</span>
+                                    <p class="text-sm text-gray-500">في الساعة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-gray-600 mr-2 font-medium">(5.0)</span>
+                                <span class="text-gray-400">| 245 تقييم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">التراث</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">الفنون</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">المتاحف</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/sa.png" class="w-4 h-4 ml-1 rounded-full" alt="Arabic">
+                                    العربية
+                                </span>
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/gb.png" class="w-4 h-4 ml-1 rounded-full" alt="English">
+                                    الإنجليزية
+                                </span>
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/fr.png" class="w-4 h-4 ml-1 rounded-full" alt="French">
+                                    الفرنسية
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-600 text-sm flex items-center hover:text-emerald-500 transition-colors cursor-pointer">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                                    جدة، المنطقة التاريخية
+                                </span>
+                                <span class="text-emerald-500 text-sm flex items-center">
+                                    <i class="fas fa-clock ml-1"></i>
+                                    متاح خلال 24 ساعة
+                                </span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="guide-profile.html" class="flex-1 text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors">
+                                    عرض الملف الشخصي
+                                </a>
+                                <button class="w-12 h-12 flex items-center justify-center border-2 border-emerald-500 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-colors">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 3 -->
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                        <div class="relative">
+                            <img src="https://i.pravatar.cc/300?img=3" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" alt="Guide">
+                            <div class="absolute top-4 right-4 flex flex-col gap-2">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm flex items-center shadow-lg">
+                                    <i class="fas fa-check-circle ml-1"></i>
+                                    موثق
+                                </span>
+                                <span class="bg-amber-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    خبير مغامرات
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">متخصص في سياحة المغامرات والرحلات البرية</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 hover:text-emerald-500 transition-colors">خالد السعيد</h3>
+                                    <p class="text-sm text-gray-500">مرشد سياحي محترف - 8 سنوات خبرة</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-emerald-500 font-bold text-xl">250 ريال</span>
+                                    <p class="text-sm text-gray-500">في الساعة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="text-gray-600 mr-2 font-medium">(4.0)</span>
+                                <span class="text-gray-400">| 180 تقييم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">سياحة المغامرات</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">الصحراء</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">التخييم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/sa.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="Arabic">
+                                    العربية
+                                </span>
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/gb.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="English">
+                                    الإنجليزية
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-600 text-sm flex items-center hover:text-emerald-500 transition-colors cursor-pointer">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                                    العلا
+                                </span>
+                                <span class="text-emerald-500 text-sm flex items-center">
+                                    <i class="fas fa-clock ml-1"></i>
+                                    متاح اليوم
+                                </span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="guide-profile.html" class="flex-1 text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                    عرض الملف الشخصي
+                                </a>
+                                <button class="w-12 h-12 flex items-center justify-center border-2 border-emerald-500 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-colors">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 4 -->
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
+                        <div class="relative">
+                            <img src="https://i.pravatar.cc/300?img=4" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" alt="Guide">
+                            <div class="absolute top-4 right-4 flex flex-col gap-2">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm flex items-center shadow-lg">
+                                    <i class="fas fa-check-circle ml-1"></i>
+                                    موثق
+                                </span>
+                                <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    خبير تراث
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">متخصصة في التراث العمراني والثقافة السعودية</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 hover:text-emerald-500 transition-colors">نورة الحربي</h3>
+                                    <p class="text-sm text-gray-500">مرشدة سياحية معتمدة - 12 سنة خبرة</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-emerald-500 font-bold text-xl">220 ريال</span>
+                                    <p class="text-sm text-gray-500">في الساعة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-gray-600 mr-2 font-medium">(4.8)</span>
+                                <span class="text-gray-400">| 156 تقييم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">التراث العمراني</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">المتاحف</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">الحرف اليدوية</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/sa.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="Arabic">
+                                    العربية
+                                </span>
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/gb.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="English">
+                                    الإنجليزية
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-600 text-sm flex items-center hover:text-emerald-500 transition-colors cursor-pointer">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                                    الدرعية التاريخية
+                                </span>
+                                <span class="text-emerald-500 text-sm flex items-center">
+                                    <i class="fas fa-clock ml-1"></i>
+                                    متاح غداً
+                                </span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="guide-profile.html" class="flex-1 text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                    عرض الملف الشخصي
+                                </a>
+                                <button class="w-12 h-12 flex items-center justify-center border-2 border-emerald-500 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-colors">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 5 -->
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400">
+                        <div class="relative">
+                            <img src="https://i.pravatar.cc/300?img=5" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" alt="Guide">
+                            <div class="absolute top-4 right-4 flex flex-col gap-2">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm flex items-center shadow-lg">
+                                    <i class="fas fa-check-circle ml-1"></i>
+                                    موثق
+                                </span>
+                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    خبير بحري
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">متخصص في الرحلات البحرية والغوص</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 hover:text-emerald-500 transition-colors">فهد البحري</h3>
+                                    <p class="text-sm text-gray-500">مرشد سياحي بحري - 15 سنة خبرة</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-emerald-500 font-bold text-xl">300 ريال</span>
+                                    <p class="text-sm text-gray-500">في الساعة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-gray-600 mr-2 font-medium">(5.0)</span>
+                                <span class="text-gray-400">| 210 تقييم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">الغوص</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">الرحلات البحرية</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">صيد الأسماك</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/sa.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="Arabic">
+                                    العربية
+                                </span>
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/gb.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="English">
+                                    الإنجليزية
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-600 text-sm flex items-center hover:text-emerald-500 transition-colors cursor-pointer">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                                    ينبع البحر
+                                </span>
+                                <span class="text-emerald-500 text-sm flex items-center">
+                                    <i class="fas fa-clock ml-1"></i>
+                                    متاح اليوم
+                                </span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="guide-profile.html" class="flex-1 text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                    عرض الملف الشخصي
+                                </a>
+                                <button class="w-12 h-12 flex items-center justify-center border-2 border-emerald-500 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-colors">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 6 -->
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="500">
+                        <div class="relative">
+                            <img src="https://i.pravatar.cc/300?img=6" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" alt="Guide">
+                            <div class="absolute top-4 right-4 flex flex-col gap-2">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm flex items-center shadow-lg">
+                                    <i class="fas fa-check-circle ml-1"></i>
+                                    موثق
+                                </span>
+                                <span class="bg-rose-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    خبير طبيعة
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">متخصصة في السياحة البيئية والطبيعية</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 hover:text-emerald-500 transition-colors">سارة القحطاني</h3>
+                                    <p class="text-sm text-gray-500">مرشدة سياحية بيئية - 6 سنوات خبرة</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-emerald-500 font-bold text-xl">180 ريال</span>
+                                    <p class="text-sm text-gray-500">في الساعة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-gray-600 mr-2 font-medium">(4.7)</span>
+                                <span class="text-gray-400">| 98 تقييم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">المحميات الطبيعية</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">مراقبة الطيور</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">التصوير</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/sa.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="Arabic">
+                                    العربية
+                                </span>
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/gb.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="English">
+                                    الإنجليزية
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-600 text-sm flex items-center hover:text-emerald-500 transition-colors cursor-pointer">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                                    أبها
+                                </span>
+                                <span class="text-emerald-500 text-sm flex items-center">
+                                    <i class="fas fa-clock ml-1"></i>
+                                    متاح خلال يومين
+                                </span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="guide-profile.html" class="flex-1 text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                    عرض الملف الشخصي
+                                </a>
+                                <button class="w-12 h-12 flex items-center justify-center border-2 border-emerald-500 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-colors">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 7 -->
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="600">
+                        <div class="relative">
+                            <img src="https://i.pravatar.cc/300?img=7" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" alt="Guide">
+                            <div class="absolute top-4 right-4 flex flex-col gap-2">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm flex items-center shadow-lg">
+                                    <i class="fas fa-check-circle ml-1"></i>
+                                    موثق
+                                </span>
+                                <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    خبير آثار
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">متخصص في المواقع الأثرية والتاريخية</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 hover:text-emerald-500 transition-colors">عبدالله العتيبي</h3>
+                                    <p class="text-sm text-gray-500">مرشد سياحي أثري - 10 سنوات خبرة</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-emerald-500 font-bold text-xl">270 ريال</span>
+                                    <p class="text-sm text-gray-500">في الساعة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-gray-600 mr-2 font-medium">(4.9)</span>
+                                <span class="text-gray-400">| 167 تقييم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">المواقع الأثرية</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">النقوش الصخرية</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">التاريخ القديم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/sa.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="Arabic">
+                                    العربية
+                                </span>
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/gb.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="English">
+                                    الإنجليزية
+                                </span>
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/fr.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="French">
+                                    الفرنسية
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-600 text-sm flex items-center hover:text-emerald-500 transition-colors cursor-pointer">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                                    مدائن صالح
+                                </span>
+                                <span class="text-emerald-500 text-sm flex items-center">
+                                    <i class="fas fa-clock ml-1"></i>
+                                    متاح اليوم
+                                </span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="guide-profile.html" class="flex-1 text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                    عرض الملف الشخصي
+                                </a>
+                                <button class="w-12 h-12 flex items-center justify-center border-2 border-emerald-500 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-colors">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 8 -->
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="700">
+                        <div class="relative">
+                            <img src="https://i.pravatar.cc/300?img=8" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" alt="Guide">
+                            <div class="absolute top-4 right-4 flex flex-col gap-2">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm flex items-center shadow-lg">
+                                    <i class="fas fa-check-circle ml-1"></i>
+                                    موثق
+                                </span>
+                                <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    خبير تراث
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">متخصص في التراث والحرف اليدوية</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 hover:text-emerald-500 transition-colors">سارة الدوسري</h3>
+                                    <p class="text-sm text-gray-500">مرشدة سياحية - 8 سنوات خبرة</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-emerald-500 font-bold text-xl">220 ريال</span>
+                                    <p class="text-sm text-gray-500">في الساعة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-gray-600 mr-2 font-medium">(4.6)</span>
+                                <span class="text-gray-400">| 142 تقييم</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">التراث الشعبي</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">الحرف اليدوية</span>
+                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm hover:bg-emerald-200 transition-colors cursor-pointer">الأسواق التراثية</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/sa.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="Arabic">
+                                    العربية
+                                </span>
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                                    <img src="https://flagcdn.com/w20/gb.png" class="w-4 h-4 ml-1 rounded-full shadow-sm" alt="English">
+                                    الإنجليزية
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-600 text-sm flex items-center hover:text-emerald-500 transition-colors cursor-pointer">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                                    جدة التاريخية
+                                </span>
+                                <span class="text-emerald-500 text-sm flex items-center">
+                                    <i class="fas fa-clock ml-1"></i>
+                                    متاح غداً
+                                </span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="guide-profile.html" class="flex-1 text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                    عرض الملف الشخصي
+                                </a>
+                                <button class="w-12 h-12 flex items-center justify-center border-2 border-emerald-500 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-colors">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="col-span-full flex justify-center mt-12 space-x-2 space-x-reverse">
+                    <button class="w-10 h-10 rounded-full border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors flex items-center justify-center">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="w-10 h-10 rounded-full bg-emerald-500 text-white">1</button>
+                    <button class="w-10 h-10 rounded-full border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors">2</button>
+                    <button class="w-10 h-10 rounded-full border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors">3</button>
+                    <button class="w-10 h-10 rounded-full border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors">4</button>
+                    <button class="w-10 h-10 rounded-full border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors flex items-center justify-center">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-24">
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <!-- About Section -->
+                <div class="space-y-6">
+                    <img src="https://via.placeholder.com/150x50/28a745/FFFFFF?text=Logo" alt="شعار الموقع" class="h-12">
+                    <p class="text-gray-400">منصتك المثالية لاستكشاف جمال المملكة العربية السعودية مع نخبة من المرشدين السياحيين المعتمدين.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6">روابط سريعة</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">الرئيسية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">المرشدون</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">المكاتب السياحية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">العروض</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">من نحن</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6">الدعم</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">الأسئلة الشائعة</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">سياسة الخصوصية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">الشروط والأحكام</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">الدعم الفني</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">اتصل بنا</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6">النشرة البريدية</h3>
+                    <p class="text-gray-400 mb-4">اشترك في نشرتنا البريدية للحصول على آخر العروض والأخبار</p>
+                    <form class="space-y-4">
+                        <div class="relative">
+                            <input type="email" placeholder="البريد الإلكتروني" class="w-full bg-gray-800 rounded-full px-6 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <button type="submit" class="absolute left-2 top-1/2 -translate-y-1/2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-6 py-2 transition-colors">اشتراك</button>
+                        </div>
+                    </form>
+                    <div class="mt-6 space-y-2">
+                        <p class="flex items-center text-gray-400"><i class="fas fa-phone-alt text-emerald-500 ml-2"></i> 920000000</p>
+                        <p class="flex items-center text-gray-400"><i class="fas fa-envelope text-emerald-500 ml-2"></i> info@example.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">جميع الحقوق محفوظة &copy; 2024 استكشف السعودية</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

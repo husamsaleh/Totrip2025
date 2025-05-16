@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}مقاطع الفيديو | استكشف السعودية{% endblock %}
+
+{% block content %}
+<div class="bg-gradient-to-r from-red-700 to-red-500 text-white pt-10 pb-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h1 class="text-3xl font-bold mb-2">مقاطع الفيديو</h1>
+                    <p class="opacity-80">قم بإدارة مقاطع الفيديو من حسابك على يوتيوب</p>
+                    <p class="opacity-80 mt-2">عدد مقاطع الفيديو: <span class="font-bold">{{ videos_count }}</span> من أصل <span class="font-bold">{{ videos_limit }}</span> (متبقي: <span class="font-bold">{{ videos_remaining }}</span>)</p>
+                </div>
+                {% if videos_remaining > 0 %}
+                <a href="{% url 'tourguides:add_video' %}" class="inline-flex items-center justify-center px-5 py-2 bg-white text-red-700 rounded-lg hover:bg-red-50 transition-all duration-300">
+                    <i class="fas fa-plus ml-2"></i>
+                    إضافة فيديو جديد
+                </a>
+                {% else %}
+                <button disabled class="inline-flex items-center justify-center px-5 py-2 bg-gray-200 text-gray-500 rounded-lg cursor-not-allowed">
+                    <i class="fas fa-ban ml-2"></i>
+                    تم الوصول للحد الأقصى من مقاطع الفيديو
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-7xl mx-auto">
+        {% if videos %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for video in videos %}
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div class="aspect-w-16 aspect-h-9 relative">
+                    <img src="{{ video.get_thumbnail_url }}" alt="{{ video.title }}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                        <a href="{{ video.youtube_url }}" target="_blank" class="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center text-white hover:bg-red-700 transition-all" aria-label="تشغيل الفيديو">
+                            <i class="fas fa-play text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-medium text-gray-800 text-lg">{{ video.title }}</h3>
+                    {% if video.description %}
+                    <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ video.description }}</p>
+                    {% endif %}
+                    <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+                        <a href="{% url 'tourguides:update_video' id=video.id %}" class="inline-flex items-center justify-center px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-all">
+                            <i class="fas fa-edit ml-1"></i>
+                            تعديل
+                        </a>
+                        <a href="{% url 'tourguides:delete_video' id=video.id %}" class="inline-flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-all">
+                            <i class="fas fa-trash-alt ml-1"></i>
+                            حذف
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12 bg-white rounded-xl shadow-sm">
+            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center text-red-600">
+                <i class="fas fa-video-slash text-3xl"></i>
+            </div>
+            <h2 class="text-xl font-bold text-gray-700 mb-2">لا توجد مقاطع فيديو</h2>
+            <p class="text-gray-500 mb-6 max-w-lg mx-auto">قم بإضافة مقاطع فيديو من حسابك على يوتيوب لعرضها للسياح المحتملين</p>
+            <a href="{% url 'tourguides:add_video' %}" class="inline-flex items-center justify-center px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                <i class="fas fa-plus ml-2"></i>
+                إضافة فيديو جديد
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

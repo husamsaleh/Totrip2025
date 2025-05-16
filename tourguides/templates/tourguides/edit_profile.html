@@ -1,0 +1,964 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}تعديل الملف الشخصي | استكشف السعودية{% endblock %}
+
+{% block extra_css %}
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-file-input::-webkit-file-upload-button {
+        visibility: hidden;
+    }
+
+    .custom-file-input::before {
+        content: 'اختر صورة';
+        display: inline-block;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1.5rem;
+        outline: none;
+        white-space: nowrap;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+    }
+
+    .custom-file-input:hover::before {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    .hover-scale {
+        transition: transform 0.3s ease;
+    }
+
+    .hover-scale:hover {
+        transform: scale(1.02);
+    }
+
+    .input-focus {
+        transition: all 0.3s ease;
+    }
+
+    .input-focus:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="max-w-5xl mx-auto">
+        <div class="glass-card rounded-3xl p-6 sm:p-10">
+            <div class="flex items-center justify-between mb-12">
+                <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">تعديل الملف الشخصي</h1>
+                <a href="{% url 'tourguides:tourguide_profile' slug=tour_guide.slug %}" class="text-gray-500 hover:text-emerald-500 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </a>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="space-y-10">
+                {% csrf_token %}
+                
+                <!-- Profile Picture Section -->
+                <div class="flex flex-col items-center space-y-6">
+                    <div class="relative group">
+                        {% if tour_guide.profile_image %}
+                            <img src="{{ tour_guide.profile_image.file.url }}" alt="الصورة الشخصية" 
+                                class="w-40 h-40 rounded-full object-cover ring-4 ring-emerald-500/30 hover-scale">
+                        {% else %}
+                            <div class="w-40 h-40 rounded-full bg-emerald-100 flex items-center justify-center ring-4 ring-emerald-500/30">
+                                <i class="fas fa-user text-emerald-500 text-4xl"></i>
+                            </div>
+                        {% endif %}
+                        <div class="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <label class="cursor-pointer text-white text-center p-4">
+                                <i class="fas fa-camera text-2xl mb-2"></i>
+                                <p class="text-sm">تغيير الصورة</p>
+                                <input type="file" name="profile_image" class="hidden" accept="image/*">
+                            </label>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500">يفضل رفع صورة بحجم 400×400 بكسل</p>
+                </div>
+
+                <!-- Basic Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">المعلومات الشخصية</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">الاسم الأول</label>
+                                <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" 
+                                       class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">الاسم الأخير</label>
+                                <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" 
+                                       class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">البريد الإلكتروني</label>
+                                <input type="email" value="{{ tour_guide.user.email }}" readonly
+                                       class="w-full px-5 py-4 rounded-xl border border-gray-200 bg-gray-50">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">رقم الجوال</label>
+                                <div class="relative">
+                                    <input type="tel" name="phone_number" value="{{ tour_guide.phone_number }}" 
+                                           class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">المعلومات المهنية</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">نبذة تعريفية</label>
+                                <textarea name="bio" rows="4" 
+                                          class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus resize-none">{{ tour_guide.bio }}</textarea>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">سنوات الخبرة</label>
+                                <input type="number" name="years_of_experience" value="{{ tour_guide.years_of_experience }}" 
+                                       class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">صورة الغلاف</label>
+                                <input type="file" name="banner_image" class="custom-file-input" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">روابط التواصل الاجتماعي</h2>
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fab fa-twitter"></i>
+                            </span>
+                            <input type="url" name="twitter" value="{{ tour_guide.twitter }}" placeholder="رابط تويتر" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fab fa-instagram"></i>
+                            </span>
+                            <input type="url" name="instagram" value="{{ tour_guide.instagram }}" placeholder="رابط انستغرام" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fab fa-linkedin"></i>
+                            </span>
+                            <input type="url" name="linkedin" value="{{ tour_guide.linkedin }}" placeholder="رابط لينكد إن" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fas fa-globe"></i>
+                            </span>
+                            <input type="url" name="website" value="{{ tour_guide.website }}" placeholder="رابط الموقع الإلكتروني" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fab fa-facebook"></i>
+                            </span>
+                            <input type="url" name="facebook" value="{{ tour_guide.facebook }}" placeholder="رابط فيسبوك" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fab fa-youtube"></i>
+                            </span>
+                            <input type="url" name="youtube" value="{{ tour_guide.youtube }}" placeholder="رابط يوتيوب" 
+                                   class="w-full px-12 py-4 rounded-xl border border-gray-200 input-focus">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Specialties & Languages -->
+                <div class="space-y-8">
+                    <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">التخصصات واللغات</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-4">مجالات التخصص</label>
+                            <div class="mb-4">
+                                <div class="flex flex-wrap gap-2 border border-gray-200 rounded-xl p-3 mb-3 min-h-[100px]" id="selected-specialties-container">
+                                    {% for specialty in tour_guide.specialties.all %}
+                                    <div class="specialty-tag bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm flex items-center" data-id="{{ specialty.id }}">
+                                        {{ specialty.name }}
+                                        <button type="button" class="ml-2 text-emerald-600 hover:text-emerald-800 remove-specialty" data-id="{{ specialty.id }}">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="relative">
+                                    <input type="text" id="specialty-search" placeholder="ابحث عن التخصصات أو أضف جديدة..." 
+                                           class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all">
+                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                </div>
+                                <div id="specialties-dropdown" class="hidden absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                    <div class="p-2">
+                                        <div id="existing-specialties">
+                                            {% for specialty in specialties %}
+                                            <div class="specialty-option px-4 py-2 hover:bg-emerald-50 cursor-pointer flex items-center" data-id="{{ specialty.id }}">
+                                                <span class="ml-2">{{ specialty.name }}</span>
+                                                <i class="fas fa-tag text-emerald-500 ml-auto"></i>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div id="add-new-specialty" class="hidden px-4 py-2 hover:bg-emerald-50 cursor-pointer flex items-center border-t border-gray-100 mt-2 pt-2">
+                                            <span class="ml-2">إضافة "<span id="new-specialty-name"></span>"</span>
+                                            <i class="fas fa-plus text-emerald-500 ml-auto"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="specialty-error" class="text-red-500 text-sm mt-2 hidden">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>
+                                    يرجى اختيار تخصص واحد على الأقل
+                                </div>
+                                <input type="hidden" name="specialties" id="specialties-input" value="{% for specialty in tour_guide.specialties.all %}{{ specialty.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-4">اللغات</label>
+                            <div class="mb-4">
+                                <div class="flex flex-wrap gap-2 border border-gray-200 rounded-xl p-3 mb-3 min-h-[100px]" id="selected-languages-container">
+                                    {% for language in tour_guide.languages.all %}
+                                    <div class="language-tag bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center" data-id="{{ language.id }}">
+                                        {{ language.name }}
+                                        <button type="button" class="ml-2 text-blue-600 hover:text-blue-800 remove-language" data-id="{{ language.id }}">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="relative">
+                                    <input type="text" id="language-search" placeholder="ابحث عن اللغات أو أضف جديدة..." 
+                                           class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all">
+                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                </div>
+                                <div id="languages-dropdown" class="hidden absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                    <div class="p-2">
+                                        <div id="existing-languages">
+                                            {% for language in languages %}
+                                            <div class="language-option px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center" data-id="{{ language.id }}">
+                                                <span class="ml-2">{{ language.name }}</span>
+                                                <i class="fas fa-language text-blue-500 ml-auto"></i>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div id="add-new-language" class="hidden px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center border-t border-gray-100 mt-2 pt-2">
+                                            <span class="ml-2">إضافة "<span id="new-language-name"></span>"</span>
+                                            <i class="fas fa-plus text-blue-500 ml-auto"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="language-error" class="text-red-500 text-sm mt-2 hidden">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>
+                                    يرجى اختيار لغة واحدة على الأقل
+                                </div>
+                                <input type="hidden" name="languages" id="languages-input" value="{% for language in tour_guide.languages.all %}{{ language.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 border-r-4 border-emerald-500 pr-4">الشهادات</h2>
+                    <div class="mb-4">
+                        <div class="flex flex-wrap gap-2 border border-gray-200 rounded-xl p-3 mb-3 min-h-[100px]" id="selected-certifications-container">
+                            {% for certification in tour_guide.certifications.all %}
+                            <div class="certification-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm flex items-center" data-id="{{ certification.id }}">
+                                {{ certification.name }}
+                                <button type="button" class="ml-2 text-purple-600 hover:text-purple-800 remove-certification" data-id="{{ certification.id }}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="certification-search" placeholder="ابحث عن الشهادات أو أضف جديدة..." 
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <div id="certifications-dropdown" class="hidden absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                            <div class="p-2">
+                                <div id="existing-certifications">
+                                    {% for certification in certifications %}
+                                    <div class="certification-option px-4 py-2 hover:bg-purple-50 cursor-pointer flex items-center" data-id="{{ certification.id }}">
+                                        <span class="ml-2">{{ certification.name }}</span>
+                                        <i class="fas fa-certificate text-purple-500 ml-auto"></i>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div id="add-new-certification" class="hidden px-4 py-2 hover:bg-purple-50 cursor-pointer flex items-center border-t border-gray-100 mt-2 pt-2">
+                                    <span class="ml-2">إضافة "<span id="new-certification-name"></span>"</span>
+                                    <i class="fas fa-plus text-purple-500 ml-auto"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="certification-error" class="text-red-500 text-sm mt-2 hidden">
+                            <i class="fas fa-exclamation-circle mr-1"></i>
+                            يرجى اختيار شهادة واحدة على الأقل
+                        </div>
+                        <input type="hidden" name="certifications" id="certifications-input" value="{% for certification in tour_guide.certifications.all %}{{ certification.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                    </div>
+                </div>
+
+                <!-- Submit buttons -->
+                <div class="flex justify-end gap-4 mt-8 pt-8 border-t border-gray-200">
+                    <a href="{% url 'tourguides:tourguide_profile' slug=tour_guide.slug %}" class="btn-secondary">إلغاء</a>
+                    <button type="submit" class="btn-primary">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM fully loaded');
+        
+        setupSpecialties();
+        setupLanguages();
+        setupCertifications();
+        
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Validate specialties
+            if (document.getElementById('specialties-input').value === '') {
+                document.getElementById('specialty-error').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('specialty-error').classList.add('hidden');
+            }
+            
+            // Validate languages
+            if (document.getElementById('languages-input').value === '') {
+                document.getElementById('language-error').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('language-error').classList.add('hidden');
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: document.querySelector('.text-red-500:not(.hidden)').offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Setup for specialties
+    function setupSpecialties() {
+        const selectedItems = new Set();
+        const hiddenInput = document.getElementById('specialties-input');
+        
+        // Parse initial values
+        const initialValues = hiddenInput.value.split(',').filter(id => id.trim() !== '');
+        initialValues.forEach(id => {
+            if (id) selectedItems.add(parseInt(id));
+        });
+        console.log('Initial specialties:', Array.from(selectedItems));
+        
+        // Setup remove buttons for existing tags
+        document.querySelectorAll('.remove-specialty').forEach(button => {
+            button.onclick = function(e) {
+                e.preventDefault();
+                const id = parseInt(this.getAttribute('data-id'));
+                console.log('Removing specialty:', id);
+                selectedItems.delete(id);
+                this.closest('.specialty-tag').remove();
+                updateHiddenInput();
+            };
+        });
+        
+        // Setup search and dropdown
+        const searchInput = document.getElementById('specialty-search');
+        const dropdown = document.getElementById('specialties-dropdown');
+        
+        searchInput.onfocus = function() {
+            dropdown.classList.remove('hidden');
+        };
+        
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        
+        // Filter options on input
+        searchInput.oninput = function() {
+            const searchValue = this.value.toLowerCase().trim();
+            filterDropdownOptions('specialty', searchValue);
+        };
+        
+        // Handle selecting existing item
+        document.querySelectorAll('.specialty-option').forEach(option => {
+            option.onclick = function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                const name = this.querySelector('span').textContent.trim();
+                console.log('Selected specialty:', name, id);
+                
+                if (!selectedItems.has(id)) {
+                    addSpecialty(id, name);
+                }
+                
+                searchInput.value = '';
+                dropdown.classList.add('hidden');
+            };
+        });
+        
+        // Handle adding new item
+        document.getElementById('add-new-specialty').onclick = function() {
+            const name = document.getElementById('new-specialty-name').textContent.trim();
+            console.log('Adding new specialty:', name);
+            
+            fetch('{% url "tourguides:add_specialty" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+                
+                if (data.success) {
+                    // Add new specialty to selection
+                    addSpecialty(data.id, data.name);
+                    
+                    // Add to dropdown options
+                    addOptionToDropdown('specialty', data.id, data.name);
+                    
+                    // Reset search
+                    searchInput.value = '';
+                    dropdown.classList.add('hidden');
+                } else {
+                    alert(data.error || 'فشل في إضافة تخصص جديد');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء إضافة تخصص جديد');
+            });
+        };
+        
+        // Function to add a specialty to the selected container
+        function addSpecialty(id, name) {
+            selectedItems.add(id);
+            
+            const container = document.getElementById('selected-specialties-container');
+            const tag = document.createElement('div');
+            tag.className = 'specialty-tag bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm flex items-center';
+            tag.setAttribute('data-id', id);
+            tag.innerHTML = `
+                ${name}
+                <button type="button" class="ml-2 text-emerald-600 hover:text-emerald-800 remove-specialty" data-id="${id}">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            // Add event listener to the remove button
+            const removeButton = tag.querySelector('.remove-specialty');
+            removeButton.onclick = function(e) {
+                e.preventDefault();
+                const tagId = parseInt(this.getAttribute('data-id'));
+                console.log('Removing specialty:', tagId);
+                selectedItems.delete(tagId);
+                tag.remove();
+                updateHiddenInput();
+            };
+            
+            container.appendChild(tag);
+            updateHiddenInput();
+            
+            // Hide error message if any
+            document.getElementById('specialty-error').classList.add('hidden');
+        }
+        
+        // Function to update hidden input
+        function updateHiddenInput() {
+            hiddenInput.value = Array.from(selectedItems).join(',');
+            console.log('Updated specialties input:', hiddenInput.value);
+        }
+    }
+    
+    // Setup for languages
+    function setupLanguages() {
+        const selectedItems = new Set();
+        const hiddenInput = document.getElementById('languages-input');
+        
+        // Parse initial values
+        const initialValues = hiddenInput.value.split(',').filter(id => id.trim() !== '');
+        initialValues.forEach(id => {
+            if (id) selectedItems.add(parseInt(id));
+        });
+        console.log('Initial languages:', Array.from(selectedItems));
+        
+        // Setup remove buttons for existing tags
+        document.querySelectorAll('.remove-language').forEach(button => {
+            button.onclick = function(e) {
+                e.preventDefault();
+                const id = parseInt(this.getAttribute('data-id'));
+                console.log('Removing language:', id);
+                selectedItems.delete(id);
+                this.closest('.language-tag').remove();
+                updateHiddenInput();
+            };
+        });
+        
+        // Setup search and dropdown
+        const searchInput = document.getElementById('language-search');
+        const dropdown = document.getElementById('languages-dropdown');
+        
+        searchInput.onfocus = function() {
+            dropdown.classList.remove('hidden');
+        };
+        
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        
+        // Filter options on input
+        searchInput.oninput = function() {
+            const searchValue = this.value.toLowerCase().trim();
+            filterDropdownOptions('language', searchValue);
+        };
+        
+        // Handle selecting existing item
+        document.querySelectorAll('.language-option').forEach(option => {
+            option.onclick = function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                const name = this.querySelector('span').textContent.trim();
+                console.log('Selected language:', name, id);
+                
+                if (!selectedItems.has(id)) {
+                    addLanguage(id, name);
+                }
+                
+                searchInput.value = '';
+                dropdown.classList.add('hidden');
+            };
+        });
+        
+        // Handle adding new item
+        document.getElementById('add-new-language').onclick = function() {
+            const name = document.getElementById('new-language-name').textContent.trim();
+            console.log('Adding new language:', name);
+            
+            fetch('{% url "tourguides:add_language" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+                
+                if (data.success) {
+                    // Add new language to selection
+                    addLanguage(data.id, data.name);
+                    
+                    // Add to dropdown options
+                    addOptionToDropdown('language', data.id, data.name);
+                    
+                    // Reset search
+                    searchInput.value = '';
+                    dropdown.classList.add('hidden');
+                } else {
+                    alert(data.error || 'فشل في إضافة لغة جديدة');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء إضافة لغة جديدة');
+            });
+        };
+        
+        // Function to add a language to the selected container
+        function addLanguage(id, name) {
+            selectedItems.add(id);
+            
+            const container = document.getElementById('selected-languages-container');
+            const tag = document.createElement('div');
+            tag.className = 'language-tag bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center';
+            tag.setAttribute('data-id', id);
+            tag.innerHTML = `
+                ${name}
+                <button type="button" class="ml-2 text-blue-600 hover:text-blue-800 remove-language" data-id="${id}">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            // Add event listener to the remove button
+            const removeButton = tag.querySelector('.remove-language');
+            removeButton.onclick = function(e) {
+                e.preventDefault();
+                const tagId = parseInt(this.getAttribute('data-id'));
+                console.log('Removing language:', tagId);
+                selectedItems.delete(tagId);
+                tag.remove();
+                updateHiddenInput();
+            };
+            
+            container.appendChild(tag);
+            updateHiddenInput();
+            
+            // Hide error message if any
+            document.getElementById('language-error').classList.add('hidden');
+        }
+        
+        // Function to update hidden input
+        function updateHiddenInput() {
+            hiddenInput.value = Array.from(selectedItems).join(',');
+            console.log('Updated languages input:', hiddenInput.value);
+        }
+    }
+    
+    // Setup for certifications
+    function setupCertifications() {
+        const selectedItems = new Set();
+        const hiddenInput = document.getElementById('certifications-input');
+        
+        // Parse initial values
+        const initialValues = hiddenInput.value.split(',').filter(id => id.trim() !== '');
+        initialValues.forEach(id => {
+            if (id) selectedItems.add(parseInt(id));
+        });
+        console.log('Initial certifications:', Array.from(selectedItems));
+        
+        // Setup remove buttons for existing tags
+        document.querySelectorAll('.remove-certification').forEach(button => {
+            button.onclick = function(e) {
+                e.preventDefault();
+                const id = parseInt(this.getAttribute('data-id'));
+                console.log('Removing certification:', id);
+                selectedItems.delete(id);
+                this.closest('.certification-tag').remove();
+                updateHiddenInput();
+            };
+        });
+        
+        // Setup search and dropdown
+        const searchInput = document.getElementById('certification-search');
+        const dropdown = document.getElementById('certifications-dropdown');
+        
+        searchInput.onfocus = function() {
+            dropdown.classList.remove('hidden');
+        };
+        
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        
+        // Filter options on input
+        searchInput.oninput = function() {
+            const searchValue = this.value.toLowerCase().trim();
+            filterDropdownOptions('certification', searchValue);
+        };
+        
+        // Handle selecting existing item
+        document.querySelectorAll('.certification-option').forEach(option => {
+            option.onclick = function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                const name = this.querySelector('span').textContent.trim();
+                console.log('Selected certification:', name, id);
+                
+                if (!selectedItems.has(id)) {
+                    addCertification(id, name);
+                }
+                
+                searchInput.value = '';
+                dropdown.classList.add('hidden');
+            };
+        });
+        
+        // Handle adding new item
+        document.getElementById('add-new-certification').onclick = function() {
+            const name = document.getElementById('new-certification-name').textContent.trim();
+            console.log('Adding new certification:', name);
+            
+            fetch('{% url "tourguides:add_certification" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+                
+                if (data.success) {
+                    // Add new certification to selection
+                    addCertification(data.id, data.name);
+                    
+                    // Add to dropdown options
+                    addOptionToDropdown('certification', data.id, data.name);
+                    
+                    // Reset search
+                    searchInput.value = '';
+                    dropdown.classList.add('hidden');
+                } else {
+                    alert(data.error || 'فشل في إضافة شهادة جديدة');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء إضافة شهادة جديدة');
+            });
+        };
+        
+        // Function to add a certification to the selected container
+        function addCertification(id, name) {
+            selectedItems.add(id);
+            
+            const container = document.getElementById('selected-certifications-container');
+            const tag = document.createElement('div');
+            tag.className = 'certification-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm flex items-center';
+            tag.setAttribute('data-id', id);
+            tag.innerHTML = `
+                ${name}
+                <button type="button" class="ml-2 text-purple-600 hover:text-purple-800 remove-certification" data-id="${id}">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            // Add event listener to the remove button
+            const removeButton = tag.querySelector('.remove-certification');
+            removeButton.onclick = function(e) {
+                e.preventDefault();
+                const tagId = parseInt(this.getAttribute('data-id'));
+                console.log('Removing certification:', tagId);
+                selectedItems.delete(tagId);
+                tag.remove();
+                updateHiddenInput();
+            };
+            
+            container.appendChild(tag);
+            updateHiddenInput();
+            
+            // Hide error message if any
+            document.getElementById('certification-error').classList.add('hidden');
+        }
+        
+        // Function to update hidden input
+        function updateHiddenInput() {
+            hiddenInput.value = Array.from(selectedItems).join(',');
+            console.log('Updated certifications input:', hiddenInput.value);
+        }
+    }
+    
+    // Helper function to filter dropdown options
+    function filterDropdownOptions(type, searchValue) {
+        const existingItems = document.getElementById(`existing-${type}s`);
+        const options = existingItems.querySelectorAll(`.${type}-option`);
+        const addNew = document.getElementById(`add-new-${type}`);
+        const newName = document.getElementById(`new-${type}-name`);
+        
+        let hasMatch = false;
+        
+        options.forEach(option => {
+            const text = option.textContent.toLowerCase();
+            if (text.includes(searchValue)) {
+                option.style.display = 'flex';
+                hasMatch = true;
+            } else {
+                option.style.display = 'none';
+            }
+        });
+        
+        // Show/hide "add new" option
+        if (searchValue && !hasMatch) {
+            addNew.classList.remove('hidden');
+            newName.textContent = searchValue;
+        } else {
+            addNew.classList.add('hidden');
+        }
+    }
+    
+    // Helper function to add new option to dropdown
+    function addOptionToDropdown(type, id, name) {
+        const iconClass = type === 'language' ? 'fa-language text-blue-500' : 
+                         (type === 'certification' ? 'fa-certificate text-purple-500' : 'fa-tag text-emerald-500');
+        
+        const existingItems = document.getElementById(`existing-${type}s`);
+        const option = document.createElement('div');
+        option.className = `${type}-option px-4 py-2 hover:bg-emerald-50 cursor-pointer flex items-center`;
+        option.setAttribute('data-id', id);
+        option.innerHTML = `
+            <span class="ml-2">${name}</span>
+            <i class="fas ${iconClass} ml-auto"></i>
+        `;
+        
+        // Add click handler
+        option.onclick = function() {
+            const optionId = parseInt(this.getAttribute('data-id'));
+            const optionName = this.querySelector('span').textContent.trim();
+            
+            // Call the appropriate add function based on type
+            if (type === 'specialty') {
+                // Find the parent scope's addSpecialty function
+                const container = document.getElementById('selected-specialties-container');
+                const hiddenInput = document.getElementById('specialties-input');
+                const selectedItems = new Set(hiddenInput.value.split(',').map(id => parseInt(id)).filter(id => !isNaN(id)));
+                
+                if (!selectedItems.has(optionId)) {
+                    // Manually add the item since we can't access the function directly
+                    selectedItems.add(optionId);
+                    
+                    const tag = document.createElement('div');
+                    tag.className = 'specialty-tag bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm flex items-center';
+                    tag.setAttribute('data-id', optionId);
+                    tag.innerHTML = `
+                        ${optionName}
+                        <button type="button" class="ml-2 text-emerald-600 hover:text-emerald-800 remove-specialty" data-id="${optionId}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    
+                    const removeButton = tag.querySelector('.remove-specialty');
+                    removeButton.onclick = function(e) {
+                        e.preventDefault();
+                        selectedItems.delete(optionId);
+                        tag.remove();
+                        hiddenInput.value = Array.from(selectedItems).join(',');
+                    };
+                    
+                    container.appendChild(tag);
+                    hiddenInput.value = Array.from(selectedItems).join(',');
+                }
+            } else if (type === 'language') {
+                // Similar logic for languages
+                const container = document.getElementById('selected-languages-container');
+                const hiddenInput = document.getElementById('languages-input');
+                const selectedItems = new Set(hiddenInput.value.split(',').map(id => parseInt(id)).filter(id => !isNaN(id)));
+                
+                if (!selectedItems.has(optionId)) {
+                    selectedItems.add(optionId);
+                    
+                    const tag = document.createElement('div');
+                    tag.className = 'language-tag bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center';
+                    tag.setAttribute('data-id', optionId);
+                    tag.innerHTML = `
+                        ${optionName}
+                        <button type="button" class="ml-2 text-blue-600 hover:text-blue-800 remove-language" data-id="${optionId}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    
+                    const removeButton = tag.querySelector('.remove-language');
+                    removeButton.onclick = function(e) {
+                        e.preventDefault();
+                        selectedItems.delete(optionId);
+                        tag.remove();
+                        hiddenInput.value = Array.from(selectedItems).join(',');
+                    };
+                    
+                    container.appendChild(tag);
+                    hiddenInput.value = Array.from(selectedItems).join(',');
+                }
+            } else if (type === 'certification') {
+                // Similar logic for certifications
+                const container = document.getElementById('selected-certifications-container');
+                const hiddenInput = document.getElementById('certifications-input');
+                const selectedItems = new Set(hiddenInput.value.split(',').map(id => parseInt(id)).filter(id => !isNaN(id)));
+                
+                if (!selectedItems.has(optionId)) {
+                    selectedItems.add(optionId);
+                    
+                    const tag = document.createElement('div');
+                    tag.className = 'certification-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm flex items-center';
+                    tag.setAttribute('data-id', optionId);
+                    tag.innerHTML = `
+                        ${optionName}
+                        <button type="button" class="ml-2 text-purple-600 hover:text-purple-800 remove-certification" data-id="${optionId}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    
+                    const removeButton = tag.querySelector('.remove-certification');
+                    removeButton.onclick = function(e) {
+                        e.preventDefault();
+                        selectedItems.delete(optionId);
+                        tag.remove();
+                        hiddenInput.value = Array.from(selectedItems).join(',');
+                    };
+                    
+                    container.appendChild(tag);
+                    hiddenInput.value = Array.from(selectedItems).join(',');
+                }
+            }
+            
+            // Hide dropdown and clear search
+            const searchInput = document.getElementById(`${type}-search`);
+            const dropdown = document.getElementById(`${type}s-dropdown`);
+            searchInput.value = '';
+            dropdown.classList.add('hidden');
+        };
+        
+        existingItems.appendChild(option);
+    }
+    
+    // Function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock %} 

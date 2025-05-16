@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استكشف السعودية | الصفحة الرئيسية</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Regular'),
+                 local('San Francisco');
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Medium'),
+                 local('San Francisco');
+            font-weight: 500;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Semibold'),
+                 local('San Francisco');
+            font-weight: 600;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Bold'),
+                 local('San Francisco');
+            font-weight: 700;
+        }
+
+        body {
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-effect.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #10B981, #34D399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .custom-shadow {
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Add padding to create a gap between dropdown items */
+        .dropdown-menu {
+            padding: 0.5rem 0;
+        }
+
+        /* Add transition for smooth show/hide */
+        .dropdown-content {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+
+        /* Show dropdown on hover */
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100">
+    <!-- Initialize AOS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
+
+            // Add scroll event listener for navbar
+            window.addEventListener('scroll', function() {
+                const nav = document.querySelector('nav');
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0 hover-scale">
+                        <img class="h-12" src="https://i.ibb.co/Qj1bBfR/logo-green.png" alt="شعار الموقع">
+                    </a>
+                    <div class="hidden md:mr-8 md:flex md:space-x-8 md:space-x-reverse">
+                        <a href="index.html" class="text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">الرئيسية</a>
+                        <a href="guides.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المرشدون</a>
+                        <a href="agencies.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المكاتب السياحية</a>
+                        <a href="blogs.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المدونة</a>
+                  <!--       
+                        ## Modified Dropdown Menu
+                        <div class="dropdown relative">
+                            <button class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110 inline-flex items-center">
+                                المزيد
+                                <i class="fas fa-chevron-down mr-1 text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+                            </button>
+                            <div class="dropdown-content absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 border border-gray-100">
+                                <a href="totrip-partner.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                    <i class="fas fa-calendar-alt w-5 inline-block"></i>
+                                   سجل معنا
+                                </a>
+                                <a href="transportation.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                    <i class="fas fa-car w-5 inline-block"></i>
+                                    خدمات النقل
+                                </a>
+                                <a href="accommodation.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                    <i class="fas fa-hotel w-5 inline-block"></i>
+                                    حجز الفنادق
+                                </a>
+                                <a href="packages.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                    <i class="fas fa-gift w-5 inline-block"></i>
+                                    الباقات السياحية
+                                </a>
+                                <a href="support.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                    <i class="fas fa-headset w-5 inline-block"></i>
+                                    الدعم الفني
+                                </a>
+                            </div>
+                        </div>
+                         -->
+                        <a href="contact.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">اتصل بنا</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-4">
+                        <button class="inline-flex items-center text-gray-600 hover:text-emerald-600 transition-all duration-300">
+                            <i class="fas fa-globe ml-2"></i>
+                            العربية
+                        </button>
+                        <a href="login.html" class="px-6 py-2.5 text-gray-600 hover:text-emerald-600 font-medium rounded-full border-2 border-gray-300 hover:border-emerald-500 transition-all duration-300">
+                            تسجيل دخول
+                        </a>
+                        <a href="register.html" class="px-6 py-2.5 text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-full shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 hover:-translate-y-1">
+                            إنشاء حساب
+                        </a>
+                    </div>
+                    <button class="md:hidden bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+                        <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1578895101408-1a36b834405b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" alt="Aerial view of Saudi Arabia cityscape at sunset">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 backdrop-blur-sm"></div>
+        </div>
+        <div class="relative max-w-7xl mx-auto px-4 text-center" data-aos="fade-up">
+            <h1 class="text-6xl md:text-8xl font-bold text-white leading-tight mb-8 text-shadow animate-float">
+                استكشف <span class="gradient-text">السعودية</span><br>بأعين الخبراء
+            </h1>
+            <p class="text-xl md:text-3xl text-gray-200 max-w-3xl mx-auto mb-12">
+                اكتشف جمال المملكة مع نخبة من المرشدين المحترفين
+            </p>
+            <button class="px-12 py-5 bg-emerald-600 hover:bg-emerald-500 text-white text-xl font-medium rounded-full transition-all transform hover:scale-110 hover:shadow-2xl hover:shadow-emerald-500/50 animate-pulse">
+                ابدأ رحلتك الآن
+            </button>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-white text-3xl"></i>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="max-w-6xl mx-auto px-4 -mt-24 relative z-10" data-aos="fade-up">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="relative group">
+                    <select class="w-full bg-gray-50/50 border-2 border-gray-200 rounded-xl px-4 py-4 appearance-none focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300">
+                        <option selected>اختر المدينة</option>
+                        <option>الرياض</option>
+                        <option>جدة</option>
+                        <option>العلا</option>
+                    </select>
+                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-emerald-500 transition-colors">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <select class="w-full bg-gray-50/50 border-2 border-gray-200 rounded-xl px-4 py-4 appearance-none focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300">
+                        <option selected>نوع الخدمة</option>
+                        <option>مرشد سياحي</option>
+                        <option>مكتب سياحي</option>
+                        <option>خدمات نقل</option>
+                    </select>
+                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-emerald-500 transition-colors">
+                        <i class="fas fa-concierge-bell"></i>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <select class="w-full bg-gray-50/50 border-2 border-gray-200 rounded-xl px-4 py-4 appearance-none focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300">
+                        <option selected>المدة الزمنية</option>
+                        <option>يوم واحد</option>
+                        <option>2-3 أيام</option>
+                        <option>أسبوع</option>
+                    </select>
+                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-emerald-500 transition-colors">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                <button class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-medium rounded-xl py-4 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50 hover:-translate-y-1">
+                    <i class="fas fa-search ml-2"></i>
+                    ابحث عن رحلتك
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Trips Section -->
+    <section class="max-w-7xl mx-auto px-4 py-24">
+        <div class="flex justify-between items-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-800 gradient-text" data-aos="fade-up">أفضل رحلات المكاتب السياحية</h2>
+            <a href="agencies.html" class="inline-flex items-center text-emerald-600 hover:text-emerald-700 transition-colors">
+                عرض جميع المكاتب
+                <i class="fas fa-arrow-left mr-2"></i>
+            </a>
+        </div>
+        
+        <!-- Carousel Container -->
+        <div class="relative" data-aos="fade-up">
+            <!-- Remove overflow-hidden from trips-carousel and add wrapper div -->
+            <div class="overflow-hidden">
+                <div class="trips-carousel flex gap-6 transition-transform duration-500 ease-out">
+                    <!-- Trip Card 1 -->
+                    <div class="min-w-[400px] group">
+                        <div class="relative overflow-hidden rounded-3xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
+                            <div class="absolute top-4 right-4 z-10">
+                                <a href="agency.html" class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium hover:bg-emerald-500 hover:text-white transition-all duration-300">
+                                    <img src="https://i.ibb.co/VqzR8Vk/tourism-agency1.png" class="w-6 h-6 rounded-full object-cover" alt="آفاق للسياحة">
+                                    آفاق للسياحة
+                                </a>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1578895101408-1bc89e443f18" class="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-700" alt="رحلة العلا">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-8">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">3 أيام</span>
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">رحلة جماعية</span>
+                                </div>
+                                <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">استكشف العلا</h3>
+                                <p class="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                    رحلة استثنائية تشمل زيارة المواقع التاريخية والمناظر الطبيعية الخلابة
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-emerald-400 font-bold text-2xl">800 ريال</span>
+                                        <span class="text-gray-400 text-sm mr-2">للشخص</span>
+                                    </div>
+                                    <button class="px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-emerald-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                                        احجز الآن
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trip Card 2 - Riyadh Edge -->
+                    <div class="min-w-[400px] group">
+                        <div class="relative overflow-hidden rounded-3xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
+                            <div class="absolute top-4 right-4 z-10">
+                                <a href="agency.html" class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium hover:bg-emerald-500 hover:text-white transition-all duration-300">
+                                    <img src="https://i.ibb.co/Qj1bBfR/logo-green.png" class="w-6 h-6 rounded-full object-cover" alt="نجوم الرياض">
+                                    نجوم الرياض
+                                </a>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6" class="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-700" alt="رحلة الرياض">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-8">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">يومان</span>
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">رحلة عائلية</span>
+                                </div>
+                                <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">معالم الرياض</h3>
+                                <p class="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                    استكشف أبرز معالم العاصمة من برج المملكة إلى الدرعية التاريخية
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-emerald-400 font-bold text-2xl">600 ريال</span>
+                                        <span class="text-gray-400 text-sm mr-2">للشخص</span>
+                                    </div>
+                                    <button class="px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-emerald-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                                        احجز الآن
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trip Card 3 - Jeddah Historical -->
+                    <div class="min-w-[400px] group">
+                        <div class="relative overflow-hidden rounded-3xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
+                            <div class="absolute top-4 right-4 z-10">
+                                <a href="agency.html" class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium hover:bg-emerald-500 hover:text-white transition-all duration-300">
+                                    <img src="https://i.ibb.co/VqzR8Vk/tourism-agency1.png" class="w-6 h-6 rounded-full object-cover" alt="جدة التاريخية">
+                                    أصالة جدة
+                                </a>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb" class="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-700" alt="جدة التاريخية">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-8">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">4 أيام</span>
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">تراث وثقافة</span>
+                                </div>
+                                <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">جدة التاريخية</h3>
+                                <p class="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                    اكتشف سحر البلد التاريخي وتذوق أشهى المأكولات الشعبية
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-emerald-400 font-bold text-2xl">900 ريال</span>
+                                        <span class="text-gray-400 text-sm mr-2">للشخص</span>
+                                    </div>
+                                    <button class="px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-emerald-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                                        احجز الآن
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trip Card 4 - Abha Adventure -->
+                    <div class="min-w-[400px] group">
+                        <div class="relative overflow-hidden rounded-3xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
+                            <div class="absolute top-4 right-4 z-10">
+                                <a href="agency.html" class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium hover:bg-emerald-500 hover:text-white transition-all duration-300">
+                                    <img src="https://i.ibb.co/Qj1bBfR/logo-green.png" class="w-6 h-6 rounded-full object-cover" alt="عسير للسياحة">
+                                    عسير للسياحة
+                                </a>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e" class="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-700" alt="أبها">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-8">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">5 أيام</span>
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">مغامرات</span>
+                                </div>
+                                <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">مغامرات أبها</h3>
+                                <p class="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                    استمتع بالطبيعة الخلابة والطقس المعتدل في جبال عسير
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-emerald-400 font-bold text-2xl">1200 ريال</span>
+                                        <span class="text-gray-400 text-sm mr-2">للشخص</span>
+                                    </div>
+                                    <button class="px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-emerald-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                                        احجز الآن
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add these cards after the existing Trip Card 4 in the trips-carousel div -->
+
+                    <!-- Trip Card 5 - Taif Gardens -->
+                    <div class="min-w-[400px] group">
+                        <div class="relative overflow-hidden rounded-3xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
+                            <div class="absolute top-4 right-4 z-10">
+                                <a href="agency.html" class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium hover:bg-emerald-500 hover:text-white transition-all duration-300">
+                                    <img src="https://i.ibb.co/VqzR8Vk/tourism-agency1.png" class="w-6 h-6 rounded-full object-cover" alt="روائع الطائف">
+                                    روائع الطائف
+                                </a>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1582727657635-c771002bdada" class="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-700" alt="حدائق الطائف">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-8">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">3 أيام</span>
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">سياحة بيئية</span>
+                                </div>
+                                <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">حدائق الطائف</h3>
+                                <p class="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                    استمتع بجمال الورود وزيارة المزارع العضوية في مدينة الورد
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-emerald-400 font-bold text-2xl">750 ريال</span>
+                                        <span class="text-gray-400 text-sm mr-2">للشخص</span>
+                                    </div>
+                                    <button class="px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-emerald-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                                        احجز الآن
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trip Card 6 - Yanbu Diving -->
+                    <div class="min-w-[400px] group">
+                        <div class="relative overflow-hidden rounded-3xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
+                            <div class="absolute top-4 right-4 z-10">
+                                <a href="agency.html" class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium hover:bg-emerald-500 hover:text-white transition-all duration-300">
+                                    <img src="https://i.ibb.co/Qj1bBfR/logo-green.png" class="w-6 h-6 rounded-full object-cover" alt="بحر السعودية">
+                                    بحر السعودية
+                                </a>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1682687982501-1e58ab814714" class="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-700" alt="غوص ينبع">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-8">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">يومان</span>
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">رياضات مائية</span>
+                                </div>
+                                <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">غوص ينبع</h3>
+                                <p class="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                    اكتشف عالم البحر الأحمر الساحر مع أفضل مدربي الغوص
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-emerald-400 font-bold text-2xl">1100 ريال</span>
+                                        <span class="text-gray-400 text-sm mr-2">للشخص</span>
+                                    </div>
+                                    <button class="px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-emerald-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                                        احجز الآن
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trip Card 7 - AlQassim Heritage -->
+                    <div class="min-w-[400px] group">
+                        <div class="relative overflow-hidden rounded-3xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
+                            <div class="absolute top-4 right-4 z-10">
+                                <a href="agency.html" class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium hover:bg-emerald-500 hover:text-white transition-all duration-300">
+                                    <img src="https://i.ibb.co/VqzR8Vk/tourism-agency1.png" class="w-6 h-6 rounded-full object-cover" alt="تراث نجد">
+                                    تراث نجد
+                                </a>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1590077428593-a55bb07c4665" class="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-700" alt="القصيم التراثية">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-8">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">3 أيام</span>
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">تراث وثقافة</span>
+                                </div>
+                                <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">القصيم التراثية</h3>
+                                <p class="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                    عش تجربة الضيافة النجدية الأصيلة وزيارة الأسواق التراثية
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-emerald-400 font-bold text-2xl">850 ريال</span>
+                                        <span class="text-gray-400 text-sm mr-2">للشخص</span>
+                                    </div>
+                                    <button class="px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-emerald-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                                        احجز الآن
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trip Card 8 - Tabuk Mountains -->
+                    <div class="min-w-[400px] group">
+                        <div class="relative overflow-hidden rounded-3xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
+                            <div class="absolute top-4 right-4 z-10">
+                                <a href="agency.html" class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium hover:bg-emerald-500 hover:text-white transition-all duration-300">
+                                    <img src="https://i.ibb.co/Qj1bBfR/logo-green.png" class="w-6 h-6 rounded-full object-cover" alt="شمال المملكة">
+                                    شمال المملكة
+                                </a>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1575490573739-f98c17e24730" class="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-700" alt="جبال تبوك">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-8">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">4 أيام</span>
+                                    <span class="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-400 rounded-full text-sm">مغامرات جبلية</span>
+                                </div>
+                                <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">جبال تبوك</h3>
+                                <p class="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                    تسلق الجبال واستكشف الوديان في أجمل مناطق شمال المملكة
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-emerald-400 font-bold text-2xl">1300 ريال</span>
+                                        <span class="text-gray-400 text-sm mr-2">للشخص</span>
+                                    </div>
+                                    <button class="px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-emerald-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                                        احجز الآن
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <button class="absolute top-1/2 right-4 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-emerald-500 hover:text-white transition-all duration-300 flex items-center justify-center group prev-btn">
+                <i class="fas fa-chevron-right transition-transform group-hover:scale-125"></i>
+            </button>
+            <button class="absolute top-1/2 left-4 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-emerald-500 hover:text-white transition-all duration-300 flex items-center justify-center group next-btn">
+                <i class="fas fa-chevron-left transition-transform group-hover:scale-125"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Latest Blog Posts Carousel Section -->
+    <section class="py-24 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 gradient-text" data-aos="fade-up">آخر المقالات</h2>
+                <a href="blogs.html" class="inline-flex items-center text-emerald-600 hover:text-emerald-700 transition-colors">
+                    عرض جميع المقالات
+                    <i class="fas fa-arrow-left mr-2"></i>
+                </a>
+            </div>
+
+            <!-- Carousel Container -->
+            <div class="relative" data-aos="fade-up">
+                <!-- Carousel Track -->
+                <div class="blog-carousel flex gap-6 transition-transform duration-500 ease-out">
+                    <!-- Blog Card 1 -->
+                    <a href="blog-post.html" class="min-w-[350px] bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 block">
+                        <div class="relative h-48">
+                            <img src="https://images.unsplash.com/photo-1578895101408-1a36b834405b" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                                 alt="العلا">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute top-4 right-4 bg-emerald-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm">
+                                السياحة الثقافية
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-gray-500 text-sm mb-2">
+                                <span class="flex items-center">
+                                    <i class="far fa-calendar-alt ml-1"></i>
+                                    15 مارس 2024
+                                </span>
+                                <span class="mr-4 flex items-center">
+                                    <i class="far fa-eye ml-1"></i>
+                                    2.5K مشاهدة
+                                </span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">اكتشف أسرار العلا التاريخية</h3>
+                            <p class="text-gray-600 mb-4 line-clamp-2">رحلة عبر الزمن في واحدة من أجمل المواقع الأثرية في المملكة العربية السعودية.</p>
+                            <span class="inline-flex items-center text-emerald-600 group-hover:text-emerald-700">
+                                اقرأ المزيد
+                                <i class="fas fa-arrow-left mr-2 transition-transform group-hover:translate-x-1"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 2 -->
+                    <a href="blog-post.html" class="min-w-[350px] bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 block">
+                        <div class="relative h-48">
+                            <img src="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                                 alt="جدة التاريخية">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute top-4 right-4 bg-emerald-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm">
+                                التراث العمراني
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-gray-500 text-sm mb-2">
+                                <span class="flex items-center">
+                                    <i class="far fa-calendar-alt ml-1"></i>
+                                    12 مارس 2024
+                                </span>
+                                <span class="mr-4 flex items-center">
+                                    <i class="far fa-eye ml-1"></i>
+                                    1.8K مشاهدة
+                                </span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">جدة التاريخية: تراث حي</h3>
+                            <p class="text-gray-600 mb-4 line-clamp-2">استكشف جمال العمارة التقليدية والتراث الثقافي في قلب جدة القديمة.</p>
+                            <span class="inline-flex items-center text-emerald-600 group-hover:text-emerald-700">
+                                اقرأ المزيد
+                                <i class="fas fa-arrow-left mr-2 transition-transform group-hover:translate-x-1"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 3 -->
+                    <a href="blog-post.html" class="min-w-[350px] bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 block">
+                        <div class="relative h-48">
+                            <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                                 alt="الرياض">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute top-4 right-4 bg-emerald-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm">
+                                السياحة الحضرية
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-gray-500 text-sm mb-2">
+                                <span class="flex items-center">
+                                    <i class="far fa-calendar-alt ml-1"></i>
+                                    10 مارس 2024
+                                </span>
+                                <span class="mr-4 flex items-center">
+                                    <i class="far fa-eye ml-1"></i>
+                                    2.1K مشاهدة
+                                </span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">الرياض: مدينة المستقبل</h3>
+                            <p class="text-gray-600 mb-4 line-clamp-2">تعرف على المعالم العصرية والمشاريع الطموحة في عاصمة المملكة.</p>
+                            <span class="inline-flex items-center text-emerald-600 group-hover:text-emerald-700">
+                                اقرأ المزيد
+                                <i class="fas fa-arrow-left mr-2 transition-transform group-hover:translate-x-1"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Add more blog cards here -->
+                </div>
+
+                <!-- Navigation Buttons -->
+                <button class="absolute top-1/2 right-4 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-emerald-500 hover:text-white transition-all duration-300 flex items-center justify-center group prev-btn">
+                    <i class="fas fa-chevron-right transition-transform group-hover:scale-125"></i>
+                </button>
+                <button class="absolute top-1/2 left-4 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-emerald-500 hover:text-white transition-all duration-300 flex items-center justify-center group next-btn">
+                    <i class="fas fa-chevron-left transition-transform group-hover:scale-125"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Guides Section -->
+    <section class="bg-gradient-to-b from-gray-50 to-white py-24">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-16 gradient-text" data-aos="fade-up">مرشدون مميزون</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Guide Card 1 -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="p-8 text-center">
+                        <div class="relative inline-block mb-6">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e" class="w-32 h-32 rounded-full mx-auto object-cover ring-4 ring-emerald-500/20" alt="مرشد">
+                            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                موثق
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">أحمد محمد</h3>
+                        <p class="text-gray-600 mb-4">مرشد سياحي متخصص في الرياض</p>
+                        <div class="flex justify-center text-yellow-400 mb-4">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="text-gray-600 mr-2">(4.8)</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-6">خبرة 5 سنوات في السياحة</p>
+                        <button class="w-full px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                            عرض الملف
+                            <i class="fas fa-user-circle mr-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Guide Card 2 -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-8 text-center">
+                        <div class="relative inline-block mb-6">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" class="w-32 h-32 rounded-full mx-auto object-cover ring-4 ring-emerald-500/20" alt="مرشد">
+                            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                موثق
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">سارة خالد</h3>
+                        <p class="text-gray-600 mb-4">متخصصة في جدة التاريخية</p>
+                        <div class="flex justify-center text-yellow-400 mb-4">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span class="text-gray-600 mr-2">(5.0)</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-6">خبرة 7 سنوات في السياحة</p>
+                        <button class="w-full px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                            عرض الملف
+                            <i class="fas fa-user-circle mr-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Guide Card 3 -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="p-8 text-center">
+                        <div class="relative inline-block mb-6">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e" class="w-32 h-32 rounded-full mx-auto object-cover ring-4 ring-emerald-500/20" alt="مرشد">
+                            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                موثق
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">فهد عبدالله</h3>
+                        <p class="text-gray-600 mb-4">خبير في رحلات العلا</p>
+                        <div class="flex justify-center text-yellow-400 mb-4">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span class="text-gray-600 mr-2">(4.9)</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-6">خبرة 6 سنوات في السياحة</p>
+                        <button class="w-full px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                            عرض الملف
+                            <i class="fas fa-user-circle mr-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Guide Card 4 -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="p-8 text-center">
+                        <div class="relative inline-block mb-6">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" class="w-32 h-32 rounded-full mx-auto object-cover ring-4 ring-emerald-500/20" alt="مرشد">
+                            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                موثق
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">نورة سعد</h3>
+                        <p class="text-gray-600 mb-4">متخصصة في السياحة الثقافية</p>
+                        <div class="flex justify-center text-yellow-400 mb-4">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="text-gray-600 mr-2">(4.7)</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-6">خبرة 4 سنوات في السياحة</p>
+                        <button class="w-full px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/50">
+                            عرض الملف
+                            <i class="fas fa-user-circle mr-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="py-24 bg-gradient-to-b from-white to-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">آراء العملاء</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Review Card 1 -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"تجربة لا تنسى في العلا! المرشد السياحي كان محترفاً جداً وقدم لنا معلومات قيمة عن تاريخ المنطقة."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                            <span class="text-emerald-600 font-bold text-xl">س</span>
+                        </div>
+                        <div class="mr-4">
+                            <p class="font-medium text-gray-800">سارة</p>
+                            <p class="text-sm text-gray-500">من الرياض</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Card 2 -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"رحلة جدة التاريخية كانت مميزة جداً. استمتعنا بالتجول في البلد وتعرفنا على تاريخ المدينة العريق."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                            <span class="text-emerald-600 font-bold text-xl">م</span>
+                        </div>
+                        <div class="mr-4">
+                            <p class="font-medium text-gray-800">محمد</p>
+                            <p class="text-sm text-gray-500">من جدة</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Card 3 -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"خدمة ممتازة والتنظيم رائع. قضينا وقتاً جميلاً في الرياض مع عائلتي. سأكرر التجربة قريباً!"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                            <span class="text-emerald-600 font-bold text-xl">ف</span>
+                        </div>
+                        <div class="mr-4">
+                            <p class="font-medium text-gray-800">فهد</p>
+                            <p class="text-sm text-gray-500">من الدمام</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <!-- About Section -->
+                <div class="space-y-6">
+                    <img src="https://via.placeholder.com/150x50/28a745/FFFFFF?text=Logo" alt="شعار الموقع" class="h-12">
+                    <p class="text-gray-400">منصتك المثالية لاستكشاف جمال المملكة العربية السعودية مع نخبة من المرشدين السياحيين المعتمدين.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6">روابط سريعة</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">الرئيسية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">المرشدون</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">المكاتب السياحية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">العروض</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">من نحن</a></li>
+                    </ul>
+                </div>
+
+
+                <!--    edit packages -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6">التعديل</h3>
+                    <ul class="space-y-4">
+                        <li><a href="guide-edit-profile.html" class="text-gray-400 hover:text-emerald-500 transition-colors"> صفحة تعديل المرشد</a></li>
+                        <li><a href="agency-edit-profile.html" class="text-gray-400 hover:text-emerald-500 transition-colors"> صفحة تعديل المكتب السياحي</a></li>
+                    </ul>
+                </div>
+
+
+
+                <!-- Support -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6">الدعم</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">الأسئلة الشائعة</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">سياسة الخصوصية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">الشروط والأحكام</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">الدعم الفني</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">اتصل بنا</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6">النشرة البريدية</h3>
+                    <p class="text-gray-400 mb-4">اشترك في نشرتنا البريدية للحصول على آخر العروض والأخبار</p>
+                    <form class="space-y-4">
+                        <div class="relative">
+                            <input type="email" placeholder="البريد الإلكتروني" class="w-full bg-gray-800 rounded-full px-6 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <button type="submit" class="absolute left-2 top-1/2 -translate-y-1/2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-6 py-2 transition-colors">اشتراك</button>
+                        </div>
+                    </form>
+                    <div class="mt-6 space-y-2">
+                        <p class="flex items-center text-gray-400"><i class="fas fa-phone-alt text-emerald-500 ml-2"></i> 920000000</p>
+                        <p class="flex items-center text-gray-400"><i class="fas fa-envelope text-emerald-500 ml-2"></i> info@example.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">جميع الحقوق محفوظة &copy; 2024 استكشف السعودية</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add this script before the closing body tag -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.blog-carousel');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            let currentPosition = 0;
+            const cardWidth = 374; // 350px width + 24px gap
+            const cardsToShow = Math.floor(carousel.offsetWidth / cardWidth);
+            const maxPosition = (carousel.children.length - cardsToShow) * cardWidth;
+
+            function updateCarousel() {
+                carousel.style.transform = `translateX(${currentPosition}px)`;
+            }
+
+            prevBtn.addEventListener('click', () => {
+                currentPosition = Math.min(currentPosition + cardWidth, 0);
+                updateCarousel();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentPosition = Math.max(currentPosition - cardWidth, -maxPosition);
+                updateCarousel();
+            });
+
+            // Update carousel on window resize
+            window.addEventListener('resize', () => {
+                const newCardsToShow = Math.floor(carousel.offsetWidth / cardWidth);
+                const newMaxPosition = (carousel.children.length - newCardsToShow) * cardWidth;
+                currentPosition = Math.max(currentPosition, -newMaxPosition);
+                updateCarousel();
+            });
+
+            // Trips Carousel
+            const tripsCarousel = document.querySelector('.trips-carousel');
+            const tripsPrevBtn = tripsCarousel.parentElement.parentElement.querySelector('.prev-btn');
+            const tripsNextBtn = tripsCarousel.parentElement.parentElement.querySelector('.next-btn');
+            let tripsCurrentPosition = 0;
+            const tripCardWidth = 424; // 400px width + 24px gap
+            const tripsToShow = Math.floor(tripsCarousel.parentElement.offsetWidth / tripCardWidth);
+            const tripsMaxPosition = (tripsCarousel.children.length - tripsToShow) * tripCardWidth;
+
+            function updateTripsCarousel() {
+                // Add smooth scrolling
+                tripsCarousel.style.transition = 'transform 0.5s ease-out';
+                tripsCarousel.style.transform = `translateX(${tripsCurrentPosition}px)`;
+            }
+
+            tripsPrevBtn.addEventListener('click', () => {
+                tripsCurrentPosition = Math.min(tripsCurrentPosition + tripCardWidth, 0);
+                updateTripsCarousel();
+            });
+
+            tripsNextBtn.addEventListener('click', () => {
+                tripsCurrentPosition = Math.max(tripsCurrentPosition - tripCardWidth, -tripsMaxPosition);
+                updateTripsCarousel();
+            });
+
+            // Update carousel on window resize
+            window.addEventListener('resize', () => {
+                const newTripsToShow = Math.floor(tripsCarousel.parentElement.offsetWidth / tripCardWidth);
+                const newTripsMaxPosition = (tripsCarousel.children.length - newTripsToShow) * tripCardWidth;
+                tripsCurrentPosition = Math.max(tripsCurrentPosition, -newTripsMaxPosition);
+                updateTripsCarousel();
+            });
+        });
+    </script>
+</body>
+</html>

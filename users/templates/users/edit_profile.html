@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}تعديل الملف الشخصي | استكشف السعودية{% endblock %}
+
+{% block content %}
+<!-- Edit Profile Section -->
+<div class="pt-32 pb-20 px-4">
+    <div class="max-w-4xl mx-auto" data-aos="fade-up">
+        {% if messages %}
+            <div class="mb-8">
+                {% for message in messages %}
+                    <div class="{% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-600{% else %}bg-emerald-50 border border-emerald-200 text-emerald-600{% endif %} px-6 py-4 rounded-xl">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Profile Form -->
+        <div class="bg-white rounded-3xl p-8 shadow-xl">
+            <h1 class="text-3xl font-bold mb-8 gradient-text">تعديل الملف الشخصي</h1>
+            
+            <form method="POST" enctype="multipart/form-data" class="space-y-8">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="bg-red-50 border border-red-200 text-red-600 px-6 py-4 rounded-xl mb-6">
+                    <p class="font-medium">يرجى تصحيح الأخطاء التالية:</p>
+                    <ul class="list-disc list-inside mt-2 text-sm">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <!-- Basic Information -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-semibold mb-4">المعلومات الأساسية</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- First Name -->
+                        <div>
+                            <label class="block text-gray-700 mb-2">الاسم الأول</label>
+                            <div class="relative">
+                                {{ form.first_name }}
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div>
+                            <label class="block text-gray-700 mb-2">الاسم الأخير</label>
+                            <div class="relative">
+                                {{ form.last_name }}
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="mt-6">
+                        <label class="block text-gray-700 mb-2">البريد الإلكتروني</label>
+                        <div class="relative">
+                            {{ form.email }}
+                            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phone -->
+                    <div class="mt-6">
+                        <label class="block text-gray-700 mb-2">رقم الجوال</label>
+                        <div class="relative">
+                            {{ form.phone_number }}
+                            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bio -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-semibold mb-4">نبذة شخصية</h2>
+                    <div>
+                        {{ form.bio }}
+                        <p class="text-xs text-gray-500 mt-1">أخبرنا المزيد عنك وعن اهتماماتك السياحية</p>
+                    </div>
+                </div>
+                
+                <!-- Profile Image -->
+                <div>
+                    <h2 class="text-xl font-semibold mb-4">الصورة الشخصية</h2>
+                    <div class="flex items-center space-x-6 space-x-reverse">
+                        <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-emerald-100" id="profile-image-preview">
+                            {% if profile.profile_image %}
+                                <img src="{{ profile.profile_image.file.url }}" alt="{{ profile.user.get_full_name }}" class="w-full h-full object-cover">
+                            {% else %}
+                                <div class="w-full h-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                    <i class="fas fa-user text-5xl"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label class="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl cursor-pointer inline-block">
+                                <i class="fas fa-upload ml-2"></i>
+                                تغيير الصورة
+                                <input type="file" name="profile_image" accept="image/*" class="hidden" id="profile-image-input">
+                            </label>
+                            <p class="text-xs text-gray-500 mt-2">يفضل صورة مربعة بحجم 400×400 بكسل</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Buttons -->
+                <div class="flex gap-4 pt-4">
+                    <button type="submit" class="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition-colors">
+                        <i class="fas fa-save ml-2"></i>
+                        حفظ التغييرات
+                    </button>
+                    <a href="{% url 'users:profile' %}" class="px-8 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl transition-colors">
+                        إلغاء
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for image preview -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileInput = document.getElementById('profile-image-input');
+        const previewContainer = document.getElementById('profile-image-preview');
+        
+        profileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewContainer.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('w-full', 'h-full', 'object-cover');
+                    previewContainer.appendChild(img);
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>
+{% endblock %} 

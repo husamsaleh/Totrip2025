@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}المرشدون السياحيون | استكشف السعودية{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Video Background -->
+<section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6" class="w-full h-full object-cover" alt="Beautiful Landscape">
+        <!-- Enhanced gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-emerald-900/30"></div>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-10 right-10 w-40 h-40 bg-emerald-500 rounded-full opacity-10"></div>
+        <div class="absolute bottom-10 left-10 w-40 h-40 bg-emerald-400 rounded-full opacity-10"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="container mx-auto px-4 relative z-10 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-shadow" data-aos="fade-up">
+                اكتشف أفضل المرشدين السياحيين
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 mb-10 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                تعرف على مرشدينا ذوي الخبرة الذين سيأخذونك في رحلة لاكتشاف كنوز المملكة
+            </p>
+            
+            <!-- Search Form -->
+            <div class="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-2xl shadow-lg max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                <form method="GET" action="{% url 'tourguides:guides_list' %}" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <select name="location" class="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-emerald-500">
+                            <option value="">جميع المواقع</option>
+                            {% for location in locations %}
+                            <option value="{{ location.id }}" {% if selected_location == location.id|stringformat:"s" %}selected{% endif %}>{{ location.name }}, {{ location.city }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <select name="specialty" class="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-emerald-500">
+                            <option value="">جميع التخصصات</option>
+                            {% for specialty in specialties %}
+                            <option value="{{ specialty.id }}" {% if selected_specialty == specialty.id|stringformat:"s" %}selected{% endif %}>{{ specialty.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <select name="language" class="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-emerald-500">
+                            <option value="">جميع اللغات</option>
+                            {% for language in languages %}
+                            <option value="{{ language.id }}" {% if selected_language == language.id|stringformat:"s" %}selected{% endif %}>{{ language.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="md:col-span-3 flex justify-center">
+                        <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-full transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-emerald-500/50">
+                            <i class="fas fa-search ml-2"></i>
+                            بحث
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content Section -->
+<section class="container mx-auto px-4 py-16">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">المرشدون السياحيون المميزون</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            اختر من بين مجموعة متنوعة من المرشدين المحترفين ذوي الخبرة والمعرفة العميقة بثقافة وتاريخ المملكة
+        </p>
+    </div>
+
+    {% if page_obj %}
+    <!-- Guides Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for guide in page_obj %}
+        <div class="guide-card rounded-xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-300">
+            <div class="relative h-60">
+                {% if guide.profile_image %}
+                <img src="{{ guide.profile_image.file.url }}" alt="{{ guide.user.get_full_name }}" class="w-full h-full object-cover">
+                {% else %}
+                <div class="w-full h-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+                    <i class="fas fa-user text-white text-5xl"></i>
+                </div>
+                {% endif %}
+                
+                <div class="card-overlay absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                    <div>
+                        <h3 class="text-white font-bold text-xl">{{ guide.user.get_full_name|default:guide.user.username }}</h3>
+                        <div class="flex items-center">
+                            <div class="flex mr-1">
+                                {% with ''|center:5 as range %}
+                                {% for _ in range %}
+                                <i class="fas fa-star {% if forloop.counter <= guide.avg_rating %}text-yellow-400{% else %}text-gray-300{% endif %} text-sm"></i>
+                                {% endfor %}
+                                {% endwith %}
+                            </div>
+                            <span class="text-white text-sm">({{ guide.review_count }})</span>
+                        </div>
+                    </div>
+                    {% if guide.years_of_experience %}
+                    <span class="bg-emerald-500 text-white text-xs py-1 px-2 rounded-full">{{ guide.years_of_experience }} سنوات خبرة</span>
+                    {% endif %}
+                </div>
+                
+                {% if guide.is_featured %}
+                <div class="absolute top-3 right-3 bg-yellow-500 text-white text-xs py-1 px-3 rounded-full">
+                    <i class="fas fa-star ml-1"></i> مميز
+                </div>
+                {% endif %}
+                
+                {% if guide.is_recommended %}
+                <div class="absolute top-3 left-3 bg-emerald-500 text-white text-xs py-1 px-3 rounded-full">
+                    <i class="fas fa-thumbs-up ml-1"></i> موصى به
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="p-4">
+                <div class="flex flex-wrap gap-2 mb-3">
+                    {% for specialty in guide.specialties.all|slice:":3" %}
+                    <span class="bg-gray-100 text-gray-600 text-xs py-1 px-2 rounded-full">{{ specialty.name }}</span>
+                    {% endfor %}
+                </div>
+                
+                <p class="text-gray-600 text-sm line-clamp-2 h-10 mb-4">
+                    {% if guide.bio %}
+                    {{ guide.bio|truncatechars:100 }}
+                    {% else %}
+                    مرشد سياحي محترف في المملكة العربية السعودية
+                    {% endif %}
+                </p>
+                
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-map-marker-alt text-emerald-500 ml-1"></i>
+                        {% with guide.schedules.all|dictsortreversed:"start_date"|first as next_schedule %}
+                        {% if next_schedule %}
+                        {{ next_schedule.location.city }}
+                        {% else %}
+                        غير محدد
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                    <a href="{% url 'tourguides:tourguide_profile' slug=guide.slug %}" class="text-emerald-500 hover:text-emerald-600 text-sm font-medium transition-colors">
+                        عرض الملف الشخصي
+                        <i class="fas fa-arrow-left mr-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="mt-12 flex justify-center">
+        <nav class="inline-flex rounded-md shadow">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_specialty %}&specialty={{ selected_specialty }}{% endif %}{% if selected_language %}&language={{ selected_language }}{% endif %}" 
+               class="px-4 py-2 bg-white text-gray-700 hover:bg-gray-50 rounded-r-md border border-gray-300">
+                التالي
+            </a>
+            {% else %}
+            <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-r-md border border-gray-300 cursor-not-allowed">
+                التالي
+            </span>
+            {% endif %}
+            
+            <div class="flex">
+                {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                <span class="px-4 py-2 bg-emerald-500 text-white border border-emerald-500">
+                    {{ num }}
+                </span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_specialty %}&specialty={{ selected_specialty }}{% endif %}{% if selected_language %}&language={{ selected_language }}{% endif %}" 
+                   class="px-4 py-2 bg-white text-gray-700 hover:bg-gray-50 border border-gray-300">
+                    {{ num }}
+                </a>
+                {% endif %}
+                {% endfor %}
+            </div>
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_specialty %}&specialty={{ selected_specialty }}{% endif %}{% if selected_language %}&language={{ selected_language }}{% endif %}" 
+               class="px-4 py-2 bg-white text-gray-700 hover:bg-gray-50 rounded-l-md border border-gray-300">
+                السابق
+            </a>
+            {% else %}
+            <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-l-md border border-gray-300 cursor-not-allowed">
+                السابق
+            </span>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <div class="text-center py-12">
+        <div class="text-5xl text-gray-300 mb-4">
+            <i class="fas fa-search"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-700 mb-2">لم يتم العثور على نتائج</h3>
+        <p class="text-gray-500 mb-6">
+            لم نتمكن من العثور على مرشدين سياحيين مطابقين لمعايير البحث الخاصة بك
+        </p>
+        <a href="{% url 'tourguides:guides_list' %}" class="inline-flex items-center text-emerald-500 hover:text-emerald-600">
+            <i class="fas fa-arrow-right ml-2"></i>
+            العودة إلى جميع المرشدين
+        </a>
+    </div>
+    {% endif %}
+</section>
+
+<!-- CTA Section -->
+<section class="bg-gradient-to-r from-emerald-600 to-emerald-800 py-16 px-4 mt-16">
+    <div class="container mx-auto max-w-5xl text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-aos="fade-up">
+            هل أنت مرشد سياحي؟
+        </h2>
+        <p class="text-xl text-white/80 mb-10 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+            انضم إلى منصتنا وابدأ في الوصول إلى آلاف المسافرين المهتمين بخدماتك
+        </p>
+        <a href="{% url 'tourguides:register' %}" class="inline-block bg-white text-emerald-600 px-8 py-4 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-white/30" data-aos="fade-up" data-aos-delay="200">
+            سجل الآن كمرشد سياحي
+            <i class="fas fa-arrow-left mr-2"></i>
+        </a>
+    </div>
+</section>
+{% endblock %} 

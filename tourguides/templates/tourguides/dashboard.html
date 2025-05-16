@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}لوحة التحكم | استكشف السعودية{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="bg-gradient-to-r from-emerald-800 to-emerald-600 text-white pt-10 pb-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-5">
+                    <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-lg">
+                        {% if tour_guide.profile_image %}
+                        <img src="{{ tour_guide.profile_image.file.url }}" alt="{{ tour_guide.user.get_full_name }}" class="w-full h-full object-cover">
+                        {% else %}
+                        <div class="w-full h-full bg-emerald-500 flex items-center justify-center">
+                            <i class="fas fa-user text-white text-3xl"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold">مرحباً، {{ tour_guide.user.first_name|default:tour_guide.user.username }}</h1>
+                        <p class="opacity-80">لوحة تحكم المرشد السياحي</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{% url 'tourguides:tourguide_profile' slug=tour_guide.slug %}" class="inline-flex items-center justify-center px-5 py-2 bg-white text-emerald-700 rounded-lg hover:bg-emerald-50 transition-all duration-300">
+                        <i class="fas fa-user ml-2"></i>
+                        عرض الملف الشخصي
+                    </a>
+                    <a href="{% url 'tourguides:tourguide_edit_profile' %}" class="inline-flex items-center justify-center px-5 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition-all duration-300">
+                        <i class="fas fa-edit ml-2"></i>
+                        تعديل الملف الشخصي
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="bg-gray-50 py-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+                <!-- Packages Stat -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500">الباقات السياحية</p>
+                            <h3 class="text-3xl font-bold mt-2">{{ packages.count }}</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
+                            <i class="fas fa-suitcase text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <a href="{% url 'tourguides:add_package' %}" class="text-emerald-600 hover:text-emerald-700 font-medium text-sm flex items-center">
+                            <i class="fas fa-plus ml-1"></i>
+                            إضافة باقة جديدة
+                        </a>
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-gray-100">
+                        <a href="{% url 'tourguides:packages_list' %}" class="text-emerald-600 hover:text-emerald-700 font-medium text-sm flex items-center">
+                            <i class="fas fa-external-link-alt ml-1"></i>
+                            عرض كل الباقات السياحية
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Schedule Stat -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500">الجولات المجدولة</p>
+                            <h3 class="text-3xl font-bold mt-2">{{ schedules.count }}</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600">
+                            <i class="fas fa-calendar-alt text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <a href="{% url 'tourguides:add_schedule' %}" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                            <i class="fas fa-plus ml-1"></i>
+                            إضافة جدول جديد
+                        </a>
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-gray-100">
+                        <a href="{% url 'tourguides:schedules_list' %}" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                            <i class="fas fa-external-link-alt ml-1"></i>
+                            عرض كل الجولات المجدولة
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Gallery Stat -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500">معرض الصور</p>
+                            <h3 class="text-3xl font-bold mt-2">{{ gallery_count }}</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-yellow-100 flex items-center justify-center text-yellow-600">
+                            <i class="fas fa-images text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between">
+                        <a href="{% url 'tourguides:add_gallery_image' %}" class="text-yellow-600 hover:text-yellow-700 font-medium text-sm flex items-center">
+                            <i class="fas fa-plus ml-1"></i>
+                            إضافة صورة جديدة
+                        </a>
+                        <a href="{% url 'tourguides:tourguide_gallery' %}" class="text-yellow-600 hover:text-yellow-700 font-medium text-sm flex items-center">
+                            <i class="fas fa-external-link-alt ml-1"></i>
+                            عرض الكل
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Videos Stat -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500">مقاطع الفيديو</p>
+                            <h3 class="text-3xl font-bold mt-2">{{ videos.count|default:0 }}</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center text-red-600">
+                            <i class="fas fa-video text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between">
+                        <a href="{% url 'tourguides:add_video' %}" class="text-red-600 hover:text-red-700 font-medium text-sm flex items-center">
+                            <i class="fas fa-plus ml-1"></i>
+                            إضافة فيديو جديد
+                        </a>
+                        <a href="{% url 'tourguides:tourguide_videos' %}" class="text-red-600 hover:text-red-700 font-medium text-sm flex items-center">
+                            <i class="fas fa-external-link-alt ml-1"></i>
+                            عرض الكل
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Reviews Stat -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500">التقييمات</p>
+                            <h3 class="text-3xl font-bold mt-2">{{ reviews.count }}</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">
+                            <i class="fas fa-star text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <div class="flex items-center text-gray-500 text-sm">
+                            <div class="flex ml-2">
+                                {% with ''|center:5 as range %}
+                                {% for _ in range %}
+                                <i class="fas fa-star {% if forloop.counter <= avg_rating %}text-yellow-400{% else %}text-gray-300{% endif %} text-xs"></i>
+                                {% endfor %}
+                                {% endwith %}
+                            </div>
+                            <span>متوسط التقييم: {{ avg_rating|floatformat:1 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Content -->
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Sidebar -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Profile Completion Card -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">اكتمال الملف الشخصي</h3>
+                        <div class="relative h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
+                            <div class="absolute top-0 left-0 h-full bg-emerald-500 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <p class="text-sm text-gray-500">أكمل ملفك الشخصي للحصول على المزيد من الطلبات</p>
+                        
+                        <div class="mt-6 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">الصورة الشخصية</span>
+                                {% if tour_guide.profile_image %}
+                                <i class="fas fa-check-circle text-emerald-500"></i>
+                                {% else %}
+                                <i class="fas fa-times-circle text-red-500"></i>
+                                {% endif %}
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">صورة الغلاف</span>
+                                {% if tour_guide.banner_image %}
+                                <i class="fas fa-check-circle text-emerald-500"></i>
+                                {% else %}
+                                <i class="fas fa-times-circle text-red-500"></i>
+                                {% endif %}
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">النبذة التعريفية</span>
+                                {% if tour_guide.bio %}
+                                <i class="fas fa-check-circle text-emerald-500"></i>
+                                {% else %}
+                                <i class="fas fa-times-circle text-red-500"></i>
+                                {% endif %}
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">التخصصات</span>
+                                {% if tour_guide.specialties.exists %}
+                                <i class="fas fa-check-circle text-emerald-500"></i>
+                                {% else %}
+                                <i class="fas fa-times-circle text-red-500"></i>
+                                {% endif %}
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">وسائل التواصل</span>
+                                {% if tour_guide.twitter or tour_guide.instagram or tour_guide.facebook %}
+                                <i class="fas fa-check-circle text-emerald-500"></i>
+                                {% else %}
+                                <i class="fas fa-times-circle text-red-500"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Upcoming Schedule -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 bg-blue-50 border-b border-blue-100">
+                        <h3 class="text-lg font-bold text-blue-800">الجولات القادمة</h3>
+                    </div>
+                    <div class="p-6">
+                        {% if schedules %}
+                        <div class="space-y-4">
+                            {% for schedule in schedules|slice:":3" %}
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 text-blue-700 h-12 w-12 rounded-lg flex flex-col items-center justify-center flex-shrink-0 ml-4">
+                                    <span class="text-sm font-semibold">{{ schedule.start_date|date:"d" }}</span>
+                                    <span class="text-xs">{{ schedule.start_date|date:"M" }}</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium">{{ schedule.location.name }}</h4>
+                                    <p class="text-sm text-gray-500">
+                                        من {{ schedule.start_date|date:"d/m/Y" }} إلى {{ schedule.end_date|date:"d/m/Y" }}
+                                    </p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-6 text-gray-400">
+                            <i class="far fa-calendar-times text-3xl mb-2"></i>
+                            <p>لا توجد جولات مجدولة حالياً</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Content -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Latest Reviews -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-800">أحدث التقييمات</h3>
+                    </div>
+                    <div class="p-6">
+                        {% if reviews %}
+                        <div class="space-y-6">
+                            {% for review in reviews %}
+                            <div class="border-b border-gray-100 pb-6 {% if forloop.last %}border-0{% endif %}">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h4 class="font-medium">{{ review.author_name }}</h4>
+                                        <div class="flex mt-1">
+                                            {% with ''|center:5 as range %}
+                                            {% for _ in range %}
+                                            <i class="fas fa-star {% if forloop.counter <= review.rating %}text-yellow-400{% else %}text-gray-300{% endif %} text-sm"></i>
+                                            {% endfor %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                    <span class="text-xs text-gray-500">{{ review.created_at|date:"d/m/Y" }}</span>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-2">{{ review.comment }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-8 text-gray-400">
+                            <i class="far fa-comment-alt text-3xl mb-2"></i>
+                            <p>لا توجد تقييمات حتى الآن</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Latest Tour Packages -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-800">باقاتك السياحية</h3>
+                        <div class="flex items-center gap-3">
+                            <a href="{% url 'tourguides:add_package' %}" class="text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                                <i class="fas fa-plus ml-1"></i>
+                                إضافة باقة
+                            </a>
+                            <a href="{% url 'tourguides:packages_list' %}" class="text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                                <i class="fas fa-external-link-alt ml-1"></i>
+                                عرض الكل
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        {% if packages %}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {% for package in packages|slice:":4" %}
+                            <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                <div class="p-5">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="text-lg font-bold">{{ package.title }}</h4>
+                                        <span class="bg-emerald-50 text-emerald-700 px-2 py-1 rounded text-sm">{{ package.duration }}</span>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mb-4">{{ package.description|truncatechars:80 }}</p>
+                                    <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                                        <span class="text-emerald-600 font-bold">{{ package.price }} ريال</span>
+                                        <span class="text-xs px-2 py-1 rounded-full {% if package.is_active %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                            {% if package.is_active %}نشط{% else %}غير نشط{% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-end gap-2 mt-3 pt-3 border-t border-gray-100">
+                                        <a href="{% url 'tourguides:update_package' slug=package.slug %}" class="text-blue-600 hover:text-blue-800">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'tourguides:delete_package' slug=package.slug %}" class="text-red-600 hover:text-red-800">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-8 text-gray-400">
+                            <i class="far fa-compass text-3xl mb-2"></i>
+                            <p>لا توجد باقات سياحية حتى الآن</p>
+                            <a href="{% url 'tourguides:add_package' %}" class="inline-block mt-4 px-6 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+                                إضافة باقة سياحية
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- YouTube Videos Section -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-800">مقاطع الفيديو</h3>
+                        <div class="flex items-center gap-3">
+                            <a href="{% url 'tourguides:add_video' %}" class="text-red-600 hover:text-red-700 text-sm font-medium">
+                                <i class="fas fa-plus ml-1"></i>
+                                إضافة فيديو
+                            </a>
+                            <a href="{% url 'tourguides:tourguide_videos' %}" class="text-red-600 hover:text-red-700 text-sm font-medium">
+                                <i class="fas fa-external-link-alt ml-1"></i>
+                                عرض الكل
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        {% if videos %}
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {% for video in videos|slice:":3" %}
+                            <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                <div class="aspect-w-16 aspect-h-9 relative">
+                                    <img src="{{ video.get_thumbnail_url }}" alt="{{ video.title }}" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                                        <a href="{{ video.youtube_url }}" target="_blank" class="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center text-white hover:bg-red-700 transition-all" aria-label="تشغيل الفيديو">
+                                            <i class="fas fa-play text-lg"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h4 class="font-medium text-gray-800 line-clamp-1">{{ video.title }}</h4>
+                                    <div class="flex justify-end gap-2 mt-3 pt-3 border-t border-gray-100">
+                                        <a href="{% url 'tourguides:update_video' id=video.id %}" class="text-blue-600 hover:text-blue-800">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'tourguides:delete_video' id=video.id %}" class="text-red-600 hover:text-red-800">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-8 text-gray-400">
+                            <i class="far fa-video-slash text-3xl mb-2"></i>
+                            <p>لا توجد مقاطع فيديو حتى الآن</p>
+                            <a href="{% url 'tourguides:add_video' %}" class="inline-block mt-4 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                                <i class="fas fa-youtube ml-2"></i>
+                                إضافة فيديو من يوتيوب
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

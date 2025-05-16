@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المدونة - استكشف السعودية</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Regular'),
+                 local('San Francisco');
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Medium'),
+                 local('San Francisco');
+            font-weight: 500;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Semibold'),
+                 local('San Francisco');
+            font-weight: 600;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: local('-apple-system'),
+                 local('BlinkMacSystemFont'),
+                 local('.SFNSText-Bold'),
+                 local('San Francisco');
+            font-weight: 700;
+        }
+
+        body {
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0 hover-scale">
+                        <img class="h-12" src="https://i.ibb.co/Qj1bBfR/logo-green.png" alt="شعار الموقع">
+                    </a>
+                    <div class="hidden md:mr-8 md:flex md:space-x-8 md:space-x-reverse">
+                        <a href="index.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">الرئيسية</a>
+                        <a href="guides.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المرشدون</a>
+                        <a href="agencies.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المكاتب السياحية</a>
+                        <a href="blogs.html" class="text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">المدونة</a>
+                        <a href="contact.html" class="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-110">اتصل بنا</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-4">
+                        <button class="inline-flex items-center text-gray-600 hover:text-emerald-600 transition-all duration-300">
+                            <i class="fas fa-globe ml-2"></i>
+                            العربية
+                        </button>
+                        <a href="login.html" class="px-6 py-2.5 text-gray-600 hover:text-emerald-600 font-medium rounded-full border-2 border-gray-300 hover:border-emerald-500 transition-all duration-300">
+                            تسجيل دخول
+                        </a>
+                        <a href="register.html" class="px-6 py-2.5 text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-full shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 hover:-translate-y-1">
+                            إنشاء حساب
+                        </a>
+                    </div>
+                    <button class="md:hidden bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+                        <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1578895101408-1a36b834405b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" alt="Aerial view of Saudi Arabia cityscape at sunset">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/30"></div>
+        </div>
+        <div class="relative text-center text-white max-w-4xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6" data-aos="fade-up">استكشف عالم السياحة في السعودية</h1>
+            <p class="text-xl opacity-90 mb-8" data-aos="fade-up" data-aos-delay="100">اكتشف أجمل الوجهات السياحية وأفضل التجارب من خلال مدونتنا</p>
+        </div>
+    </section>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <!-- Search Bar -->
+        <div class="max-w-3xl mx-auto mb-12">
+            <div class="relative group">
+                <input type="text" 
+                       class="w-full bg-gray-50/80 border-2 border-gray-200 rounded-xl px-4 py-3 sm:py-4 pr-12 focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300"
+                       placeholder="ابحث في المدونة...">
+                <div class="absolute right-4 top-1/2 -translate-y-1/2">
+                    <i class="fas fa-search text-gray-400 group-hover:text-emerald-500 transition-colors duration-300"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-8">
+            <!-- Sidebar Filters -->
+            <div class="col-span-12 lg:col-span-3">
+                <div class="bg-white rounded-3xl shadow-xl p-6 sticky top-24" data-aos="fade-left">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-4">التصنيفات</h3>
+                        <div class="space-y-2">
+                            <button class="w-full text-right px-4 py-2 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors">
+                                <i class="fas fa-angle-left ml-2"></i>السياحة الثقافية (24)
+                            </button>
+                            <button class="w-full text-right px-4 py-2 rounded-xl text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">
+                                <i class="fas fa-angle-left ml-2"></i>المغامرات (18)
+                            </button>
+                            <button class="w-full text-right px-4 py-2 rounded-xl text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">
+                                <i class="fas fa-angle-left ml-2"></i>السياحة البيئية (15)
+                            </button>
+                            <button class="w-full text-right px-4 py-2 rounded-xl text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">
+                                <i class="fas fa-angle-left ml-2"></i>التراث والآثار (20)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">الوسوم الشائعة</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full text-sm hover:bg-emerald-200 cursor-pointer transition-colors">#السياحة_السعودية</span>
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full text-sm hover:bg-emerald-200 cursor-pointer transition-colors">#العلا</span>
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full text-sm hover:bg-emerald-200 cursor-pointer transition-colors">#الدرعية</span>
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full text-sm hover:bg-emerald-200 cursor-pointer transition-colors">#نيوم</span>
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full text-sm hover:bg-emerald-200 cursor-pointer transition-colors">#البحر_الأحمر</span>
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full text-sm hover:bg-emerald-200 cursor-pointer transition-colors">#الطائف</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Posts Grid -->
+            <div class="col-span-12 lg:col-span-9">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Blog Card 1 -->
+                    <a href="blog-post.html" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1590562177087-ca6af9bb82ea" 
+                                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" 
+                                 alt="العلا">
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    السياحة الثقافية
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">اكتشف روعة العلا: رحلة عبر الزمن</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-gray-500 text-sm mb-4">
+                                <span class="flex items-center">
+                                    <i class="far fa-calendar-alt ml-1"></i>
+                                    15 مارس 2024
+                                </span>
+                                <span class="mr-4 flex items-center">
+                                    <i class="far fa-eye ml-1"></i>
+                                    1.2K مشاهدة
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-4">استكشف جمال وتاريخ العلا، موقع التراث العالمي الذي يجمع بين الطبيعة الخلابة والحضارة القديمة.</p>
+                            <div class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                اقرأ المزيد
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 2 -->
+                    <a href="blog-post.html" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6" 
+                                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" 
+                                 alt="الدرعية">
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    التراث والآثار
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">الدرعية التاريخية: قلب المملكة النابض</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-gray-500 text-sm mb-4">
+                                <span class="flex items-center">
+                                    <i class="far fa-calendar-alt ml-1"></i>
+                                    12 مارس 2024
+                                </span>
+                                <span class="mr-4 flex items-center">
+                                    <i class="far fa-eye ml-1"></i>
+                                    980 مشاهدة
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-4">تعرف على تاريخ وثقافة الدرعية، المدينة التاريخية التي تعد مهد الدولة السعودية الأولى.</p>
+                            <div class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                اقرأ المزيد
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 3 -->
+                    <a href="blog-post.html" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1601629665203-f9f2b8d07019" 
+                                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" 
+                                 alt="نيوم">
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    السياحة البيئية
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">نيوم: مستقبل السياحة المستدامة</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-gray-500 text-sm mb-4">
+                                <span class="flex items-center">
+                                    <i class="far fa-calendar-alt ml-1"></i>
+                                    10 مارس 2024
+                                </span>
+                                <span class="mr-4 flex items-center">
+                                    <i class="far fa-eye ml-1"></i>
+                                    1.5K مشاهدة
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-4">اكتشف مشروع نيوم، المدينة المستقبلية التي تجمع بين التكنولوجيا المتقدمة والاستدامة البيئية.</p>
+                            <div class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                اقرأ المزيد
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 4 -->
+                    <a href="blog-post.html" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1528127269322-539801943592" 
+                                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" 
+                                 alt="الطائف">
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    المغامرات
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">الطائف: مدينة الورد والجمال</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-gray-500 text-sm mb-4">
+                                <span class="flex items-center">
+                                    <i class="far fa-calendar-alt ml-1"></i>
+                                    8 مارس 2024
+                                </span>
+                                <span class="mr-4 flex items-center">
+                                    <i class="far fa-eye ml-1"></i>
+                                    850 مشاهدة
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-4">استمتع بجمال الطبيعة في الطائف، واكتشف مزارع الورد الشهيرة والمناظر الجبلية الخلابة.</p>
+                            <div class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                اقرأ المزيد
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 5 -->
+                    <a href="blog-post.html" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1598011523399-5edf04b5f840" 
+                                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" 
+                                 alt="البحر الأحمر">
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    السياحة البحرية
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">البحر الأحمر: جنة الغوص والاستجمام</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-gray-500 text-sm mb-4">
+                                <span class="flex items-center">
+                                    <i class="far fa-calendar-alt ml-1"></i>
+                                    5 مارس 2024
+                                </span>
+                                <span class="mr-4 flex items-center">
+                                    <i class="far fa-eye ml-1"></i>
+                                    1.1K مشاهدة
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-4">اكتشف عالماً مذهلاً تحت الماء في البحر الأحمر، حيث الشعاب المرجانية الملونة والحياة البحرية المتنوعة.</p>
+                            <div class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                اقرأ المزيد
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 6 -->
+                    <a href="blog-post.html" class="block bg-white rounded-3xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="500">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1583855282680-6dbdc69b0932" 
+                                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" 
+                                 alt="أبها">
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm shadow-lg">
+                                    السياحة الجبلية
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-sm font-medium">أبها: عروس الجبل الأخضر</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-gray-500 text-sm mb-4">
+                                <span class="flex items-center">
+                                    <i class="far fa-calendar-alt ml-1"></i>
+                                    3 مارس 2024
+                                </span>
+                                <span class="mr-4 flex items-center">
+                                    <i class="far fa-eye ml-1"></i>
+                                    920 مشاهدة
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-4">استمتع بالطقس المعتدل والمناظر الطبيعية الخلابة في أبها، وتعرف على الثقافة العسيرية الأصيلة.</p>
+                            <div class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors shadow-lg hover:shadow-emerald-500/30">
+                                اقرأ المزيد
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center mt-12">
+                    <nav class="flex gap-2">
+                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-emerald-500 text-white">1</a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">2</a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">3</a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Initialize AOS -->
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+</body>
+</html>

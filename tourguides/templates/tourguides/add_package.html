@@ -1,0 +1,851 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}{% if is_update %}تعديل باقة{% else %}إضافة باقة{% endif %} سياحية | استكشف السعودية{% endblock %}
+
+{% block extra_css %}
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-focus {
+        transition: all 0.3s ease;
+    }
+
+    .input-focus:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    }
+
+    .form-section {
+        background-color: #f8fafc;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        border: 1px solid #e2e8f0;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #10b981;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-label {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
+    }
+
+    .form-hint {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+    }
+
+    .required-indicator {
+        color: #ef4444;
+        margin-right: 0.25rem;
+    }
+
+    .custom-select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2310b981'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: left 1rem center;
+        background-size: 1.25rem;
+        padding-left: 2.5rem !important;
+        appearance: none;
+    }
+
+    /* Progress Indicator */
+    .form-progress {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        scroll-behavior: smooth;
+    }
+
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 5rem;
+    }
+
+    .step-number {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background-color: #e2e8f0;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .step-number.active {
+        background-color: #10b981;
+        color: white;
+    }
+
+    .step-number.complete {
+        background-color: #10b981;
+        color: white;
+    }
+
+    .step-label {
+        font-size: 0.875rem;
+        text-align: center;
+        color: #64748b;
+    }
+
+    .step-label.active {
+        color: #10b981;
+        font-weight: 500;
+    }
+
+    /* Toast Notification */
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        width: 90%;
+        max-width: 400px;
+        overflow: hidden;
+    }
+    
+    .toast-notification {
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-100px);
+        opacity: 0;
+        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .toast-notification.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .toast-success {
+        background-color: #10b981;
+        color: white;
+    }
+    
+    .toast-error {
+        background-color: #ef4444;
+        color: white;
+    }
+    
+    .toast-icon {
+        flex-shrink: 0;
+        margin-left: 12px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .toast-content {
+        flex-grow: 1;
+    }
+    
+    .toast-close {
+        flex-shrink: 0;
+        background: none;
+        border: none;
+        color: currentColor;
+        opacity: 0.7;
+        cursor: pointer;
+        margin-right: 4px;
+    }
+    
+    .toast-close:hover {
+        opacity: 1;
+    }
+
+    /* Mobile Improvements */
+    @media (max-width: 640px) {
+        .form-container {
+            padding: 1.25rem;
+        }
+        
+        .form-section {
+            padding: 1.25rem;
+        }
+        
+        .btn {
+            width: 100%;
+            margin-bottom: 0.75rem;
+        }
+        
+        .form-progress {
+            margin-bottom: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Toast Notification Container -->
+<div class="toast-container" id="toast-container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="toast-notification {% if message.tags == 'success' %}toast-success{% elif message.tags == 'error' %}toast-error{% else %}bg-blue-500 text-white{% endif %}" data-auto-show="true">
+                <div class="toast-icon">
+                    {% if message.tags == 'success' %}
+                        <i class="fas fa-check-circle"></i>
+                    {% elif message.tags == 'error' %}
+                        <i class="fas fa-exclamation-circle"></i>
+                    {% else %}
+                        <i class="fas fa-info-circle"></i>
+                    {% endif %}
+                </div>
+                <div class="toast-content">{{ message }}</div>
+                <button class="toast-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Main Content -->
+<div class="min-h-screen py-6 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="max-w-4xl mx-auto">
+        <div class="glass-card rounded-3xl p-5 sm:p-8 form-container">
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">
+                    {% if is_update %}
+                    <i class="fas fa-edit ml-1"></i> تعديل باقة سياحية
+                    {% else %}
+                    <i class="fas fa-plus ml-1"></i> إضافة باقة سياحية جديدة
+                    {% endif %}
+                </h1>
+                <a href="{% if is_update %}{% url 'tourguides:packages_list' %}{% else %}{% url 'tourguides:tourguide_dashboard' %}{% endif %}" class="text-gray-500 hover:text-emerald-500 transition-colors" aria-label="إغلاق">
+                    <i class="fas fa-times text-xl"></i>
+                </a>
+            </div>
+
+            <div class="form-progress">
+                <div class="progress-step">
+                    <div class="step-number active complete">
+                        <i class="fas fa-info"></i>
+                    </div>
+                    <div class="step-label active">معلومات أساسية</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number active" id="step-details">2</div>
+                    <div class="step-label" id="label-details">تفاصيل الباقة</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number" id="step-services">3</div>
+                    <div class="step-label" id="label-services">الخدمات</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number" id="step-settings">4</div>
+                    <div class="step-label" id="label-settings">إعدادات</div>
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" id="package-form">
+                {% csrf_token %}
+                
+                <!-- Step 1: Basic Information -->
+                <div class="form-section" id="section-basic">
+                    <h2 class="form-section-title">
+                        <i class="fas fa-info-circle text-emerald-500"></i>
+                        معلومات الباقة الأساسية
+                    </h2>
+                    
+                    <!-- Title -->
+                    <div class="mb-6">
+                        <label class="block form-label">
+                            <span class="required-indicator">*</span>عنوان الباقة
+                        </label>
+                        <input type="text" name="title" required
+                               class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                               placeholder="مثال: جولة في الدرعية التاريخية"
+                               value="{{ package.title|default:'' }}">
+                        <p class="form-hint">اختر عنوانًا جذابًا وواضحًا للباقة</p>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="mb-6">
+                        <label class="block form-label">
+                            <span class="required-indicator">*</span>وصف الباقة
+                        </label>
+                        <textarea name="description" rows="4" required
+                                  class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus resize-none"
+                                  placeholder="اشرح محتوى الباقة وما يميزها عن غيرها...">{{ package.description|default:'' }}</textarea>
+                        <p class="form-hint">قدم وصفًا مفصلاً للباقة يشمل الأماكن والأنشطة</p>
+                    </div>
+                    
+                    <!-- Locations -->
+                    <div class="mb-6">
+                        <label class="block form-label">
+                            <span class="required-indicator">*</span>المواقع
+                        </label>
+                        <div class="relative">
+                            <div class="border border-gray-200 rounded-xl p-2 bg-white">
+                                <div class="flex flex-wrap gap-2 mb-2 min-h-10" id="selected-locations-container">
+                                    {% if package and package.locations.all %}
+                                        {% for location in package.locations.all %}
+                                            <div class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm flex items-center location-tag" data-id="{{ location.id }}">
+                                                {{ location.name }}
+                                                <button type="button" class="ml-2 text-emerald-600 hover:text-emerald-800 remove-location" data-id="{{ location.id }}">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="relative">
+                                    <input type="text" id="location-search" placeholder="ابحث عن المواقع..." 
+                                           class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all">
+                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                </div>
+                                <div id="locations-dropdown" class="hidden absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                    {% for location in locations %}
+                                        <div class="location-option px-4 py-2 hover:bg-emerald-50 cursor-pointer flex items-center" data-id="{{ location.id }}">
+                                            <span class="mr-2">{{ location.name }}</span>
+                                            <i class="fas fa-map-marker-alt text-emerald-500 ml-auto"></i>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div id="no-locations-selected" class="text-red-500 text-sm mt-2 hidden">
+                            <i class="fas fa-exclamation-circle mr-1"></i>
+                            الرجاء اختيار موقع واحد على الأقل
+                        </div>
+                        <input type="hidden" name="locations" id="locations-input" value="{% if package %}{% for location in package.locations.all %}{{ location.id }}{% if not forloop.last %},{% endif %}{% endfor %}{% endif %}">
+                        <p class="form-hint">اختر مواقع الجولة (يمكنك البحث والنقر لإضافة مواقع متعددة)</p>
+                    </div>
+                    
+                    <div class="text-left">
+                        <button type="button" id="btn-to-details" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors shadow-sm flex items-center">
+                            الخطوة التالية
+                            <i class="fas fa-arrow-left mr-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Details -->
+                <div class="form-section hidden" id="section-details">
+                    <h2 class="form-section-title">
+                        <i class="fas fa-list-ul text-emerald-500"></i>
+                        تفاصيل الباقة
+                    </h2>
+                    
+                    <!-- Duration and Max People -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block form-label">
+                                <span class="required-indicator">*</span>المدة
+                            </label>
+                            <input type="text" name="duration" required
+                                   class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                                   placeholder="مثال: 3 أيام، 5 ساعات"
+                                   value="{{ package.duration|default:'' }}">
+                            <p class="form-hint">حدد مدة الجولة (مثل: يومين، 4 ساعات)</p>
+                        </div>
+                        <div>
+                            <label class="block form-label">
+                                <span class="required-indicator">*</span>الحد الأقصى للأشخاص
+                            </label>
+                            <input type="number" name="max_people" min="1" required
+                                   class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                                   value="{{ package.max_people|default:'10' }}">
+                            <p class="form-hint">حدد أقصى عدد من المشاركين في الباقة</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Price -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block form-label">
+                                <span class="required-indicator">*</span>السعر (ريال)
+                            </label>
+                            <input type="number" name="price" min="0" step="0.01" required
+                                   class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                                   placeholder="0.00"
+                                   value="{{ package.price|default:'' }}">
+                            <p class="form-hint">حدد سعر الباقة بالريال السعودي</p>
+                        </div>
+                        <div>
+                            <label class="block form-label">سعر مخفض (اختياري)</label>
+                            <input type="number" name="discount_price" min="0" step="0.01"
+                                   class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus"
+                                   placeholder="0.00"
+                                   value="{{ package.discount_price|default:'' }}">
+                            <p class="form-hint">أضف سعرًا مخفضًا إذا كانت الباقة في عرض خاص</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button type="button" id="btn-back-to-basic" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors shadow-sm flex items-center">
+                            <i class="fas fa-arrow-right ml-2"></i>
+                            الخطوة السابقة
+                        </button>
+                        <button type="button" id="btn-to-services" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors shadow-sm flex items-center">
+                            الخطوة التالية
+                            <i class="fas fa-arrow-left mr-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Services -->
+                <div class="form-section hidden" id="section-services">
+                    <h2 class="form-section-title">
+                        <i class="fas fa-concierge-bell text-emerald-500"></i>
+                        الخدمات المشمولة وغير المشمولة
+                    </h2>
+                    
+                    <!-- Included Services -->
+                    <div class="mb-6">
+                        <label class="block form-label">الخدمات المشمولة</label>
+                        <textarea name="included_services" rows="4"
+                                  class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus resize-none"
+                                  placeholder="اكتب هنا ما هو مشمول في الباقة. مثال:&#10;- وجبات الإفطار&#10;- النقل من وإلى المطار&#10;- مرشد سياحي">{{ package.included_services|default:'' }}</textarea>
+                        <p class="form-hint">اكتب كل خدمة في سطر جديد مع إضافة - في البداية</p>
+                    </div>
+                    
+                    <!-- Excluded Services -->
+                    <div class="mb-6">
+                        <label class="block form-label">الخدمات غير المشمولة</label>
+                        <textarea name="excluded_services" rows="4"
+                                  class="w-full px-5 py-4 rounded-xl border border-gray-200 input-focus resize-none"
+                                  placeholder="اكتب هنا ما هو غير مشمول في الباقة. مثال:&#10;- تذاكر الطيران&#10;- المشروبات&#10;- النفقات الشخصية">{{ package.excluded_services|default:'' }}</textarea>
+                        <p class="form-hint">حدد بوضوح الخدمات غير المشمولة لتجنب سوء الفهم</p>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button type="button" id="btn-back-to-details" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors shadow-sm flex items-center">
+                            <i class="fas fa-arrow-right ml-2"></i>
+                            الخطوة السابقة
+                        </button>
+                        <button type="button" id="btn-to-settings" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors shadow-sm flex items-center">
+                            الخطوة التالية
+                            <i class="fas fa-arrow-left mr-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Settings -->
+                <div class="form-section hidden" id="section-settings">
+                    <h2 class="form-section-title">
+                        <i class="fas fa-cog text-emerald-500"></i>
+                        إعدادات الباقة
+                    </h2>
+                    
+                    <!-- Status -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div class="flex items-center">
+                            <input type="checkbox" name="is_active" id="is_active" class="w-5 h-5 text-emerald-500 border-2 border-gray-300 rounded focus:ring-emerald-500" {% if package.is_active %}checked{% endif %}>
+                            <label for="is_active" class="ml-2 form-label">نشط</label>
+                            <p class="form-hint mr-2">الباقة متاحة للحجز والعرض</p>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" name="is_featured" id="is_featured" class="w-5 h-5 text-emerald-500 border-2 border-gray-300 rounded focus:ring-emerald-500" {% if package.is_featured %}checked{% endif %}>
+                            <label for="is_featured" class="ml-2 form-label">مميز</label>
+                            <p class="form-hint mr-2">سيتم عرض الباقة في الصفحة الرئيسية</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button type="button" id="btn-back-to-services" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors shadow-sm flex items-center">
+                            <i class="fas fa-arrow-right ml-2"></i>
+                            الخطوة السابقة
+                        </button>
+                        <button type="submit" class="px-8 py-4 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all font-medium flex items-center">
+                            <i class="fas fa-{% if is_update %}save{% else %}check{% endif %} ml-2"></i>
+                            {% if is_update %}حفظ التغييرات{% else %}إضافة الباقة{% endif %}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Navigation between form sections
+        const sections = ['basic', 'details', 'services', 'settings'];
+        const currentSection = (sectionId) => document.getElementById(`section-${sectionId}`);
+        const stepIcon = (stepId) => document.getElementById(`step-${stepId}`);
+        const stepLabel = (labelId) => document.getElementById(`label-${labelId}`);
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            sections.forEach(section => {
+                currentSection(section).classList.add('hidden');
+                if (stepIcon(section)) {
+                    stepIcon(section).classList.remove('active', 'complete');
+                    stepLabel(section)?.classList.remove('active');
+                }
+            });
+            
+            // Show the current section
+            currentSection(sectionId).classList.remove('hidden');
+            
+            // Update progress indicator
+            const sectionIndex = sections.indexOf(sectionId);
+            sections.forEach((section, index) => {
+                if (index < sectionIndex) {
+                    stepIcon(section)?.classList.add('complete');
+                }
+                if (index === sectionIndex) {
+                    stepIcon(section)?.classList.add('active');
+                    stepLabel(section)?.classList.add('active');
+                }
+            });
+            
+            // Scroll to top of the form
+            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Navigation buttons
+        document.getElementById('btn-to-details').addEventListener('click', () => showSection('details'));
+        document.getElementById('btn-back-to-basic').addEventListener('click', () => showSection('basic'));
+        document.getElementById('btn-to-services').addEventListener('click', () => showSection('services'));
+        document.getElementById('btn-back-to-details').addEventListener('click', () => showSection('details'));
+        document.getElementById('btn-to-settings').addEventListener('click', () => showSection('settings'));
+        document.getElementById('btn-back-to-services').addEventListener('click', () => showSection('services'));
+        
+        // Validate form before submission
+        document.getElementById('package-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple validation for required fields
+            const title = document.querySelector('input[name="title"]').value.trim();
+            const description = document.querySelector('textarea[name="description"]').value.trim();
+            const locations = document.getElementById('locations-input').value;
+            const price = document.querySelector('input[name="price"]').value.trim();
+            
+            if (!title) {
+                showToast('يرجى إدخال عنوان الباقة', 'error');
+                showSection('basic');
+                return;
+            }
+            
+            if (!description) {
+                showToast('يرجى إدخال وصف الباقة', 'error');
+                showSection('basic');
+                return;
+            }
+            
+            if (!locations) {
+                showToast('يرجى اختيار موقع واحد على الأقل', 'error');
+                showSection('basic');
+                return;
+            }
+            
+            if (!price || isNaN(parseFloat(price))) {
+                showToast('يرجى إدخال سعر صالح', 'error');
+                showSection('details');
+                return;
+            }
+            
+            // If all validations pass, submit the form
+            const form = this;
+            const formData = new FormData(form);
+            
+            // Show loading toast
+            showToast('جاري حفظ الباقة...', 'loading');
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (response.redirected) {
+                    // Success - save success message to localStorage and redirect
+                    localStorage.setItem('packageToast', JSON.stringify({
+                        message: '{% if is_update %}تم تحديث الباقة بنجاح{% else %}تم إضافة الباقة بنجاح{% endif %}',
+                        type: 'success'
+                    }));
+                    window.location.href = response.url;
+                } else {
+                    // Handle other responses
+                    return response.text();
+                }
+            })
+            .then(html => {
+                if (html) {
+                    // Check if there are validation errors or other issues
+                    showToast('حدث خطأ أثناء حفظ الباقة، يرجى التحقق من البيانات المدخلة', 'error');
+                    // Submit the form normally to show Django's validation errors
+                    form.submit();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('حدث خطأ أثناء حفظ الباقة، يرجى المحاولة مرة أخرى', 'error');
+            });
+        });
+
+        // Toast notification functions
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type === 'success' ? 'toast-success' : type === 'loading' ? 'bg-blue-500 text-white' : 'toast-error'}`;
+            
+            let icon = '';
+            if (type === 'success') {
+                icon = '<i class="fas fa-check-circle"></i>';
+            } else if (type === 'error') {
+                icon = '<i class="fas fa-exclamation-circle"></i>';
+            } else if (type === 'loading') {
+                icon = '<i class="fas fa-spinner fa-spin"></i>';
+            }
+            
+            toast.innerHTML = `
+                <div class="toast-icon">${icon}</div>
+                <div class="toast-content">${message}</div>
+                <button class="toast-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Show the toast with animation
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Add event listener to close button
+            const closeBtn = toast.querySelector('.toast-close');
+            closeBtn.addEventListener('click', () => {
+                closeToast(toast);
+            });
+            
+            // Auto-close after 5 seconds for non-loading toasts
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    closeToast(toast);
+                }, 5000);
+            }
+            
+            return toast;
+        }
+        
+        function closeToast(toast) {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+        }
+        
+        // Check for stored toast message on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize pre-rendered toasts
+            document.querySelectorAll('.toast-notification[data-auto-show="true"]').forEach(toast => {
+                // Show toast with animation
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 10);
+                
+                // Add event listener to close button
+                const closeBtn = toast.querySelector('.toast-close');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        closeToast(toast);
+                    });
+                }
+                
+                // Auto-close after 5 seconds
+                setTimeout(() => {
+                    closeToast(toast);
+                }, 5000);
+            });
+            
+            const storedToast = localStorage.getItem('packageToast');
+            if (storedToast) {
+                try {
+                    const { message, type } = JSON.parse(storedToast);
+                    showToast(message, type);
+                    localStorage.removeItem('packageToast');
+                } catch (e) {
+                    console.error('Error parsing stored toast:', e);
+                    localStorage.removeItem('packageToast');
+                }
+            }
+        });
+        
+        // Locations selector functionality
+        const locationSearch = document.getElementById('location-search');
+        const locationsDropdown = document.getElementById('locations-dropdown');
+        const selectedLocationsContainer = document.getElementById('selected-locations-container');
+        const locationsInput = document.getElementById('locations-input');
+        const noLocationsSelected = document.getElementById('no-locations-selected');
+        const locationOptions = document.querySelectorAll('.location-option');
+        
+        // Function to get current selected location IDs
+        function getSelectedLocationIds() {
+            const value = locationsInput.value;
+            return value ? value.split(',') : [];
+        }
+        
+        // Function to update the hidden input with selected locations
+        function updateLocationsInput(selectedIds) {
+            locationsInput.value = selectedIds.join(',');
+            
+            // Show error if no locations are selected
+            if (selectedIds.length === 0) {
+                noLocationsSelected.classList.remove('hidden');
+            } else {
+                noLocationsSelected.classList.add('hidden');
+            }
+        }
+        
+        // Function to add a location tag
+        function addLocationTag(id, name) {
+            const selectedIds = getSelectedLocationIds();
+            
+            // Don't add if already selected
+            if (selectedIds.includes(id.toString())) {
+                return;
+            }
+            
+            // Create tag element
+            const tag = document.createElement('div');
+            tag.className = 'bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm flex items-center location-tag';
+            tag.dataset.id = id;
+            tag.innerHTML = `
+                ${name}
+                <button type="button" class="ml-2 text-emerald-600 hover:text-emerald-800 remove-location" data-id="${id}">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            // Add remove event listener
+            const removeButton = tag.querySelector('.remove-location');
+            removeButton.addEventListener('click', function() {
+                removeLocationTag(id);
+            });
+            
+            // Add to container
+            selectedLocationsContainer.appendChild(tag);
+            
+            // Update hidden input
+            selectedIds.push(id.toString());
+            updateLocationsInput(selectedIds);
+            
+            // Clear search field and hide dropdown
+            locationSearch.value = '';
+            locationsDropdown.classList.add('hidden');
+        }
+        
+        // Function to remove a location tag
+        function removeLocationTag(id) {
+            // Remove tag element
+            const tag = selectedLocationsContainer.querySelector(`.location-tag[data-id="${id}"]`);
+            if (tag) {
+                tag.remove();
+            }
+            
+            // Update hidden input
+            const selectedIds = getSelectedLocationIds();
+            const updatedIds = selectedIds.filter(selectedId => selectedId !== id.toString());
+            updateLocationsInput(updatedIds);
+        }
+        
+        // Toggle dropdown on search field focus
+        locationSearch.addEventListener('focus', function() {
+            locationsDropdown.classList.remove('hidden');
+        });
+        
+        // Filter locations based on search input
+        locationSearch.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            let hasVisibleOptions = false;
+            
+            locationOptions.forEach(option => {
+                const locationName = option.querySelector('span').textContent.toLowerCase();
+                if (locationName.includes(searchTerm)) {
+                    option.classList.remove('hidden');
+                    hasVisibleOptions = true;
+                } else {
+                    option.classList.add('hidden');
+                }
+            });
+            
+            if (hasVisibleOptions) {
+                locationsDropdown.classList.remove('hidden');
+            } else {
+                locationsDropdown.classList.add('hidden');
+            }
+        });
+        
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!locationSearch.contains(e.target) && !locationsDropdown.contains(e.target)) {
+                locationsDropdown.classList.add('hidden');
+            }
+        });
+        
+        // Add event listeners to location options
+        locationOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const name = this.querySelector('span').textContent;
+                addLocationTag(id, name);
+            });
+        });
+        
+        // Initialize existing location tags with remove functionality
+        document.querySelectorAll('.remove-location').forEach(button => {
+            button.addEventListener('click', function() {
+                removeLocationTag(this.dataset.id);
+            });
+        });
+        
+        // Validate locations before form submission
+        const packageForm = document.getElementById('package-form');
+        packageForm.addEventListener('submit', function(e) {
+            const selectedIds = getSelectedLocationIds();
+            if (selectedIds.length === 0) {
+                e.preventDefault();
+                noLocationsSelected.classList.remove('hidden');
+                
+                // Scroll to the locations section
+                document.getElementById('section-basic').classList.remove('hidden');
+                document.getElementById('section-details').classList.add('hidden');
+                document.getElementById('section-services').classList.add('hidden');
+                document.getElementById('section-settings').classList.add('hidden');
+                
+                window.scrollTo({
+                    top: locationSearch.getBoundingClientRect().top + window.pageYOffset - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+</script>
+{% endblock %} 
