@@ -20,11 +20,19 @@ class Command(BaseCommand):
         admin_email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@example.com')
         admin_password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'admin123')
 
-        if not User.objects.filter(username=admin_username).exists():
+        try:
+            admin_user = User.objects.get(username=admin_username)
+            if not admin_user.is_superuser or not admin_user.is_staff:
+                admin_user.is_superuser = True
+                admin_user.is_staff = True
+                admin_user.set_password(admin_password)
+                admin_user.save()
+                self.stdout.write(self.style.SUCCESS(f'Updated existing user "{admin_username}" to superuser.'))
+            else:
+                self.stdout.write(self.style.WARNING(f'Superuser "{admin_username}" already exists.'))
+        except User.DoesNotExist:
             User.objects.create_superuser(admin_username, admin_email, admin_password)
             self.stdout.write(self.style.SUCCESS(f'Successfully created superuser: {admin_username}'))
-        else:
-            self.stdout.write(self.style.WARNING(f'Superuser "{admin_username}" already exists.'))
 
         try:
             site = Site.objects.get(is_default_site=True)
@@ -33,6 +41,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR('Default site not found. Cannot create pages.'))
             root_page = None
 
+        blog_index_page = None
         if root_page:
             try:
                 blog_index_page = BlogIndexPage.objects.get(slug='blog')
@@ -47,23 +56,33 @@ class Command(BaseCommand):
                 blog_index_page.save_revision().publish()
                 self.stdout.write(self.style.SUCCESS('Created Blog Index Page.'))
 
-            category1, _ = BlogCategory.objects.get_or_create(
+            category1, cat1_created = BlogCategory.objects.get_or_create(
                 slug='travel-tips',
                 defaults={'name': 'Travel Tips'}
             )
-            category2, _ = BlogCategory.objects.get_or_create(
+            if cat1_created:
+                self.stdout.write(self.style.SUCCESS('Created Blog Category: Travel Tips'))
+            
+            category2, cat2_created = BlogCategory.objects.get_or_create(
                 slug='destinations',
                 defaults={'name': 'Destinations'}
             )
-            category3, _ = BlogCategory.objects.get_or_create(
+            if cat2_created:
+                self.stdout.write(self.style.SUCCESS('Created Blog Category: Destinations'))
+            
+            category3, cat3_created = BlogCategory.objects.get_or_create(
                 slug='guides',
                 defaults={'name': 'Guides'}
             )
+            if cat3_created:
+                self.stdout.write(self.style.SUCCESS('Created Blog Category: Guides'))
 
-            author, _ = BlogAuthor.objects.get_or_create(
+            author, author_created = BlogAuthor.objects.get_or_create(
                 name='Admin',
                 defaults={'bio': 'Administrator and content creator.'}
             )
+            if author_created:
+                self.stdout.write(self.style.SUCCESS('Created Blog Author: Admin'))
 
             blog_posts_data = [
                 {
@@ -92,47 +111,69 @@ class Command(BaseCommand):
                 },
             ]
 
-            for post_data in blog_posts_data:
-                try:
-                    existing_post = BlogPage.objects.get(slug=post_data['slug'])
-                    self.stdout.write(self.style.WARNING(f'Blog Post "{post_data["title"]}" already exists.'))
-                except BlogPage.DoesNotExist:
-                    blog_page = BlogPage(
-                        title=post_data['title'],
-                        slug=post_data['slug'],
-                        intro=post_data['intro'],
-                        body=post_data['body'],
-                        date=post_data['date'],
-                        author=author,
-                        read_time=5,
-                    )
-                    blog_index_page.add_child(instance=blog_page)
-                    blog_page.save_revision().publish()
-                    blog_page.categories.set(post_data['categories'])
-                    self.stdout.write(self.style.SUCCESS(f'Created Blog Post: {blog_page.title}'))
+            if blog_index_page:
+                for post_data in blog_posts_data:
+                    try:
+                        existing_post = BlogPage.objects.get(slug=post_data['slug'])
+                        self.stdout.write(self.style.WARNING(f'Blog Post "{post_data["title"]}" already exists.'))
+                    except BlogPage.DoesNotExist:
+                        blog_page = BlogPage(
+                            title=post_data['title'],
+                            slug=post_data['slug'],
+                            intro=post_data['intro'],
+                            body=post_data['body'],
+                            date=post_data['date'],
+                            author=author,
+                            read_time=5,
+                        )
+                        blog_index_page.add_child(instance=blog_page)
+                        blog_page.save_revision().publish()
+                        blog_page.categories.set(post_data['categories'])
+                        self.stdout.write(self.style.SUCCESS(f'Created Blog Post: {blog_page.title}'))
 
-        arabic_lang, _ = Language.objects.get_or_create(name='Arabic', defaults={'code': 'ar'})
-        english_lang, _ = Language.objects.get_or_create(name='English', defaults={'code': 'en'})
+        arabic_lang, arabic_created = Language.objects.get_or_create(name='Arabic', defaults={'code': 'ar'})
+        if arabic_created:
+            self.stdout.write(self.style.SUCCESS('Created Language: Arabic'))
+        
+        english_lang, english_created = Language.objects.get_or_create(name='English', defaults={'code': 'en'})
+        if english_created:
+            self.stdout.write(self.style.SUCCESS('Created Language: English'))
 
-        specialty1, _ = Specialty.objects.get_or_create(name='Historical Tours')
-        specialty2, _ = Specialty.objects.get_or_create(name='Adventure Tours')
-        specialty3, _ = Specialty.objects.get_or_create(name='Cultural Tours')
+        specialty1, spec1_created = Specialty.objects.get_or_create(name='Historical Tours')
+        if spec1_created:
+            self.stdout.write(self.style.SUCCESS('Created Specialty: Historical Tours'))
+        
+        specialty2, spec2_created = Specialty.objects.get_or_create(name='Adventure Tours')
+        if spec2_created:
+            self.stdout.write(self.style.SUCCESS('Created Specialty: Adventure Tours'))
+        
+        specialty3, spec3_created = Specialty.objects.get_or_create(name='Cultural Tours')
+        if spec3_created:
+            self.stdout.write(self.style.SUCCESS('Created Specialty: Cultural Tours'))
 
-        riyadh, _ = Location.objects.get_or_create(
+        riyadh, riyadh_created = Location.objects.get_or_create(
             name='Riyadh',
             city='Riyadh',
             defaults={'country': 'Saudi Arabia', 'is_popular': True}
         )
-        jeddah, _ = Location.objects.get_or_create(
+        if riyadh_created:
+            self.stdout.write(self.style.SUCCESS('Created Location: Riyadh'))
+        
+        jeddah, jeddah_created = Location.objects.get_or_create(
             name='Jeddah',
             city='Jeddah',
             defaults={'country': 'Saudi Arabia', 'is_popular': True}
         )
-        mecca, _ = Location.objects.get_or_create(
+        if jeddah_created:
+            self.stdout.write(self.style.SUCCESS('Created Location: Jeddah'))
+        
+        mecca, mecca_created = Location.objects.get_or_create(
             name='Mecca',
             city='Mecca',
             defaults={'country': 'Saudi Arabia', 'is_popular': True}
         )
+        if mecca_created:
+            self.stdout.write(self.style.SUCCESS('Created Location: Mecca'))
 
         tour_guides_data = [
             {
@@ -168,7 +209,7 @@ class Command(BaseCommand):
         ]
 
         for guide_data in tour_guides_data:
-            user, created = User.objects.get_or_create(
+            user, user_created = User.objects.get_or_create(
                 username=guide_data['username'],
                 defaults={
                     'email': guide_data['email'],
@@ -177,9 +218,12 @@ class Command(BaseCommand):
                 }
             )
 
-            if created:
+            if user_created:
                 user.set_password('guide123')
                 user.save()
+                self.stdout.write(self.style.SUCCESS(f'Created User: {user.username}'))
+            else:
+                self.stdout.write(self.style.WARNING(f'User "{user.username}" already exists.'))
 
             tour_guide, tg_created = TourGuide.objects.get_or_create(
                 user=user,
