@@ -34,20 +34,18 @@ class Command(BaseCommand):
             root_page = None
 
         if root_page:
-            blog_index_page, created = BlogIndexPage.objects.get_or_create(
-                slug='blog',
-                defaults={
-                    'title': 'Blog',
-                    'intro': 'Welcome to our blog!',
-                }
-            )
-
-            if created:
+            try:
+                blog_index_page = BlogIndexPage.objects.get(slug='blog')
+                self.stdout.write(self.style.WARNING('Blog Index Page already exists.'))
+            except BlogIndexPage.DoesNotExist:
+                blog_index_page = BlogIndexPage(
+                    title='Blog',
+                    slug='blog',
+                    intro='Welcome to our blog!',
+                )
                 root_page.add_child(instance=blog_index_page)
                 blog_index_page.save_revision().publish()
                 self.stdout.write(self.style.SUCCESS('Created Blog Index Page.'))
-            else:
-                self.stdout.write(self.style.WARNING('Blog Index Page already exists.'))
 
             category1, _ = BlogCategory.objects.get_or_create(
                 slug='travel-tips',
@@ -95,8 +93,10 @@ class Command(BaseCommand):
             ]
 
             for post_data in blog_posts_data:
-                existing_post = BlogPage.objects.filter(slug=post_data['slug']).first()
-                if not existing_post:
+                try:
+                    existing_post = BlogPage.objects.get(slug=post_data['slug'])
+                    self.stdout.write(self.style.WARNING(f'Blog Post "{post_data["title"]}" already exists.'))
+                except BlogPage.DoesNotExist:
                     blog_page = BlogPage(
                         title=post_data['title'],
                         slug=post_data['slug'],
@@ -110,8 +110,6 @@ class Command(BaseCommand):
                     blog_page.save_revision().publish()
                     blog_page.categories.set(post_data['categories'])
                     self.stdout.write(self.style.SUCCESS(f'Created Blog Post: {blog_page.title}'))
-                else:
-                    self.stdout.write(self.style.WARNING(f'Blog Post "{post_data["title"]}" already exists.'))
 
         arabic_lang, _ = Language.objects.get_or_create(name='Arabic', defaults={'code': 'ar'})
         english_lang, _ = Language.objects.get_or_create(name='English', defaults={'code': 'en'})
